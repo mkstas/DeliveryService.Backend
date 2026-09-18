@@ -13,16 +13,16 @@ namespace DeliveryService.Domain.Entities
         /// </summary>
         public StringBounded Name { get; init; }
 
+        /// <summary>
+        /// The display name of the permission.
+        /// </summary>
+        public StringBounded DisplayName { get; init; }
+
         private readonly List<Role> _roles = [];
         /// <summary>
         /// The roles that grant this permission.
         /// </summary>
         public IReadOnlyList<Role> Roles => _roles.AsReadOnly();
-
-        /// <summary>
-        /// The display name of the permission.
-        /// </summary>
-        public StringBounded DisplayName { get; init; }
 
         private Permission(StringBounded name, StringBounded displayName)
         {
