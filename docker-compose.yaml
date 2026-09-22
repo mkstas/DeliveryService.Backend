@@ -1,0 +1,37 @@
+services:
+  delivery_service_postgres:
+    image: postgres:latest
+    container_name: delivery_service_postgres
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=delivery_service
+    volumes:
+      - postgres_data:/var/lib/postgresql
+    ports:
+      - 5432:5432
+    networks:
+      - delivery_service
+
+  delivery_service_pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: delivery_service_pgadmin
+    restart: unless-stopped
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=root@mail.com
+      - PGADMIN_DEFAULT_PASSWORD=root
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    ports:
+      - 5050:80
+    networks:
+      - delivery_service
+
+volumes:
+  postgres_data:
+  pgadmin_data:
+
+networks:
+  delivery_service:
+    driver: bridge
