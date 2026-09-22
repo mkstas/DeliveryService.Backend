@@ -10,9 +10,6 @@ namespace DeliveryService.Domain.Common.Abstracts
         /// </summary>
         public Guid Id { get; init; }
 
-        /// <summary>
-        /// Initializes a new instance with a unique identifier.
-        /// </summary>
         protected Entity()
         {
             Id = Guid.NewGuid();

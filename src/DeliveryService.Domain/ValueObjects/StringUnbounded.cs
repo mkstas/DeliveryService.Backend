@@ -3,7 +3,7 @@ using DeliveryService.Domain.Common.Helpers;
 namespace DeliveryService.Domain.ValueObjects
 {
     /// <summary>
-    /// Value object that constrains a string.
+    /// Value object that constrains a string to be non-empty.
     /// </summary>
     public record StringUnbounded
     {

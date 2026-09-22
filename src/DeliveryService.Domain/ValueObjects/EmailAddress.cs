@@ -20,11 +20,11 @@ namespace DeliveryService.Domain.ValueObjects
         /// <summary>
         /// Creates a <see cref="EmailAddress"/> instance with validation.
         /// </summary>
-        /// <param name="value">Must not be null, empty, or longer than <see cref="MAX_LENGTH"/>.</param>
+        /// <param name="value">Must not be null, empty, or exceed <see cref="MAX_LENGTH"/> characters.</param>
         /// <returns>A validated <see cref="EmailAddress"/> instance.</returns>
         /// <exception cref="ArgumentNullException">Thrown when the value is null or empty.</exception>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when the value exceeds <see cref="MAX_LENGTH"/>.</exception>
-        /// <exception cref="ArgumentException">Thrown when the value is in an invalid email address format.</exception>
+        /// <exception cref="ArgumentException">Thrown when the value is not a valid email address.</exception>
         public static EmailAddress Create(string value)
         {
             ValidationHelper.CheckNotNullOrEmpty(value, nameof(EmailAddress));

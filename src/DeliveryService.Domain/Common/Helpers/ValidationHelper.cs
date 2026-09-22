@@ -19,11 +19,11 @@ namespace DeliveryService.Domain.Common.Helpers
         }
 
         /// <summary>
-        /// Validates that a specified numeric value does not exceed the given upper limit.
+        /// Validates that the specified numeric value does not exceed the given upper limit.
         /// </summary>
         /// <param name="value">The numeric value to validate.</param>
         /// <param name="limit">The maximum allowed limit.</param>
-        /// <param name="paramName">The name of the parameter being validated, used in the exception message.</param>
+        /// <param name="paramName">The name of the parameter being validated.</param>
         /// <exception cref="ArgumentOutOfRangeException">
         /// Thrown when <paramref name="value"/> is strictly greater than <paramref name="limit"/>.
         /// </exception>

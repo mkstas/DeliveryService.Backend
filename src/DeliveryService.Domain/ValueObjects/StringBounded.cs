@@ -19,7 +19,7 @@ namespace DeliveryService.Domain.ValueObjects
         /// <summary>
         /// Creates a <see cref="StringBounded"/> instance with validation.
         /// </summary>
-        /// <param name="value">Must not be null, empty, or longer than <see cref="MAX_LENGTH"/>.</param>
+        /// <param name="value">Must not be null, empty, or exceed <see cref="MAX_LENGTH"/> characters.</param>
         /// <returns>A validated <see cref="StringBounded"/> instance.</returns>
         /// <exception cref="ArgumentNullException">Thrown when the value is null or empty.</exception>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when the value exceeds <see cref="MAX_LENGTH"/>.</exception>
