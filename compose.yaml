@@ -1,6 +1,6 @@
 services:
   delivery_service_postgres:
-    image: postgres:latest
+    image: postgres:alpine
     container_name: delivery_service_postgres
     restart: unless-stopped
     environment:
