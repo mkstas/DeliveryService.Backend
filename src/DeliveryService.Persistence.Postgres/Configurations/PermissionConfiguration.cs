@@ -16,15 +16,15 @@ namespace DeliveryService.Persistence.Postgres.Configurations
             builder.Property(p => p.Id)
                    .HasColumnName("id");
 
-            builder.Property(p => p.Name)
+            builder.Property(p => p.SystemName)
                    .HasConversion(
                         n => (string)n,
                         n => StringBounded.Create(n))
-                   .HasColumnName("name")
+                   .HasColumnName("system_name")
                    .HasMaxLength(StringBounded.MAX_LENGTH)
                    .IsRequired();
 
-            builder.HasIndex(p => p.Name).IsUnique();
+            builder.HasIndex(p => p.SystemName).IsUnique();
 
             builder.Property(p => p.DisplayName)
                    .HasConversion(

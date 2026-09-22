@@ -37,7 +37,7 @@ namespace DeliveryService.Persistence.Postgres.Configurations
                    .HasConversion(
                         fn => (string)fn,
                         fn => StringBounded.Create(fn))
-                   .HasColumnName("firstname")
+                   .HasColumnName("first_name")
                    .IsRequired();
 
             builder.HasMany(u => u.Roles)
