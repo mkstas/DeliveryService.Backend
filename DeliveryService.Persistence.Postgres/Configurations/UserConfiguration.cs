@@ -18,7 +18,7 @@ namespace DeliveryService.Persistence.Postgres.Configurations
 
             builder.Property(u => u.EmailAddress)
                    .HasConversion(
-                        ea => ea,
+                        ea => (string)ea,
                         ea => EmailAddress.Create(ea))
                    .HasColumnName("email_address")
                    .HasMaxLength(EmailAddress.MAX_LENGTH)
@@ -28,9 +28,16 @@ namespace DeliveryService.Persistence.Postgres.Configurations
 
             builder.Property(u => u.PasswordHash)
                    .HasConversion(
-                        ph => ph,
+                        ph => (string)ph,
                         ph => StringUnbounded.Create(ph))
                    .HasColumnName("password_hash")
+                   .IsRequired();
+
+            builder.Property(u => u.FirstName)
+                   .HasConversion(
+                        fn => (string)fn,
+                        fn => StringBounded.Create(fn))
+                   .HasColumnName("firstname")
                    .IsRequired();
 
             builder.HasMany(u => u.Roles)

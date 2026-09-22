@@ -18,7 +18,7 @@ namespace DeliveryService.Persistence.Postgres.Configurations
 
             builder.Property(r => r.Name)
                    .HasConversion(
-                        n => n,
+                        n => (string)n,
                         n => StringBounded.Create(n))
                    .HasColumnName("name")
                    .HasMaxLength(StringBounded.MAX_LENGTH)
