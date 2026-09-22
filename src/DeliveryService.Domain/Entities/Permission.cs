@@ -11,7 +11,7 @@ namespace DeliveryService.Domain.Entities
         /// <summary>
         /// The internal name of the permission.
         /// </summary>
-        public StringBounded Name { get; init; }
+        public StringBounded SystemName { get; init; }
 
         /// <summary>
         /// The display name of the permission.
@@ -24,9 +24,9 @@ namespace DeliveryService.Domain.Entities
         /// </summary>
         public IReadOnlyList<Role> Roles => _roles.AsReadOnly();
 
-        private Permission(StringBounded name, StringBounded displayName)
+        private Permission(StringBounded systemName, StringBounded displayName)
         {
-            Name = name;
+            SystemName = systemName;
             DisplayName = displayName;
         }
 
