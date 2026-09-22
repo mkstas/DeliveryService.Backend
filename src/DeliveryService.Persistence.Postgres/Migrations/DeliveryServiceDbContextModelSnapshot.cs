@@ -35,18 +35,18 @@ namespace DeliveryService.Persistence.Postgres.Migrations
                         .HasColumnType("character varying(256)")
                         .HasColumnName("display_name");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("SystemName")
                         .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)")
-                        .HasColumnName("name");
+                        .HasColumnName("system_name");
 
                     b.HasKey("Id");
 
                     b.HasIndex("DisplayName")
                         .IsUnique();
 
-                    b.HasIndex("Name")
+                    b.HasIndex("SystemName")
                         .IsUnique();
 
                     b.ToTable("permissions", (string)null);
@@ -89,7 +89,7 @@ namespace DeliveryService.Persistence.Postgres.Migrations
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("text")
-                        .HasColumnName("firstname");
+                        .HasColumnName("first_name");
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DeliveryService.Persistence.Postgres.Migrations
 {
     /// <inheritdoc />
-    public partial class CreateRoleBasedTables : Migration
+    public partial class CreateUserRoleBasedTables : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -16,7 +16,7 @@ namespace DeliveryService.Persistence.Postgres.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
-                    name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
+                    system_name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
                     display_name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false)
                 },
                 constraints: table =>
@@ -43,7 +43,7 @@ namespace DeliveryService.Persistence.Postgres.Migrations
                     id = table.Column<Guid>(type: "uuid", nullable: false),
                     email_address = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
                     password_hash = table.Column<string>(type: "text", nullable: false),
-                    firstname = table.Column<string>(type: "text", nullable: false)
+                    first_name = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -105,9 +105,9 @@ namespace DeliveryService.Persistence.Postgres.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_permissions_name",
+                name: "IX_permissions_system_name",
                 table: "permissions",
-                column: "name",
+                column: "system_name",
                 unique: true);
 
             migrationBuilder.CreateIndex(
