@@ -1,3 +1,5 @@
+using DeliveryService.Domain.Interfaces.Repositories;
+using DeliveryService.Persistence.Postgres.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -23,6 +25,8 @@ namespace DeliveryService.Persistence.Postgres
             {
                 options.UseNpgsql(connectionString);
             });
+
+            services.AddScoped<IPermissionRepository, PermissionRepository>();
 
             return services;
         }
