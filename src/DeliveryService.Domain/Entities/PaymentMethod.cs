@@ -36,6 +36,6 @@ namespace DeliveryService.Domain.Entities
         /// <param name="userId">The identifier of the user who owns the payment method.</param>
         /// <param name="cardNumber">The card number of the payment method.</param>
         /// <returns>A new <see cref="PaymentMethod"/> instance.</returns>
-        internal static PaymentMethod Create(Guid userId, CardNumber cardNumber) => new (userId, cardNumber);
+        internal static PaymentMethod Create(Guid userId, CardNumber cardNumber) => new(userId, cardNumber);
     }
 }
