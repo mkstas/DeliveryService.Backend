@@ -29,6 +29,12 @@ namespace DeliveryService.Domain.Entities
         /// </summary>
         public IReadOnlyList<Role> Roles => _roles.AsReadOnly();
 
+        private readonly List<PaymentMethod> _paymentMethods = [];
+        /// <summary>
+        /// The payment methods of the user.
+        /// </summary>
+        public IReadOnlyList<PaymentMethod> PaymentMethods => _paymentMethods.AsReadOnly();
+
         private User(EmailAddress emailAddress, StringUnbounded passwordHash, StringBounded firstName)
         {
             EmailAddress = emailAddress;
@@ -75,5 +81,21 @@ namespace DeliveryService.Domain.Entities
         /// </summary>
         /// <param name="role">The role to remove.</param>
         public void RemoveRole(Role role) => _roles.Remove(role);
+
+        /// <summary>
+        /// Creates a payment method for the user from the given card number.
+        /// </summary>
+        /// <param name="cardNumber">The card number of the new payment method.</param>
+        public void CreatePaymentMethod(CardNumber cardNumber)
+        {
+            var paymentMethod = PaymentMethod.Create(Id, cardNumber);
+            _paymentMethods.Add(paymentMethod);
+        }
+
+        /// <summary>
+        /// Removes a payment method from the user.
+        /// </summary>
+        /// <param name="paymentMethod">The payment method to remove.</param>
+        public void RemovePaymentMethod(PaymentMethod paymentMethod) => _paymentMethods.Remove(paymentMethod);
     }
 }
