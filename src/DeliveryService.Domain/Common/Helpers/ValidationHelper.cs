@@ -34,5 +34,38 @@ namespace DeliveryService.Domain.Common.Helpers
                 throw new ArgumentOutOfRangeException(paramName, $"{paramName} cannot be greater than {limit}.");
             }
         }
+
+        /// <summary>
+        /// Validates that the specified numeric value is equal to the given number.
+        /// </summary>
+        /// <param name="value">The numeric value to validate.</param>
+        /// <param name="number">The exact value the <paramref name="value"/> must equal.</param>
+        /// <param name="paramName">The name of the parameter being validated.</param>
+        /// <exception cref="ArgumentException">
+        /// Thrown when <paramref name="value"/> is not equal to <paramref name="number"/>.
+        /// </exception>
+        public static void CheckEqualToNumber(double value, double number, string paramName)
+        {
+            if (value != number)
+            {
+                throw new ArgumentException($"{paramName} must be equal {number}.");
+            }
+        }
+
+        /// <summary>
+        /// Validates that the specified decimal value is not negative.
+        /// </summary>
+        /// <param name="value">The decimal value to validate.</param>
+        /// <param name="paramName">The name of the parameter being validated.</param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// Thrown when <paramref name="value"/> is negative.
+        /// </exception>
+        public static void CheckIsPositive(decimal value, string paramName)
+        {
+            if (value < 0)
+            {
+                throw new ArgumentOutOfRangeException(paramName, $"{paramName} cannot be negative.");
+            }
+        }
     }
 }
