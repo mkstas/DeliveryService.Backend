@@ -67,5 +67,21 @@ namespace DeliveryService.Domain.Common.Helpers
                 throw new ArgumentOutOfRangeException(paramName, $"{paramName} cannot be negative.");
             }
         }
+
+        /// <summary>
+        /// Validates that the specified unsigned numeric value is greater than zero.
+        /// </summary>
+        /// <param name="value">The unsigned numeric value to validate.</param>
+        /// <param name="paramName">The name of the parameter being validated.</param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// Thrown when <paramref name="value"/> is zero.
+        /// </exception>
+        public static void CheckGreaterThanZero(uint value, string paramName)
+        {
+            if (value == 0)
+            {
+                throw new ArgumentOutOfRangeException(paramName, $"{paramName} must be greater than zero.");
+            }
+        }
     }
 }
