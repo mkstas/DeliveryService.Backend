@@ -33,9 +33,9 @@ namespace DeliveryService.Domain.Entities
         /// <summary>
         /// Creates a new <see cref="Permission"/> instance.
         /// </summary>
-        /// <param name="name">Must not be null, empty, or exceed <see cref="StringBounded.MAX_LENGTH"/> characters.</param>
-        /// <param name="displayName">Must not be null, empty, or exceed <see cref="StringBounded.MAX_LENGTH"/> characters.</param>
+        /// <param name="systemName">The system name of the permission. Must not be null, empty, or exceed <see cref="StringBounded.MAX_LENGTH"/> characters.</param>
+        /// <param name="displayName">The display name of the permission. Must not be null, empty, or exceed <see cref="StringBounded.MAX_LENGTH"/> characters.</param>
         /// <returns>A new <see cref="Permission"/> instance.</returns>
-        public static Permission Create(StringBounded name, StringBounded displayName) => new(name, displayName);
+        public static Permission Create(StringBounded systemName, StringBounded displayName) => new(systemName, displayName);
     }
 }

@@ -21,7 +21,7 @@ namespace DeliveryService.Domain.Entities
         /// <summary>
         /// The user who owns this payment method.
         /// </summary>
-        public User? User { get; init; }
+        public User User { get; init; } = null!;
 
         private PaymentMethod(Guid userId, CardNumber cardNumber)
         {

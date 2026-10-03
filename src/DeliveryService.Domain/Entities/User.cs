@@ -23,6 +23,11 @@ namespace DeliveryService.Domain.Entities
         /// </summary>
         public StringBounded FirstName { get; private set; }
 
+        /// <summary>
+        /// Gets the cart of the user, if one exists.
+        /// </summary>
+        public Cart? Cart { get; private set; }
+
         private readonly List<Role> _roles = [];
         /// <summary>
         /// The roles assigned to the user.
@@ -34,6 +39,12 @@ namespace DeliveryService.Domain.Entities
         /// The payment methods of the user.
         /// </summary>
         public IReadOnlyList<PaymentMethod> PaymentMethods => _paymentMethods.AsReadOnly();
+
+        private readonly List<Order> _orders = [];
+        /// <summary>
+        /// The orders placed by the user.
+        /// </summary>
+        public IReadOnlyList<Order> Orders => _orders.AsReadOnly();
 
         private User(EmailAddress emailAddress, StringUnbounded passwordHash, StringBounded firstName)
         {
@@ -83,7 +94,7 @@ namespace DeliveryService.Domain.Entities
         public void RemoveRole(Role role) => _roles.Remove(role);
 
         /// <summary>
-        /// Creates a payment method for the user from the given card number.
+        /// Creates a payment method for the user using the specified card number.
         /// </summary>
         /// <param name="cardNumber">The card number of the new payment method.</param>
         public void CreatePaymentMethod(CardNumber cardNumber)
@@ -97,5 +108,22 @@ namespace DeliveryService.Domain.Entities
         /// </summary>
         /// <param name="paymentMethod">The payment method to remove.</param>
         public void RemovePaymentMethod(PaymentMethod paymentMethod) => _paymentMethods.Remove(paymentMethod);
+
+        /// <summary>
+        /// Creates a cart for the user if one does not already exist.
+        /// </summary>
+        public void CreateCart() => Cart ??= Cart.Create(Id);
+
+        /// <summary>
+        /// Creates an order for the user.
+        /// </summary>
+        /// <param name="cost">The total cost of the order.</param>
+        /// <param name="address">Must not be null, empty, or exceed <see cref="StringBounded.MAX_LENGTH"/> characters.</param>
+        /// <param name="comment">Must not be null or empty.</param>
+        public void CreateOrder(Currency cost, StringBounded address, StringUnbounded? comment = null)
+        {
+            var order = Order.Create(Id, cost, address, comment);
+            _orders.Add(order);
+        }
     }
 }
