@@ -18,8 +18,7 @@ namespace DeliveryService.Persistence.Postgres
         /// <returns>The same service collection for fluent method chaining.</returns>
         public static IServiceCollection AddPersistencePostgres(
             this IServiceCollection services,
-            string connectionString
-        )
+            string connectionString)
         {
             services.AddDbContext<DeliveryServiceDbContext>(options =>
             {
