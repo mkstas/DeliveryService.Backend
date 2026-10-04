@@ -38,6 +38,7 @@ namespace DeliveryService.Persistence.Postgres.Configurations
                         fn => (string)fn,
                         fn => StringBounded.Create(fn))
                    .HasColumnName("first_name")
+                   .HasMaxLength(StringBounded.MAX_LENGTH)
                    .IsRequired();
 
             builder.HasMany(u => u.Roles)
@@ -47,15 +48,21 @@ namespace DeliveryService.Persistence.Postgres.Configurations
                         l => l.HasOne<Role>()
                               .WithMany()
                               .HasForeignKey("role_id")
-                              .OnDelete(DeleteBehavior.Cascade),
+                              .OnDelete(DeleteBehavior.Restrict),
                         r => r.HasOne<User>()
                               .WithMany()
                               .HasForeignKey("user_id")
-                              .OnDelete(DeleteBehavior.Cascade),
+                              .OnDelete(DeleteBehavior.Restrict),
                         j => j.ToTable("user_roles")
                               .HasKey("role_id", "user_id"));
 
             builder.Navigation(u => u.Roles)
+                   .UsePropertyAccessMode(PropertyAccessMode.Field);
+
+            builder.Navigation(u => u.PaymentMethods)
+                   .UsePropertyAccessMode(PropertyAccessMode.Field);
+
+            builder.Navigation(u => u.Orders)
                    .UsePropertyAccessMode(PropertyAccessMode.Field);
         }
     }

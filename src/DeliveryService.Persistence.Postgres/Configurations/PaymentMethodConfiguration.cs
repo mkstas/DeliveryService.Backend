@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace DeliveryService.Persistence.Postgres.Configurations
 {
-    public class PaymentMethodConfiguration : IEntityTypeConfiguration<PaymentMethod>
+    internal class PaymentMethodConfiguration : IEntityTypeConfiguration<PaymentMethod>
     {
         public void Configure(EntityTypeBuilder<PaymentMethod> builder)
         {

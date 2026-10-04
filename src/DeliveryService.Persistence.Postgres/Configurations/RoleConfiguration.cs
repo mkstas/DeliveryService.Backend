@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace DeliveryService.Persistence.Postgres.Configurations
 {
-    public class RoleConfiguration : IEntityTypeConfiguration<Role>
+    internal class RoleConfiguration : IEntityTypeConfiguration<Role>
     {
         public void Configure(EntityTypeBuilder<Role> builder)
         {
@@ -33,11 +33,11 @@ namespace DeliveryService.Persistence.Postgres.Configurations
                         l => l.HasOne<Permission>()
                               .WithMany()
                               .HasForeignKey("permission_id")
-                              .OnDelete(DeleteBehavior.Cascade),
+                              .OnDelete(DeleteBehavior.Restrict),
                         r => r.HasOne<Role>()
                               .WithMany()
                               .HasForeignKey("role_id")
-                              .OnDelete(DeleteBehavior.Cascade),
+                              .OnDelete(DeleteBehavior.Restrict),
                         j => j.ToTable("role_permissions")
                               .HasKey("permission_id", "role_id"));
 

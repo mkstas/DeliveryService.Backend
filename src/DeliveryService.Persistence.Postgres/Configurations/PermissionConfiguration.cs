@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace DeliveryService.Persistence.Postgres.Configurations
 {
-    public class PermissionConfiguration : IEntityTypeConfiguration<Permission>
+    internal class PermissionConfiguration : IEntityTypeConfiguration<Permission>
     {
         public void Configure(EntityTypeBuilder<Permission> builder)
         {
@@ -32,8 +32,6 @@ namespace DeliveryService.Persistence.Postgres.Configurations
                         n => StringBounded.Create(n))
                    .HasColumnName("display_name")
                    .HasMaxLength(StringBounded.MAX_LENGTH);
-
-            builder.HasIndex(p => p.DisplayName).IsUnique();
 
             builder.Navigation(p => p.Roles)
                    .UsePropertyAccessMode(PropertyAccessMode.Field);
