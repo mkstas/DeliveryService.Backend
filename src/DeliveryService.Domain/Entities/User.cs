@@ -23,6 +23,12 @@ namespace DeliveryService.Domain.Entities
         /// </summary>
         public StringBounded FirstName { get; private set; }
 
+        private readonly List<Establishment> _establishments = [];
+        /// <summary>
+        /// The establishments associated with the user.
+        /// </summary>
+        public IReadOnlyList<Establishment> Establishments => _establishments.AsReadOnly();
+
         /// <summary>
         /// Gets the cart of the user, if one exists.
         /// </summary>

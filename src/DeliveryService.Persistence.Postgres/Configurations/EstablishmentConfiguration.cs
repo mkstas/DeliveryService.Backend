@@ -34,6 +34,21 @@ namespace DeliveryService.Persistence.Postgres.Configurations
 
             builder.HasIndex(e => e.BusinessAccount).IsUnique();
 
+            builder.HasMany(u => u.Users)
+                   .WithMany(e => e.Establishments)
+                   .UsingEntity<Dictionary<string, object>>(
+                        "user_establishments",
+                        l => l.HasOne<User>()
+                              .WithMany()
+                              .HasForeignKey("user_id")
+                              .OnDelete(DeleteBehavior.Restrict),
+                        r => r.HasOne<Establishment>()
+                              .WithMany()
+                              .HasForeignKey("establishment_id")
+                              .OnDelete(DeleteBehavior.Restrict),
+                        j => j.ToTable("establishment_users")
+                              .HasKey("user_id", "establishment_id"));
+
             builder.Navigation(e => e.Ingredients)
                    .UsePropertyAccessMode(PropertyAccessMode.Field);
 
