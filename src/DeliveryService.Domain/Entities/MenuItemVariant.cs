@@ -28,11 +28,6 @@ namespace DeliveryService.Domain.Entities
         /// </summary>
         public MenuItem MenuItem { get; init; } = null!;
 
-        /// <summary>
-        /// Gets the specification associated with this variant, if any.
-        /// </summary>
-        public Specification Specification { get; init; } = null!;
-
         private readonly List<MenuItemSpecification> _specifications = [];
         /// <summary>
         /// The specifications of the variant.

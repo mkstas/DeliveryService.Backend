@@ -11,7 +11,7 @@ namespace DeliveryService.Domain.Entities
         /// <summary>
         /// The identifier of the establishment this menu item belongs to.
         /// </summary>
-        public Guid EstablishmentId { get; init; }
+        public Guid MenuId { get; init; }
 
         /// <summary>
         /// The identifier of the category this menu item belongs to.
@@ -50,10 +50,10 @@ namespace DeliveryService.Domain.Entities
         /// </summary>
         public IReadOnlyList<MenuItemVariant> Variants => _variants.AsReadOnly();
 
-        private MenuItem(Guid establishmentId, Guid categoryId, StringBounded name, StringUnbounded? description = null)
+        private MenuItem(Guid menuId, Guid categoryId, StringBounded name, StringUnbounded? description = null)
         {
             Id = Guid.Empty;
-            EstablishmentId = establishmentId;
+            MenuId = menuId;
             CategoryId = categoryId;
             Name = name;
             Description = description;
@@ -62,13 +62,13 @@ namespace DeliveryService.Domain.Entities
         /// <summary>
         /// Creates a new <see cref="MenuItem"/> instance.
         /// </summary>
-        /// <param name="establishmentId">The identifier of the establishment this menu item belongs to.</param>
+        /// <param name="menuId">The identifier of the menu this item belongs to.</param>
         /// <param name="categoryId">The identifier of the category this menu item belongs to.</param>
         /// <param name="name">Must not be null, empty, or exceed <see cref="StringBounded.MAX_LENGTH"/> characters.</param>
         /// <param name="description">If provided, must not be empty.</param>
         /// <returns>A new <see cref="MenuItem"/> instance.</returns>
-        internal static MenuItem Create(Guid establishmentId, Guid categoryId, StringBounded name, StringUnbounded? description = null)
-            => new(establishmentId, categoryId, name, description);
+        internal static MenuItem Create(Guid menuId, Guid categoryId, StringBounded name, StringUnbounded? description = null)
+            => new(menuId, categoryId, name, description);
 
         /// <summary>
         /// Changes the category of the menu item.
