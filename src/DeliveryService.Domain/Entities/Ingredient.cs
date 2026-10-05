@@ -45,6 +45,12 @@ namespace DeliveryService.Domain.Entities
         /// </summary>
         public IReadOnlyList<CartItem> CartItems => _cartItems.AsReadOnly();
 
+        private readonly List<OrderItemIngredient> _orderItemIngredients = [];
+        /// <summary>
+        /// The order item ingredients that reference this ingredient.
+        /// </summary>
+        public IReadOnlyList<OrderItemIngredient> OrderItemIngredients => _orderItemIngredients.AsReadOnly();
+
         private Ingredient(Guid establishmentId, StringBounded name, StringBounded? imageUrl = null)
         {
             Id = Guid.Empty;
