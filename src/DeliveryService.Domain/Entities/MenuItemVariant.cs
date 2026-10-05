@@ -34,6 +34,12 @@ namespace DeliveryService.Domain.Entities
         /// </summary>
         public IReadOnlyList<MenuItemSpecification> Specifications => _specifications.AsReadOnly();
 
+        private readonly List<CartItem> _cartItems = [];
+        /// <summary>
+        /// The cart items associatad with this variant.
+        /// </summary>
+        public IReadOnlyList<CartItem> CartItems => _cartItems.AsReadOnly();
+
         private MenuItemVariant(Guid menuItemId, Currency price, StringBounded? imageUrl = null)
         {
             Id = Guid.Empty;
