@@ -13,18 +13,18 @@ namespace DeliveryService.Domain.Entities
         /// </summary>
         public StringBounded Name { get; private set; }
 
-        private readonly List<MenuItemSpecification> _menuItemSpecifications = [];
+        private readonly List<DishSpecification> _dishSpecifications = [];
         /// <summary>
-        /// The menu item specifications that reference this specification.
+        /// The dish specifications that reference this specification.
         /// </summary>
-        public IReadOnlyList<MenuItemSpecification> MenuItemSpecifications => _menuItemSpecifications.AsReadOnly();
+        public IReadOnlyList<DishSpecification> DishSpecifications => _dishSpecifications.AsReadOnly();
 
         private Specification(StringBounded name) => Name = name;
 
         /// <summary>
         /// Creates a new <see cref="Specification"/> instance.
         /// </summary>
-        /// <param name="name">The name of the specification. Must not be null, empty, or exceed <see cref="StringBounded.MAX_LENGTH"/> characters.</param>
+        /// <param name="name">Must not be null, empty, or exceed <see cref="StringBounded.MAX_LENGTH"/> characters.</param>
         /// <returns>A new <see cref="Specification"/> instance.</returns>
         public static Specification Create(StringBounded name) => new(name);
 

@@ -18,11 +18,6 @@ namespace DeliveryService.Domain.Entities
         /// </summary>
         public StringUnbounded PasswordHash { get; private set; }
 
-        /// <summary>
-        /// The first name of the user.
-        /// </summary>
-        public StringBounded FirstName { get; private set; }
-
         private readonly List<Establishment> _establishments = [];
         /// <summary>
         /// The establishments associated with the user.
@@ -46,17 +41,10 @@ namespace DeliveryService.Domain.Entities
         /// </summary>
         public IReadOnlyList<PaymentMethod> PaymentMethods => _paymentMethods.AsReadOnly();
 
-        private readonly List<Order> _orders = [];
-        /// <summary>
-        /// The orders placed by the user.
-        /// </summary>
-        public IReadOnlyList<Order> Orders => _orders.AsReadOnly();
-
-        private User(EmailAddress emailAddress, StringUnbounded passwordHash, StringBounded firstName)
+        private User(EmailAddress emailAddress, StringUnbounded passwordHash)
         {
             EmailAddress = emailAddress;
             PasswordHash = passwordHash;
-            FirstName = firstName;
         }
 
         /// <summary>
@@ -64,10 +52,8 @@ namespace DeliveryService.Domain.Entities
         /// </summary>
         /// <param name="emailAddress">Must not be null, empty, or exceed <see cref="EmailAddress.MAX_LENGTH"/> characters.</param>
         /// <param name="passwordHash">Must not be null or empty.</param>
-        /// <param name="firstName">Must not be null, empty, or exceed <see cref="StringBounded.MAX_LENGTH"/> characters.</param>
         /// <returns>A new <see cref="User"/> instance.</returns>
-        public static User Create(EmailAddress emailAddress, StringUnbounded passwordHash, StringBounded firstName)
-            => new(emailAddress, passwordHash, firstName);
+        public static User Create(EmailAddress emailAddress, StringUnbounded passwordHash) => new(emailAddress, passwordHash);
 
         /// <summary>
         /// Changes the email address of the user.
@@ -80,12 +66,6 @@ namespace DeliveryService.Domain.Entities
         /// </summary>
         /// <param name="newPasswordHash">The new password hash to assign to the user.</param>
         public void ChangePasswordHash(StringUnbounded newPasswordHash) => PasswordHash = newPasswordHash;
-
-        /// <summary>
-        /// Changes the first name of the user.
-        /// </summary>
-        /// <param name="newFirstName">The new first name to assign to the user.</param>
-        public void ChangeFirstName(StringBounded newFirstName) => FirstName = newFirstName;
 
         /// <summary>
         /// Adds a role to the user.
@@ -102,7 +82,7 @@ namespace DeliveryService.Domain.Entities
         /// <summary>
         /// Creates a payment method for the user using the specified card number.
         /// </summary>
-        /// <param name="cardNumber">The card number of the new payment method.</param>
+        /// <param name="cardNumber">Must not be null, empty, and must consist of exactly <see cref="CardNumber.LENGTH"/> digits.</param>
         public void CreatePaymentMethod(CardNumber cardNumber)
         {
             var paymentMethod = PaymentMethod.Create(Id, cardNumber);
@@ -119,17 +99,5 @@ namespace DeliveryService.Domain.Entities
         /// Creates a cart for the user if one does not already exist.
         /// </summary>
         public void CreateCart() => Cart ??= Cart.Create(Id);
-
-        /// <summary>
-        /// Creates an order for the user.
-        /// </summary>
-        /// <param name="cost">The total cost of the order.</param>
-        /// <param name="address">Must not be null, empty, or exceed <see cref="StringBounded.MAX_LENGTH"/> characters.</param>
-        /// <param name="comment">Must not be null or empty.</param>
-        public void CreateOrder(Currency cost, StringBounded address, StringUnbounded? comment = null)
-        {
-            var order = Order.Create(Id, cost, address, comment);
-            _orders.Add(order);
-        }
     }
 }

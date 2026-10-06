@@ -4,14 +4,14 @@ using DeliveryService.Domain.ValueObjects;
 namespace DeliveryService.Domain.Entities
 {
     /// <summary>
-    /// Represents a variant of a menu item within the system.
+    /// Represents a dish variant within the system.
     /// </summary>
-    public class MenuItemVariant : Entity
+    public class DishVariant : Entity
     {
         /// <summary>
-        /// The identifier of the menu item this variant belongs to.
+        /// The identifier of the dish this variant belongs to.
         /// </summary>
-        public Guid MenuItemId { get; init; }
+        public Guid DishId { get; init; }
 
         /// <summary>
         /// The price of the variant.
@@ -24,39 +24,32 @@ namespace DeliveryService.Domain.Entities
         public StringBounded? ImageUrl { get; private set; }
 
         /// <summary>
-        /// Gets the menu item this variant belongs to.
+        /// The dish this variant belongs to.
         /// </summary>
-        public MenuItem MenuItem { get; init; } = null!;
+        public Dish Dish { get; init; } = null!;
 
-        private readonly List<MenuItemSpecification> _specifications = [];
+        private readonly List<DishSpecification> _specifications = [];
         /// <summary>
         /// The specifications of the variant.
         /// </summary>
-        public IReadOnlyList<MenuItemSpecification> Specifications => _specifications.AsReadOnly();
+        public IReadOnlyList<DishSpecification> Specifications => _specifications.AsReadOnly();
 
-        private readonly List<CartItem> _cartItems = [];
-        /// <summary>
-        /// The cart items associatad with this variant.
-        /// </summary>
-        public IReadOnlyList<CartItem> CartItems => _cartItems.AsReadOnly();
-
-        private MenuItemVariant(Guid menuItemId, Currency price, StringBounded? imageUrl = null)
+        private DishVariant(Guid dishId, Currency price, StringBounded? imageUrl = null)
         {
             Id = Guid.Empty;
-            MenuItemId = menuItemId;
+            DishId = dishId;
             Price = price;
             ImageUrl = imageUrl;
         }
 
         /// <summary>
-        /// Creates a new <see cref="MenuItemVariant"/> instance.
+        /// Creates a new <see cref="DishVariant"/> instance.
         /// </summary>
-        /// <param name="menuItemId">The identifier of the menu item this variant belongs to.</param>
-        /// <param name="price">The price of the variant.</param>
+        /// <param name="dishId">The identifier of the dish this variant belongs to.</param>
+        /// <param name="price">Must not be negative.</param>
         /// <param name="imageUrl">If provided, must not be empty or exceed <see cref="StringBounded.MAX_LENGTH"/> characters.</param>
-        /// <returns>A new <see cref="MenuItemVariant"/> instance.</returns>
-        internal static MenuItemVariant Create(Guid menuItemId, Currency price, StringBounded? imageUrl = null)
-            => new(menuItemId, price, imageUrl);
+        /// <returns>A new <see cref="DishVariant"/> instance.</returns>
+        internal static DishVariant Create(Guid dishId, Currency price, StringBounded? imageUrl = null) => new(dishId, price, imageUrl);
 
         /// <summary>
         /// Changes the price of the variant.
@@ -77,14 +70,14 @@ namespace DeliveryService.Domain.Entities
         /// <param name="value">Must not be null, empty, or exceed <see cref="StringBounded.MAX_LENGTH"/> characters.</param>
         public void CreateSpecification(Guid specificationId, StringBounded value)
         {
-            var menuItemSpecification = MenuItemSpecification.Create(Id, specificationId, value);
-            _specifications.Add(menuItemSpecification);
+            var specification = DishSpecification.Create(Id, specificationId, value);
+            _specifications.Add(specification);
         }
 
         /// <summary>
         /// Removes a specification from the variant.
         /// </summary>
         /// <param name="specification">The specification to remove.</param>
-        public void RemoveSpecification(MenuItemSpecification specification) => _specifications.Remove(specification);
+        public void RemoveSpecification(DishSpecification specification) => _specifications.Remove(specification);
     }
 }

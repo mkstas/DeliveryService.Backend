@@ -30,7 +30,7 @@ namespace DeliveryService.Domain.Entities
         /// <summary>
         /// Creates a new <see cref="Role"/> instance.
         /// </summary>
-        /// <param name="name">The name of the role. Must not be null, empty, or exceed <see cref="StringBounded.MAX_LENGTH"/> characters.</param>
+        /// <param name="name">Must not be null, empty, or exceed <see cref="StringBounded.MAX_LENGTH"/> characters.</param>
         /// <returns>A new <see cref="Role"/> instance.</returns>
         public static Role Create(StringBounded name) => new(name);
 

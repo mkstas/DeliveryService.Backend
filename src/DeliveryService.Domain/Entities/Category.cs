@@ -4,7 +4,7 @@ using DeliveryService.Domain.ValueObjects;
 namespace DeliveryService.Domain.Entities
 {
     /// <summary>
-    /// Represents a category for menu items within the system.
+    /// Represents a category within the system.
     /// </summary>
     public class Category : Entity
     {
@@ -13,18 +13,18 @@ namespace DeliveryService.Domain.Entities
         /// </summary>
         public StringBounded Name { get; private set; }
 
-        private readonly List<MenuItem> _menuItems = [];
+        private readonly List<Dish> _dishes = [];
         /// <summary>
-        /// Gets the menu items that belong to this category.
+        /// The dishes associated with this category.
         /// </summary>
-        public IReadOnlyList<MenuItem> MenuItems => _menuItems.AsReadOnly();
+        public IReadOnlyList<Dish> Dishes => _dishes.AsReadOnly();
 
         private Category(StringBounded name) => Name = name;
 
         /// <summary>
         /// Creates a new <see cref="Category"/> instance.
         /// </summary>
-        /// <param name="name">The name of the category. Must not be null, empty, or exceed <see cref="StringBounded.MAX_LENGTH"/> characters.</param>
+        /// <param name="name">Must not be null, empty, or exceed <see cref="StringBounded.MAX_LENGTH"/> characters.</param>
         /// <returns>A new <see cref="Category"/> instance.</returns>
         public static Category Create(StringBounded name) => new(name);
 
