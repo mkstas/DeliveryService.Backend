@@ -50,6 +50,12 @@ namespace DeliveryService.Domain.Entities
         /// </summary>
         public IReadOnlyList<DishVariant> Variants => _variants.AsReadOnly();
 
+        private readonly List<Modifier> _modifiers = [];
+        /// <summary>
+        /// The modifier of the dish.
+        /// </summary>
+        public IReadOnlyList<Modifier> Modifiers => _modifiers.AsReadOnly();
+
         private Dish(Guid establishmentId, Guid categoryId, StringBounded name, StringUnbounded? description = null)
         {
             Id = Guid.Empty;

@@ -17,11 +17,11 @@ namespace DeliveryService.Domain.Entities
         /// </summary>
         public User User { get; private set; } = null!;
 
-        private readonly List<CartItem> _cartItems = [];
+        private readonly List<CartItem> _items = [];
         /// <summary>
         /// The cart items of this cart.
         /// </summary>
-        public IReadOnlyList<CartItem> CartItems => _cartItems.AsReadOnly();
+        public IReadOnlyList<CartItem> Items => _items.AsReadOnly();
 
         private Cart(Guid userId)
         {
@@ -37,18 +37,14 @@ namespace DeliveryService.Domain.Entities
         internal static Cart Create(Guid userId) => new(userId);
 
         /// <summary>
-        /// Adds a cart item to the cart for the specified menu item variant and ingredients.
+        /// Increase a cart item quantity for the specified dish variant and modifiers.
         /// </summary>
-        /// <param name="menuItemVariantId">The identifier of the menu item variant to add.</param>
-        /// <param name="ingredients">The list of ingredients to include with the cart item.</param>
-        /// <param name="quantity">The quantity of the menu item variant to add.</param>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// Thrown when <paramref name="quantity"/> is zero.
-        /// </exception>
-        public void CreateCartItem(Guid menuItemVariantId, List<Ingredient> ingredients, uint quantity)
+        /// <param name="dishVariantId">The identifier of the dish variant.</param>
+        /// <param name="modifiers">The list of modifiers to include with the cart item.</param>
+        /// <param name="quantity">The quantity of the dish variant.</param>
+        public void IncreaseCartItemQuantity(Guid dishVariantId, List<Modifier> modifiers, uint quantity)
         {
-
-            var existingCartItem = FindCartItem(menuItemVariantId, ingredients);
+            var existingCartItem = FindCartItem(dishVariantId, modifiers);
 
             if (existingCartItem is not null)
             {
@@ -56,72 +52,32 @@ namespace DeliveryService.Domain.Entities
             }
             else
             {
-                _cartItems.Add(CartItem.Create(Id, menuItemVariantId, quantity));
+                var cartItem = CartItem.Create(Id, dishVariantId, quantity, modifiers);
+                _items.Add(cartItem);
             }
         }
 
-        private CartItem? FindCartItem(Guid menuItemVariantId, List<Ingredient> ingredients)
-            => _cartItems.Find(i => i.MenuItemVariantId == menuItemVariantId && i.HasSameIngredients(ingredients));
-
         /// <summary>
-        /// Removes the cart item with the specified identifier from the cart.
+        /// Decrease a cart item quantity for the specified dish variant and modifiers.
         /// </summary>
-        /// <param name="cartItemId">The identifier of the cart item to remove.</param>
-        public void RemoveCartItem(Guid cartItemId)
+        /// <param name="dishVariantId">The identifier of the dish variant.</param>
+        /// <param name="modifiers">The list of modifiers to include with the cart item.</param>
+        /// <param name="quantity">The quantity of the dish variant to add.</param>
+        public void DecreaseCartItemQuantity(Guid dishVariantId, List<Modifier> modifiers, uint quantity)
         {
-            var cartItem = _cartItems.Find(i => i.Id == cartItemId);
+            var existingCartItem = FindCartItem(dishVariantId, modifiers);
 
-            if (cartItem is not null)
+            if (existingCartItem is null) return;
+
+            existingCartItem.DecreaseQuantity(quantity);
+
+            if (existingCartItem.Quantity == 0)
             {
-                _cartItems.Remove(cartItem);
+                _items.Remove(existingCartItem);
             }
         }
 
-        /// <summary>
-        /// Removes the specified cart item from the cart.
-        /// </summary>
-        /// <param name="cartItem">The cart item to remove.</param>
-        public void RemoveCartItem(CartItem cartItem) => _cartItems.Remove(cartItem);
-
-        /// <summary>
-        /// Increases the quantity of the cart item for the given menu item variant and set of ingredients.
-        /// </summary>
-        /// <param name="menuItemVariantId">The identifier of the menu item variant.</param>
-        /// <param name="ingredients">The ingredients to compare against.</param>
-        /// <param name="quantity">The quantity to add.</param>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// Thrown when <paramref name="quantity"/> is zero.
-        /// </exception>
-        /// <exception cref="OverflowException">
-        /// Thrown when the resulting quantity exceeds <see cref="uint.MaxValue"/>.
-        /// </exception>
-        public void IncreaseCartItemQuantity(Guid menuItemVariantId, List<Ingredient> ingredients, uint quantity)
-            => FindCartItem(menuItemVariantId, ingredients)?.IncreaseQuantity(quantity);
-
-        /// <summary>
-        /// Decreases the quantity of the cart item for the given menu item variant and set of ingredients.
-        /// </summary>
-        /// <param name="menuItemVariantId">The identifier of the menu item variant.</param>
-        /// <param name="ingredients">The ingredients to compare against.</param>
-        /// <param name="quantity">The quantity to subtract.</param>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// Thrown when <paramref name="quantity"/> is zero.
-        /// </exception>
-        public void DecreaseCartItemQuantity(Guid menuItemVariantId, List<Ingredient> ingredients, uint quantity)
-        {
-            var cartItem = FindCartItem(menuItemVariantId, ingredients);
-
-            if (cartItem is null)
-            {
-                return;
-            }
-
-            cartItem.DecreaseQuantity(quantity);
-
-            if (cartItem.Quantity == 0)
-            {
-                _cartItems.Remove(cartItem);
-            }
-        }
+        private CartItem? FindCartItem(Guid dishVariantId, List<Modifier> modifiers)
+            => _items.Find(ci => ci.DishVariantId == dishVariantId && ci.HasSameModifiers(modifiers));
     }
 }

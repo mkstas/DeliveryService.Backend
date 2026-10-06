@@ -1,5 +1,4 @@
 using DeliveryService.Domain.Common.Abstracts;
-using DeliveryService.Domain.Common.Helpers;
 
 namespace DeliveryService.Domain.Entities
 {
@@ -33,13 +32,13 @@ namespace DeliveryService.Domain.Entities
         /// </summary>
         public DishVariant DishVariant { get; init; } = null!;
 
-        private readonly List<Ingredient> _ingredients = [];
+        private readonly List<Modifier> _modifiers = [];
         /// <summary>
-        /// The ingredients associated with this cart item.
+        /// The modifiers associated with this cart item.
         /// </summary>
-        public IReadOnlyList<Ingredient> Ingredients => _ingredients.AsReadOnly();
+        public IReadOnlyList<Modifier> Modifiers => _modifiers.AsReadOnly();
 
-        private CartItem(Guid cartId, Guid dishVariantId, uint quantity)
+        private CartItem(Guid cartId, Guid dishVariantId, uint quantity, List<Modifier> modifiers)
         {
             Id = Guid.Empty;
             CartId = cartId;
@@ -51,10 +50,19 @@ namespace DeliveryService.Domain.Entities
         /// Creates a new <see cref="CartItem"/> instance.
         /// </summary>
         /// <param name="cartId">The identifier of the cart this cart item belongs to.</param>
-        /// <param name="menuItemVariantId">The identifier of the dish variant this cart item refers to.</param>
-        /// <param name="quantity">The quantity of the menu item variant in the cart.</param>
+        /// <param name="dishVariantId">The identifier of the dish variant this cart item refers to.</param>
+        /// <param name="quantity">The quantity of the dish variant in the cart.</param>
         /// <returns>A new <see cref="CartItem"/> instance.</returns>
-        internal static CartItem Create(Guid cartId, Guid menuItemVariantId, uint quantity) => new(cartId, menuItemVariantId, quantity);
+        internal static CartItem Create(Guid cartId, Guid dishVariantId, uint quantity, List<Modifier> modifiers)
+            => new(cartId, dishVariantId, quantity, modifiers);
+
+        /// <summary>
+        /// Determines whether this cart item has the same set of modifiers as the given list
+        /// </summary>
+        /// <param name="modifiers">The modifiers to compare against.</param>
+        /// <returns><c>true</c> if both contain the same modifier ids; otherwise <c>false</c>.</returns>
+        public bool HasSameModifiers(List<Modifier> modifiers)
+            => _modifiers.Select(m => m.Id).Order().SequenceEqual(modifiers.Select(m => m.Id).Order());
 
         /// <summary>
         /// Increases the quantity of the cart item.
