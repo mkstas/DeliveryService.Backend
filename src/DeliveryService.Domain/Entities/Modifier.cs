@@ -28,6 +28,11 @@ namespace DeliveryService.Domain.Entities
         /// </summary>
         public StringBounded? ImageUrl { get; private set; }
 
+        /// <summary>
+        /// The establishment this modifier belongs to.
+        /// </summary>
+        public Establishment Establishment { get; init; } = null!;
+
         private readonly List<Dish> _dishes = [];
         /// <summary>
         /// The dishes associated with this modifier.

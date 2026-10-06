@@ -36,6 +36,12 @@ namespace DeliveryService.Domain.Entities
         /// </summary>
         public IReadOnlyList<Ingredient> Ingredients => _ingredients.AsReadOnly();
 
+        private readonly List<Modifier> _modifiers = [];
+        /// <summary>
+        /// The modifiers available to the establishment.
+        /// </summary>
+        public IReadOnlyList<Modifier> Modifiers => _modifiers.AsReadOnly();
+
         private Establishment(StringBounded name, BankAccount businessAccount)
         {
             Name = name;
@@ -105,5 +111,23 @@ namespace DeliveryService.Domain.Entities
         /// </summary>
         /// <param name="ingredient">The ingredient to remove.</param>
         public void RemoveIngredient(Ingredient ingredient) => _ingredients.Remove(ingredient);
+
+        /// <summary>
+        /// Creates a modifier for the establishment.
+        /// </summary>
+        /// <param name="name">Must not be null, empty, or exceed <see cref="StringBounded.MAX_LENGTH"/> characters.</param>
+        /// <param name="price">Must not be negative.</param>
+        /// <param name="imageUrl">If provided, must not be empty or exceed <see cref="StringBounded.MAX_LENGTH"/> characters.</param>
+        public void CreateModifier(StringBounded name, Currency price, StringBounded? imageUrl = null)
+        {
+            var modifier = Modifier.Create(Id, name, price, imageUrl);
+            _modifiers.Add(modifier);
+        }
+
+        /// <summary>
+        /// Removes a modifier from the establishment.
+        /// </summary>
+        /// <param name="modifier">The modifier to remove.</param>
+        public void RemoveModifier(Modifier modifier) => _modifiers.Remove(modifier);
     }
 }
