@@ -44,6 +44,7 @@ namespace DeliveryService.Domain.Entities
             CartId = cartId;
             DishVariantId = dishVariantId;
             Quantity = quantity;
+            _modifiers.AddRange(modifiers);
         }
 
         /// <summary>
