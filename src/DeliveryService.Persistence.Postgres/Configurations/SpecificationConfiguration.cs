@@ -13,6 +13,9 @@ namespace DeliveryService.Persistence.Postgres.Configurations
 
             builder.HasKey(s => s.Id);
 
+            builder.Property(s => s.Id)
+                   .HasColumnName("id");
+
             builder.Property(s => s.Name)
                    .HasConversion(
                         n => (string)n,
@@ -21,7 +24,7 @@ namespace DeliveryService.Persistence.Postgres.Configurations
                    .HasMaxLength(StringBounded.MAX_LENGTH)
                    .IsRequired();
 
-            builder.Navigation(s => s.MenuItemSpecifications)
+            builder.Navigation(s => s.DishSpecifications)
                    .UsePropertyAccessMode(PropertyAccessMode.Field);
         }
     }

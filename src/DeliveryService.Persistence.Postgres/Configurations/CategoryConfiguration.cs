@@ -26,7 +26,7 @@ namespace DeliveryService.Persistence.Postgres.Configurations
 
             builder.HasIndex(c => c.Name).IsUnique();
 
-            builder.Navigation(c => c.MenuItems)
+            builder.Navigation(c => c.Dishes)
                    .UsePropertyAccessMode(PropertyAccessMode.Field);
         }
     }

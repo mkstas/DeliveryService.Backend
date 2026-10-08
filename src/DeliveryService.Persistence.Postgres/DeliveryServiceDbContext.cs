@@ -10,6 +10,7 @@ namespace DeliveryService.Persistence.Postgres
         public DbSet<Permission> Permissions { get; set; }
         public DbSet<Establishment> Establishments { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Specification> Specifications { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

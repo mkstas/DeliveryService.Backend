@@ -24,7 +24,7 @@ namespace DeliveryService.Persistence.Postgres.Configurations
                    .HasForeignKey<Cart>(c => c.UserId)
                    .OnDelete(DeleteBehavior.Cascade);
 
-            builder.Navigation(c => c.CartItems)
+            builder.Navigation(c => c.Items)
                    .UsePropertyAccessMode(PropertyAccessMode.Field);
         }
     }

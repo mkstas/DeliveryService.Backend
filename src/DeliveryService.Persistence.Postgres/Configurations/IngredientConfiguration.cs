@@ -28,22 +28,12 @@ namespace DeliveryService.Persistence.Postgres.Configurations
                    .HasMaxLength(StringBounded.MAX_LENGTH)
                    .IsRequired();
 
-            builder.Property(i => i.ImageUrl)
-                   .HasConversion(
-                        iu => iu != null ? (string)iu : null,
-                        iu => iu != null ? StringBounded.Create(iu) : null)
-                   .HasColumnName("image_url")
-                   .HasMaxLength(StringBounded.MAX_LENGTH)
-                   .HasDefaultValue(null);
+            builder.HasOne(i => i.Establishment)
+                   .WithMany(e => e.Ingredients)
+                   .HasForeignKey(i => i.EstablishmentId)
+                   .OnDelete(DeleteBehavior.Cascade);
 
-            builder.Property(i => i.IsActive)
-                   .HasColumnName("is_active")
-                   .HasDefaultValue(true);
-
-            builder.Navigation(i => i.MenuItemIngredients)
-                   .UsePropertyAccessMode(PropertyAccessMode.Field);
-
-            builder.Navigation(i => i.CartItems)
+            builder.Navigation(i => i.Dishes)
                    .UsePropertyAccessMode(PropertyAccessMode.Field);
         }
     }

@@ -24,9 +24,9 @@ namespace DeliveryService.Persistence.Postgres.Configurations
                    .HasConversion(
                         cn => (string)cn,
                         cn => CardNumber.Create(cn))
-                   .HasColumnName("card_number")
-                   .HasMaxLength(StringBounded.MAX_LENGTH)
-                   .IsRequired();
+                    .HasColumnName("card_number")
+                    .HasMaxLength(CardNumber.LENGTH)
+                    .IsRequired();
 
             builder.HasIndex(pm => pm.CardNumber).IsUnique();
 

@@ -38,6 +38,7 @@ namespace DeliveryService.Domain.Entities
         /// </summary>
         public IReadOnlyList<Modifier> Modifiers => _modifiers.AsReadOnly();
 
+        private CartItem() {}
         private CartItem(Guid cartId, Guid dishVariantId, uint quantity, List<Modifier> modifiers)
         {
             Id = Guid.Empty;

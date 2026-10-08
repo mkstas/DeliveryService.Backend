@@ -33,14 +33,6 @@ namespace DeliveryService.Persistence.Postgres.Configurations
                    .HasColumnName("password_hash")
                    .IsRequired();
 
-            builder.Property(u => u.FirstName)
-                   .HasConversion(
-                        fn => (string)fn,
-                        fn => StringBounded.Create(fn))
-                   .HasColumnName("first_name")
-                   .HasMaxLength(StringBounded.MAX_LENGTH)
-                   .IsRequired();
-
             builder.HasMany(u => u.Roles)
                    .WithMany(r => r.Users)
                    .UsingEntity<Dictionary<string, object>>(
@@ -59,10 +51,10 @@ namespace DeliveryService.Persistence.Postgres.Configurations
             builder.Navigation(u => u.Roles)
                    .UsePropertyAccessMode(PropertyAccessMode.Field);
 
-            builder.Navigation(u => u.PaymentMethods)
+            builder.Navigation(u => u.Establishments)
                    .UsePropertyAccessMode(PropertyAccessMode.Field);
 
-            builder.Navigation(u => u.Orders)
+            builder.Navigation(u => u.PaymentMethods)
                    .UsePropertyAccessMode(PropertyAccessMode.Field);
         }
     }

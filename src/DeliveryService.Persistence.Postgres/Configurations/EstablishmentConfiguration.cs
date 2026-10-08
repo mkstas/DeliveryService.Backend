@@ -49,6 +49,9 @@ namespace DeliveryService.Persistence.Postgres.Configurations
                         j => j.ToTable("establishment_users")
                               .HasKey("user_id", "establishment_id"));
 
+            builder.Navigation(e => e.Modifiers)
+                   .UsePropertyAccessMode(PropertyAccessMode.Field);
+
             builder.Navigation(e => e.Ingredients)
                    .UsePropertyAccessMode(PropertyAccessMode.Field);
 
