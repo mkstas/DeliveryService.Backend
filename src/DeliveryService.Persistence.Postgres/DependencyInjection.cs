@@ -16,7 +16,7 @@ namespace DeliveryService.Persistence.Postgres
         /// <param name="services">The <see cref="IServiceCollection"/> to register the PostgreSQL persistence dependencies.</param>
         /// <param name="connectionString">The PostgreSQL connection string.</param>
         /// <returns>The same service collection for fluent method chaining.</returns>
-        public static IServiceCollection AddPersistencePostgres(
+        public static IServiceCollection AddPersistencePostgresLayer(
             this IServiceCollection services,
             string connectionString)
         {
@@ -26,6 +26,8 @@ namespace DeliveryService.Persistence.Postgres
             });
 
             services.AddScoped<IPermissionRepository, PermissionRepository>();
+            services.AddScoped<IRoleRepository, RoleRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
 
             return services;
         }
