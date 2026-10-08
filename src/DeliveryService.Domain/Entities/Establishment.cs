@@ -52,7 +52,7 @@ namespace DeliveryService.Domain.Entities
         /// Creates a new <see cref="Establishment"/> instance.
         /// </summary>
         /// <param name="name">Must not be null, empty, or exceed <see cref="StringBounded.MAX_LENGTH"/> characters.</param>
-        /// <param name="businessAccount">Must not be null, empty, and must consist of exactly <see cref="BankAccount.LENGTH"/> digits.</param>
+        /// <param name="businessAccount">Must not be null or empty, and must consist of exactly <see cref="BankAccount.LENGTH"/> digits.</param>
         /// <returns>A new <see cref="Establishment"/> instance.</returns>
         public static Establishment Create(StringBounded name, BankAccount businessAccount) => new(name, businessAccount);
 

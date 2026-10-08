@@ -9,7 +9,7 @@ namespace DeliveryService.Domain.Entities
     public class Category : Entity
     {
         /// <summary>
-        /// Gets the name of the category.
+        /// The name of the category.
         /// </summary>
         public StringBounded Name { get; private set; }
 

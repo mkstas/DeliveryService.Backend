@@ -19,7 +19,7 @@ namespace DeliveryService.Domain.Entities
         public StringBounded Address { get; init; }
 
         /// <summary>
-        /// Gets the establishment this address belongs to.
+        /// The establishment this address belongs to.
         /// </summary>
         public Establishment Establishment { get; init; } = null!;
 

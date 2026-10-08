@@ -37,7 +37,7 @@ namespace DeliveryService.Domain.Entities
         internal static Cart Create(Guid userId) => new(userId);
 
         /// <summary>
-        /// Increase a cart item quantity for the specified dish variant and modifiers.
+        /// Increases the quantity of a cart item for the specified dish variant and modifiers.
         /// </summary>
         /// <param name="dishVariantId">The identifier of the dish variant.</param>
         /// <param name="modifiers">The list of modifiers to include with the cart item.</param>
@@ -58,11 +58,11 @@ namespace DeliveryService.Domain.Entities
         }
 
         /// <summary>
-        /// Decrease a cart item quantity for the specified dish variant and modifiers.
+        /// Decreases the quantity of a cart item for the specified dish variant and modifiers.
         /// </summary>
         /// <param name="dishVariantId">The identifier of the dish variant.</param>
         /// <param name="modifiers">The list of modifiers to include with the cart item.</param>
-        /// <param name="quantity">The quantity of the dish variant to add.</param>
+        /// <param name="quantity">The quantity of the dish variant to subtract.</param>
         public void DecreaseCartItemQuantity(Guid dishVariantId, List<Modifier> modifiers, uint quantity)
         {
             var existingCartItem = FindCartItem(dishVariantId, modifiers);

@@ -34,7 +34,7 @@ namespace DeliveryService.Domain.Entities
         /// Creates a new <see cref="PaymentMethod"/> instance.
         /// </summary>
         /// <param name="userId">The identifier of the user who owns the payment method.</param>
-        /// <param name="cardNumber">Must not be null, empty, and must consist of exactly <see cref="CardNumber.LENGTH"/> digits.</param>
+        /// <param name="cardNumber">Must not be null or empty, and must consist of exactly <see cref="CardNumber.LENGTH"/> digits.</param>
         /// <returns>A new <see cref="PaymentMethod"/> instance.</returns>
         internal static PaymentMethod Create(Guid userId, CardNumber cardNumber) => new(userId, cardNumber);
     }

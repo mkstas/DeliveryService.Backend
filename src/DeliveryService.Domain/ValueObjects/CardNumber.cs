@@ -19,7 +19,7 @@ namespace DeliveryService.Domain.ValueObjects
         /// <summary>
         /// Creates a <see cref="CardNumber"/> instance with validation.
         /// </summary>
-        /// <param name="value">Must not be null, empty, and must consist of exactly <see cref="LENGTH"/> digits; spaces and hyphens are removed.</param>
+        /// <param name="value">Must not be null or empty, and must consist of exactly <see cref="LENGTH"/> digits; spaces and hyphens are removed.</param>
         /// <returns>A validated <see cref="CardNumber"/> instance.</returns>
         /// <exception cref="ArgumentNullException">Thrown when the value is null or empty.</exception>
         /// <exception cref="ArgumentException">Thrown when the value is not exactly <see cref="LENGTH"/> characters long or contains non-digit characters.</exception>

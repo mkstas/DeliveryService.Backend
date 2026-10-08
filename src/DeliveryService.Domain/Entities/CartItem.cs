@@ -53,12 +53,13 @@ namespace DeliveryService.Domain.Entities
         /// <param name="cartId">The identifier of the cart this cart item belongs to.</param>
         /// <param name="dishVariantId">The identifier of the dish variant this cart item refers to.</param>
         /// <param name="quantity">The quantity of the dish variant in the cart.</param>
+        /// <param name="modifiers">The modifiers to assign to the cart item.</param>
         /// <returns>A new <see cref="CartItem"/> instance.</returns>
         internal static CartItem Create(Guid cartId, Guid dishVariantId, uint quantity, List<Modifier> modifiers)
             => new(cartId, dishVariantId, quantity, modifiers);
 
         /// <summary>
-        /// Determines whether this cart item has the same set of modifiers as the given list
+        /// Determines whether this cart item has the same set of modifiers as the given list.
         /// </summary>
         /// <param name="modifiers">The modifiers to compare against.</param>
         /// <returns><c>true</c> if both contain the same modifier ids; otherwise <c>false</c>.</returns>

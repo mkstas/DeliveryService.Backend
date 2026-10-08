@@ -9,7 +9,7 @@ namespace DeliveryService.Domain.Entities
     public class Dish : Entity
     {
         /// <summary>
-        /// The identifier of the establishment this ingredient belongs to.
+        /// The identifier of the establishment this dish belongs to.
         /// </summary>
         public Guid EstablishmentId { get; init; }
 
@@ -52,7 +52,7 @@ namespace DeliveryService.Domain.Entities
 
         private readonly List<Modifier> _modifiers = [];
         /// <summary>
-        /// The modifier of the dish.
+        /// The modifiers associated with the dish.
         /// </summary>
         public IReadOnlyList<Modifier> Modifiers => _modifiers.AsReadOnly();
 
@@ -68,7 +68,7 @@ namespace DeliveryService.Domain.Entities
         /// <summary>
         /// Creates a new <see cref="Dish"/> instance.
         /// </summary>
-        /// <param name="establishmentId"></param>
+        /// <param name="establishmentId">The identifier of the establishment this dish belongs to.</param>
         /// <param name="categoryId">The identifier of the category this dish belongs to.</param>
         /// <param name="name">Must not be null, empty, or exceed <see cref="StringBounded.MAX_LENGTH"/> characters.</param>
         /// <param name="description">If provided, must not be empty.</param>

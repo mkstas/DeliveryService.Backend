@@ -1,5 +1,8 @@
 namespace DeliveryService.Domain.Common.Helpers
 {
+    /// <summary>
+    /// Provides common argument validation helpers.
+    /// </summary>
     public static partial class ValidationHelper
     {
         /// <summary>
@@ -48,7 +51,7 @@ namespace DeliveryService.Domain.Common.Helpers
         {
             if (value != number)
             {
-                throw new ArgumentException($"{paramName} must be equal {number}.");
+                throw new ArgumentException($"{paramName} must be equal to {number}.");
             }
         }
 

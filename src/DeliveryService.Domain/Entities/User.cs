@@ -25,7 +25,7 @@ namespace DeliveryService.Domain.Entities
         public IReadOnlyList<Establishment> Establishments => _establishments.AsReadOnly();
 
         /// <summary>
-        /// Gets the cart of the user, if one exists.
+        /// The cart of the user, if one exists.
         /// </summary>
         public Cart? Cart { get; private set; }
 
@@ -82,7 +82,7 @@ namespace DeliveryService.Domain.Entities
         /// <summary>
         /// Creates a payment method for the user using the specified card number.
         /// </summary>
-        /// <param name="cardNumber">Must not be null, empty, and must consist of exactly <see cref="CardNumber.LENGTH"/> digits.</param>
+        /// <param name="cardNumber">Must not be null or empty, and must consist of exactly <see cref="CardNumber.LENGTH"/> digits.</param>
         public void CreatePaymentMethod(CardNumber cardNumber)
         {
             var paymentMethod = PaymentMethod.Create(Id, cardNumber);
