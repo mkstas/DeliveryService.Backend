@@ -3,4 +3,7 @@
     <ProjectReference Include="..\DeliveryService.Domain\DeliveryService.Domain.csproj" />
     <ProjectReference Include="..\DeliveryService.Infrastructure\DeliveryService.Infrastructure.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" />
+  </ItemGroup>
 </Project>
