@@ -48,4 +48,4 @@ logs:
 	@docker compose logs -f
 
 psql:
-	@docker compose exec postgres psql -U $(POSTGRES_USER) -d $(POSTGRES_DB)
+	@docker compose exec delivery_service_postgres psql -U $(POSTGRES_USER) -d $(POSTGRES_DB)
