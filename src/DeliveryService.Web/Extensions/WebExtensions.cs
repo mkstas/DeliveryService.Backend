@@ -2,6 +2,7 @@ using System.Security.Claims;
 using System.Text;
 using DeliveryService.Application;
 using DeliveryService.Infrastructure;
+using DeliveryService.Infrastructure.Common;
 using DeliveryService.Infrastructure.Providers;
 using DeliveryService.Persistence.Postgres;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -11,6 +12,16 @@ namespace DeliveryService.Web.Extensions
 {
     public static class WebExtensions
     {
+        public static void AddRouteConvention(this WebApplicationBuilder builder)
+        {
+            builder.Services.AddControllers(options =>
+            {
+                options.Conventions.Add(new RoutePrefixConvention("api/v1"));
+            });
+
+            builder.Services.AddRouting(options => options.LowercaseUrls = true);
+        }
+
         public static void AddCorsConfiguration(this WebApplicationBuilder builder)
         {
             var allowedOrigins = builder.Configuration.GetSection("AllowedOrigins").Get<string[]>()
