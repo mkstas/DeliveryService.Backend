@@ -1,3 +1,4 @@
+using DeliveryService.Infrastructure.Common;
 using DeliveryService.Infrastructure.Providers;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -16,6 +17,13 @@ namespace DeliveryService.Infrastructure
         public static IServiceCollection AddInfrastructureLayer(this IServiceCollection services)
         {
             services.AddSingleton<IJwtProvider, JwtProvider>();
+
+            services.AddControllers(options =>
+            {
+                options.Conventions.Add(new RoutePrefixConvention("api/v1"));
+            });
+
+            services.AddRouting(options => options.LowercaseUrls = true);
 
             return services;
         }
