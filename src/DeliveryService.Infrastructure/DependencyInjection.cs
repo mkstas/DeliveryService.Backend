@@ -1,5 +1,7 @@
+using DeliveryService.Infrastructure.Authorization;
 using DeliveryService.Infrastructure.Common;
 using DeliveryService.Infrastructure.Providers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DeliveryService.Infrastructure
@@ -17,6 +19,8 @@ namespace DeliveryService.Infrastructure
         public static IServiceCollection AddInfrastructureLayer(this IServiceCollection services)
         {
             services.AddSingleton<IJwtProvider, JwtProvider>();
+            services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
+            services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
 
             services.AddControllers(options =>
             {
