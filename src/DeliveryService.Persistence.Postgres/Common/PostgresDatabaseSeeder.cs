@@ -8,7 +8,7 @@ namespace DeliveryService.Persistence.Postgres.Common
     /// <summary>
     /// Seeds the database.
     /// </summary>
-    public class DbSeeder(DeliveryServiceDbContext context)
+    public class PostgresDatabaseSeeder(DeliveryServiceDbContext context)
     {
         private const string AdministratorRoleName = "Administrator";
 
