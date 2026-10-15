@@ -4,12 +4,12 @@ using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
-namespace DeliveryService.Infrastructure.Providers
+namespace DeliveryService.Infrastructure.Authorization
 {
     /// <summary>
     /// Configuration options for JWT generation.
     /// </summary>
-    public class JwtOptions
+    public class AuthorizationJwtOptions
     {
         public string SecretKey { get; set; } = string.Empty;
         public int ExpiresDays { get; set; } = 0;
@@ -18,7 +18,7 @@ namespace DeliveryService.Infrastructure.Providers
     /// <summary>
     /// Provides generation of JWT access tokens.
     /// </summary>
-    public interface IJwtProvider
+    public interface IAuthorizationJwtProvider
     {
         /// <summary>
         /// Generates a JWT access token for the specified user.
@@ -32,9 +32,9 @@ namespace DeliveryService.Infrastructure.Providers
     /// Generates JWT access tokens based on <see cref="JwtOptions"/>.
     /// </summary>
     /// <param name="options">The JWT configuration options.</param>
-    public class JwtProvider(IOptions<JwtOptions> options) : IJwtProvider
+    public class AuthorizationJwtProvider(IOptions<AuthorizationJwtOptions> options) : IAuthorizationJwtProvider
     {
-        private readonly JwtOptions _options = options.Value;
+        private readonly AuthorizationJwtOptions _options = options.Value;
 
         private static Claim[] CreateClaims(Guid id)
         {

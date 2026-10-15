@@ -1,5 +1,4 @@
 using DeliveryService.Infrastructure.Authorization;
-using DeliveryService.Infrastructure.Providers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -17,7 +16,7 @@ namespace DeliveryService.Infrastructure
         /// <returns>The same service collection for fluent method chaining.</returns>
         public static IServiceCollection AddInfrastructureLayer(this IServiceCollection services)
         {
-            services.AddSingleton<IJwtProvider, JwtProvider>();
+            services.AddSingleton<IAuthorizationJwtProvider, AuthorizationJwtProvider>();
             services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
             services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
 

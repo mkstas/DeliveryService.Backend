@@ -1,5 +1,4 @@
-﻿using DeliveryService.Domain.Entities;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
 
 namespace DeliveryService.Infrastructure.Authorization
