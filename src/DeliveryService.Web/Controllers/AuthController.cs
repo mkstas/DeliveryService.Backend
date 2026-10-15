@@ -11,7 +11,7 @@ namespace DeliveryService.Web.Controllers
     public class AuthController(IUserService userService) : ControllerBase
     {
         [HttpPost("login")]
-        public async Task<IActionResult> LoginAsync([FromBody] AuthorizeUserRequest request)
+        public async Task<IActionResult> LoginAsync([FromBody] LoginUserRequest request)
         {
             var accessToken = await userService.LoginUserAsync(EmailAddress.Create(request.EmailAddress), request.Password);
 
@@ -29,7 +29,7 @@ namespace DeliveryService.Web.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> RegisterAsync([FromBody] AuthorizeUserRequest request)
+        public async Task<IActionResult> RegisterAsync([FromBody] RegisterUserRequest request)
         {
             await userService.CreateUserAsync(
                 EmailAddress.Create(request.EmailAddress), request.Password, StringBounded.Create(request.Name));
