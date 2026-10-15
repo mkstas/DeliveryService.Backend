@@ -4,9 +4,19 @@ using System.Security.Claims;
 
 namespace DeliveryService.Infrastructure.Authorization
 {
+    /// <summary>
+    /// Handles <see cref="PermissionRequirement"/> by verifying the current user has all the required permissions.
+    /// </summary>
+    /// <param name="permissionRepository">The repository used to load the user's permissions.</param>
     public class PermissionAuthorizationHandler(IPermissionRepository permissionRepository)
         : AuthorizationHandler<PermissionRequirement>
     {
+        /// <summary>
+        /// Determines whether the current user satisfies the permission requirement and marks it as succeeded if so.
+        /// </summary>
+        /// <param name="context">The authorization handler context containing the current user.</param>
+        /// <param name="requirement">The permission requirement to evaluate.</param>
+        /// <returns>A task that represents the asynchronous evaluation.</returns>
         protected override async Task HandleRequirementAsync(
             AuthorizationHandlerContext context,
             PermissionRequirement requirement)
