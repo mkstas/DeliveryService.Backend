@@ -3,15 +3,15 @@ using DeliveryService.Domain.Exceptions;
 using DeliveryService.Domain.Interfaces.Repositories;
 using DeliveryService.Domain.Interfaces.Services;
 using DeliveryService.Domain.ValueObjects;
+using DeliveryService.Infrastructure.Authorization;
 using DeliveryService.Infrastructure.Common;
-using DeliveryService.Infrastructure.Providers;
 
 namespace DeliveryService.Application.Services
 {
     public class UserService(
         IUserRepository userRepository,
         IRoleRepository roleRepository,
-        IJwtProvider jwtProvider) : IUserService
+        IAuthorizationJwtProvider authorizationJwtProvider) : IUserService
     {
         public async Task CreateUserAsync(EmailAddress address, string password)
         {
@@ -31,7 +31,7 @@ namespace DeliveryService.Application.Services
                 throw new UnauthorizedAccessException("Incorrect email address or password.");
             }
 
-            return jwtProvider.GenerateAccessToken(user.Id);
+            return authorizationJwtProvider.GenerateAccessToken(user.Id);
         }
 
         public async Task<User> GetUserByIdAsync(Guid userId)
