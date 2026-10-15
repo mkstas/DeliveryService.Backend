@@ -33,6 +33,22 @@ namespace DeliveryService.Persistence.Postgres.Configurations
                    .HasColumnName("password_hash")
                    .IsRequired();
 
+            builder.Property(u => u.Name)
+                   .HasConversion(
+                        n => (string)n,
+                        n => StringBounded.Create(n))
+                   .HasColumnName("name")
+                   .HasMaxLength(StringBounded.MAX_LENGTH)
+                   .IsRequired();
+
+            builder.Property(u => u.ImageUrl)
+                   .HasConversion(
+                        iu => iu != null ? (string)iu : null,
+                        iu => iu != null ? StringBounded.Create(iu) : null)
+                   .HasColumnName("image_url")
+                   .HasMaxLength(StringBounded.MAX_LENGTH)
+                   .HasDefaultValue(null);
+
             builder.HasMany(u => u.Roles)
                    .WithMany(r => r.Users)
                    .UsingEntity<Dictionary<string, object>>(

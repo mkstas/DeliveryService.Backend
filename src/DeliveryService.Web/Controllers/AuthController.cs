@@ -31,7 +31,8 @@ namespace DeliveryService.Web.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> RegisterAsync([FromBody] AuthorizeUserRequest request)
         {
-            await userService.CreateUserAsync(EmailAddress.Create(request.EmailAddress), request.Password);
+            await userService.CreateUserAsync(
+                EmailAddress.Create(request.EmailAddress), request.Password, StringBounded.Create(request.Name));
 
             return NoContent();
         }

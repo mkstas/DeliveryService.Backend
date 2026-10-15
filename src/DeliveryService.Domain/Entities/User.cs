@@ -18,6 +18,16 @@ namespace DeliveryService.Domain.Entities
         /// </summary>
         public StringUnbounded PasswordHash { get; private set; }
 
+        /// <summary>
+        /// The name of the user.
+        /// </summary>
+        public StringBounded Name { get; private set; }
+
+        /// <summary>
+        /// The image URL of the user, if any.
+        /// </summary>
+        public StringBounded? ImageUrl { get; private set; }
+
         private readonly List<Establishment> _establishments = [];
         /// <summary>
         /// The establishments associated with the user.
@@ -41,10 +51,12 @@ namespace DeliveryService.Domain.Entities
         /// </summary>
         public IReadOnlyList<PaymentMethod> PaymentMethods => _paymentMethods.AsReadOnly();
 
-        private User(EmailAddress emailAddress, StringUnbounded passwordHash)
+        private User(EmailAddress emailAddress, StringUnbounded passwordHash, StringBounded name, StringBounded? imageUrl = null)
         {
             EmailAddress = emailAddress;
             PasswordHash = passwordHash;
+            Name = name;
+            ImageUrl = imageUrl;
         }
 
         /// <summary>
@@ -52,8 +64,11 @@ namespace DeliveryService.Domain.Entities
         /// </summary>
         /// <param name="emailAddress">Must not be null, empty, or exceed <see cref="EmailAddress.MAX_LENGTH"/> characters.</param>
         /// <param name="passwordHash">Must not be null or empty.</param>
+        /// <param name="name">Must not be null, empty, or exceed <see cref="StringBounded.MAX_LENGTH"/> characters.</param>
+        /// <param name="imageUrl">If provided, must not be empty or exceed <see cref="StringBounded.MAX_LENGTH"/> characters.</param>
         /// <returns>A new <see cref="User"/> instance.</returns>
-        public static User Create(EmailAddress emailAddress, StringUnbounded passwordHash) => new(emailAddress, passwordHash);
+        public static User Create(EmailAddress emailAddress, StringUnbounded passwordHash, StringBounded name, StringBounded? imageUrl = null)
+             => new(emailAddress, passwordHash, name, imageUrl);
 
         /// <summary>
         /// Changes the email address of the user.
@@ -66,6 +81,18 @@ namespace DeliveryService.Domain.Entities
         /// </summary>
         /// <param name="newPasswordHash">The new password hash to assign to the user.</param>
         public void ChangePasswordHash(StringUnbounded newPasswordHash) => PasswordHash = newPasswordHash;
+
+        /// <summary>
+        /// Changes the name of the user.
+        /// </summary>
+        /// <param name="newName">The new name to assign to the user.</param>
+        public void ChangeName(StringBounded newName) => Name = newName;
+
+        /// <summary>
+        /// Changes the image URL of the user.
+        /// </summary>
+        /// <param name="newImageUrl">The new image URL to assign to the user.</param>
+        public void ChangeImageUrl(StringBounded? newImageUrl) => ImageUrl = newImageUrl;
 
         /// <summary>
         /// Adds a role to the user.

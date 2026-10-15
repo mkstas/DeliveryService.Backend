@@ -13,10 +13,10 @@ namespace DeliveryService.Application.Services
         IRoleRepository roleRepository,
         IAuthorizationJwtProvider authorizationJwtProvider) : IUserService
     {
-        public async Task CreateUserAsync(EmailAddress address, string password)
+        public async Task CreateUserAsync(EmailAddress address, string password, StringBounded name)
         {
             var passwordHash = PasswordHasher.Generate(password);
-            var user = User.Create(address, StringUnbounded.Create(passwordHash));
+            var user = User.Create(address, StringUnbounded.Create(passwordHash), name);
 
             await userRepository.CreateUserAsync(user);
         }

@@ -8,13 +8,12 @@ namespace DeliveryService.Domain.Interfaces.Services
     /// </summary>
     public interface IUserService
     {
-
         /// <summary>
         /// Creates a new user.
         /// </summary>
         /// <param name="address">The user's email address.</param>
         /// <param name="password">The user's password.</param>
-        Task CreateUserAsync(EmailAddress address, string password);
+        Task CreateUserAsync(EmailAddress address, string password, StringBounded name);
 
         /// <summary>
         /// Authenticates a user and returns an access token.
