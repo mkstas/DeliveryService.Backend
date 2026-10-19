@@ -1,5 +1,6 @@
 using DeliveryService.Persistence.Postgres;
 using DeliveryService.Persistence.Postgres.Common;
+using DeliveryService.Web.Middlewares;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 
@@ -10,6 +11,15 @@ namespace DeliveryService.Web.Extensions
     /// </summary>
     public static class AppExtensions
     {
+        /// <summary>
+        /// Adds the <see cref="ExceptionHandler"/> middleware to the application pipeline.
+        /// </summary>
+        /// <param name="app">The web application to configure.</param>
+        public static void UseExceptionHandler(this WebApplication app)
+        {
+            app.UseMiddleware<ExceptionHandler>();
+        }
+
         /// <summary>
         /// Maps the OpenAPI document and Scalar API reference in the development environment.
         /// </summary>

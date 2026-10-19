@@ -1,4 +1,5 @@
 using DeliveryService.Web.Extensions;
+using DeliveryService.Web.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,8 @@ builder.AddApplication();
 builder.AddInfrastructure();
 
 var app = builder.Build();
+
+app.UseExceptionHandler();
 
 await app.SeedPostgresDatabase();
 
