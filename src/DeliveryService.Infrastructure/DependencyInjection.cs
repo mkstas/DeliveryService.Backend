@@ -1,4 +1,5 @@
 using DeliveryService.Infrastructure.Authorization;
+using DeliveryService.Infrastructure.Minio;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -19,6 +20,7 @@ namespace DeliveryService.Infrastructure
             services.AddSingleton<IAuthorizationJwtProvider, AuthorizationJwtProvider>();
             services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
             services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
+            services.AddScoped<IMinioService, MinioService>();
 
             return services;
         }
