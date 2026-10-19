@@ -44,6 +44,13 @@ namespace DeliveryService.Domain.Interfaces.Services
         Task UpdateUserEmailAsync(Guid userId, EmailAddress address);
 
         /// <summary>
+        /// Updates the name of the specified user.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="newName">The new name.</param>
+        Task UpdateUserBioAsync(Guid userId, StringBounded newName);
+
+        /// <summary>
         /// Assigns a role to the specified user.
         /// </summary>
         /// <param name="userId">The user identifier.</param>

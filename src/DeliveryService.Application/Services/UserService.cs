@@ -53,6 +53,15 @@ namespace DeliveryService.Application.Services
             await userRepository.UpdateUserAsync(user);
         }
 
+        public async Task UpdateUserBioAsync(Guid userId, StringBounded newName)
+        {
+            var user = await userRepository.GetUserByIdAsync(userId) ?? throw new NotFoundException<User>(userId);
+
+            user.ChangeName(newName);
+
+            await userRepository.UpdateUserAsync(user);
+        }
+
         public async Task AddUserRoleAsync(Guid userId, Guid roleId)
         {
              var user = await userRepository.GetUserByIdAsync(userId) ?? throw new NotFoundException<User>(userId);

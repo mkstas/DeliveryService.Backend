@@ -31,6 +31,15 @@ namespace DeliveryService.Web.Controllers
             return Ok(response);
         }
 
+        [HttpPatch("me/bio")]
+        [Authorize]
+        public async Task<IActionResult> UpdateUserBioAsync([FromBody] UpdateUserBioRequest request)
+        {
+            await userService.UpdateUserBioAsync(User.GetCurrentUserId(), StringBounded.Create(request.Name));
+
+            return NoContent();
+        }
+
         [HttpPatch("me/email")]
         [Authorize]
         public async Task<IActionResult> UpdateUserMeEmailAsync([FromBody] UpdateUserEmailRequest request)
