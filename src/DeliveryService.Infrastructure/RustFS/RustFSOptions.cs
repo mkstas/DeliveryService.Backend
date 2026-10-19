@@ -1,22 +1,22 @@
-namespace DeliveryService.Infrastructure.Minio
+namespace DeliveryService.Infrastructure.RustFS
 {
     /// <summary>
-    /// Represents the settings used to configure the MinIO client.
+    /// Represents the settings used to configure the RustFS client.
     /// </summary>
-    public class MinioOptions
+    public class RustFSOptions
     {
         /// <summary>
-        /// The MinIO server endpoint.
+        /// The RustFS service URL.
         /// </summary>
-        public string Endpoint { get; set; } = string.Empty;
+        public string ServiceURL { get; set; } = string.Empty;
 
         /// <summary>
-        /// The access key used to authenticate with MinIO.
+        /// The access key used to authenticate with RustFS.
         /// </summary>
         public string AccessKey { get; set;  } = string.Empty;
 
         /// <summary>
-        /// The secret key used to authenticate with MinIO.
+        /// The secret key used to authenticate with RustFS.
         /// </summary>
         public string SecretKey { get; set; } = string.Empty;
 

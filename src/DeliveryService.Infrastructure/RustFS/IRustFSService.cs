@@ -1,9 +1,9 @@
-namespace DeliveryService.Infrastructure.Minio
+namespace DeliveryService.Infrastructure.RustFS
 {
     /// <summary>
-    /// Provides operations for managing files in the MinIO object storage.
+    /// Provides operations for managing files in the RustFS object storage.
     /// </summary>
-    public interface IMinioService
+    public interface IRustFSService
     {
         /// <summary>
         /// Uploads a file to the storage.
