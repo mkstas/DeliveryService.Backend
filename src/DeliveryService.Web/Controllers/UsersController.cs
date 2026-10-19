@@ -1,10 +1,10 @@
-using DeliveryService.Domain.Common;
 using DeliveryService.Domain.Interfaces.Services;
-using DeliveryService.Infrastructure.Authorization;
+using DeliveryService.Domain.ValueObjects;
 using DeliveryService.Web.Contracts.Permissions;
 using DeliveryService.Web.Contracts.Roles;
 using DeliveryService.Web.Contracts.Users;
 using DeliveryService.Web.Extensions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DeliveryService.Web.Controllers
@@ -14,7 +14,7 @@ namespace DeliveryService.Web.Controllers
     public class UsersController(IUserService userService) : ControllerBase
     {
         [HttpGet("me")]
-        [HasPermission(PermissionsGroup.Users.Read)]
+        [Authorize]
         public async Task<IActionResult> GetUserMeAsync()
         {
             var user = await userService.GetUserByIdAsync(User.GetCurrentUserId());
@@ -29,6 +29,15 @@ namespace DeliveryService.Web.Controllers
                 [.. user.PaymentMethods.Select(pm => new PaymentMethodResponse(pm.Id, pm.CardNumber))]);
 
             return Ok(response);
+        }
+
+        [HttpPatch("me/email")]
+        [Authorize]
+        public async Task<IActionResult> UpdateUserMeEmailAsync([FromBody] UpdateUserEmailRequest request)
+        {
+            await userService.UpdateUserEmailAsync(User.GetCurrentUserId(), EmailAddress.Create(request.EmailAddress));
+
+            return NoContent();
         }
     }
 }

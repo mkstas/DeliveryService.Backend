@@ -44,6 +44,15 @@ namespace DeliveryService.Application.Services
             return await userRepository.GetUsersAsync();
         }
 
+        public async Task UpdateUserEmailAsync(Guid userId, EmailAddress address)
+        {
+            var user = await userRepository.GetUserByIdAsync(userId) ?? throw new NotFoundException<User>(userId);
+
+            user.ChangeEmailAddress(address);
+
+            await userRepository.UpdateUserAsync(user);
+        }
+
         public async Task AddUserRoleAsync(Guid userId, Guid roleId)
         {
              var user = await userRepository.GetUserByIdAsync(userId) ?? throw new NotFoundException<User>(userId);

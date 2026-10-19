@@ -37,6 +37,13 @@ namespace DeliveryService.Domain.Interfaces.Services
         Task<List<User>> GetUsersAsync();
 
         /// <summary>
+        /// Updates the email address of the specified user.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="address">The new email address.</param>
+        Task UpdateUserEmailAsync(Guid userId, EmailAddress address);
+
+        /// <summary>
         /// Assigns a role to the specified user.
         /// </summary>
         /// <param name="userId">The user identifier.</param>
