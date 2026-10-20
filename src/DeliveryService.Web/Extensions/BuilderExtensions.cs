@@ -1,11 +1,14 @@
 using System.Security.Claims;
 using System.Text;
+using Amazon.S3;
 using DeliveryService.Application;
 using DeliveryService.Infrastructure;
 using DeliveryService.Infrastructure.Authorization;
 using DeliveryService.Infrastructure.Common;
+using DeliveryService.Infrastructure.RustFS;
 using DeliveryService.Persistence.Postgres;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace DeliveryService.Web.Extensions
@@ -117,6 +120,33 @@ namespace DeliveryService.Web.Extensions
                 ?? throw new UnauthorizedAccessException("User Id claim not found.");
 
             return Guid.Parse(userIdClaim.Value);
+        }
+
+        /// <summary>
+        /// Binds the <see cref="RustFSOptions"/> from configuration and registers the S3 client for RustFS.
+        /// </summary>
+        /// <param name="builder">The web application builder to configure.</param>
+        /// <exception cref="InvalidOperationException">Thrown when the <c>RustFSOptions</c> configuration section is missing.</exception>
+        public static void AddRustFSClient(this WebApplicationBuilder builder)
+        {
+            var rustFSoptions = builder.Configuration.GetSection(nameof(RustFSOptions))
+                ?? throw new InvalidOperationException($"{nameof(RustFSOptions)} not configured.");
+
+            builder.Services.Configure<RustFSOptions>(rustFSoptions);
+
+            builder.Services.AddSingleton<IAmazonS3>(serviceProvider =>
+            {
+                var options = serviceProvider.GetRequiredService<IOptions<RustFSOptions>>().Value;
+
+                return new AmazonS3Client(
+                    options.AccessKey,
+                    options.SecretKey,
+                    new AmazonS3Config
+                    {
+                        ServiceURL = options.ServiceURL,
+                        ForcePathStyle = true
+                    });
+            });
         }
 
         /// <summary>

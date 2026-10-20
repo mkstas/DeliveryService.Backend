@@ -18,5 +18,24 @@ services:
       start_period: 10s
     restart: unless-stopped
 
+  delivery_service_rustfs:
+    image: rustfs/rustfs:1.0.3
+    container_name: delivery_service_rustfs
+    environment:
+      - RUSTFS_ACCESS_KEY=${RUSTFS_ACCESS_KEY}
+      - RUSTFS_SECRET_KEY=${RUSTFS_SECRET_KEY}
+    volumes:
+      - rustfs_data:/data
+    ports:
+      - "${RUSTFS_PORT}:9000"
+      - "${RUSTFS_WEB_PORT}:9001"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+
 volumes:
   postgres_data:
+  rustfs_data:

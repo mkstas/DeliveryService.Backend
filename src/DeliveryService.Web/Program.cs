@@ -1,5 +1,4 @@
 using DeliveryService.Web.Extensions;
-using DeliveryService.Web.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +9,7 @@ builder.AddCorsConfiguration();
 builder.AddJwtConfiguration();
 
 builder.AddAuthentification();
+builder.AddRustFSClient();
 
 builder.AddDatabasePostgres();
 builder.AddApplication();
