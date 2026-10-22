@@ -18,6 +18,21 @@ services:
       start_period: 10s
     restart: unless-stopped
 
+  delivery_service_redis:
+    image: redis:alpine3.22
+    container_name: delivery_service_redis
+    volumes:
+      - redis_data:/data
+    ports:
+      - "${REDIS_PORT}:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+
   delivery_service_rustfs:
     image: rustfs/rustfs:1.0.3
     container_name: delivery_service_rustfs
@@ -34,8 +49,27 @@ services:
       interval: 5s
       timeout: 3s
       retries: 5
+      start_period: 10s
+    restart: unless-stopped
+
+  delivery_service_mailpit:
+    image: axllent/mailpit:v1.31.6
+    container_name: delivery_service_mailpit
+    environment:
+      - MP_MAX_MESSAGES=5000
+      - MP_IP=0.0.0.0
+    ports:
+      - "${MAIL_PIT_SMTP_PORT}:1025"
+      - "${MAIL_PIT_WEB_PORT}:8025"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8025/api/v1/info"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
     restart: unless-stopped
 
 volumes:
   postgres_data:
+  redis_data:
   rustfs_data:
