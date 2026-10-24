@@ -411,6 +411,10 @@ namespace DeliveryService.Persistence.Postgres.Migrations
                         .HasColumnType("text")
                         .HasColumnName("password_hash");
 
+                    b.Property<DateTime?>("VerifiedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("verified_at");
+
                     b.HasKey("Id");
 
                     b.HasIndex("EmailAddress")

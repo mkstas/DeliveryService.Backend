@@ -28,6 +28,11 @@ namespace DeliveryService.Domain.Entities
         /// </summary>
         public StringBounded? ImageUrl { get; private set; }
 
+        /// <summary>
+        ///
+        /// </summary>
+        public DateTime? VerifiedAt { get; private set; }
+
         private readonly List<Establishment> _establishments = [];
         /// <summary>
         /// The establishments associated with the user.
@@ -93,6 +98,11 @@ namespace DeliveryService.Domain.Entities
         /// </summary>
         /// <param name="newImageUrl">The new image URL to assign to the user.</param>
         public void ChangeImageUrl(StringBounded? newImageUrl) => ImageUrl = newImageUrl;
+
+        /// <summary>
+        ///
+        /// </summary>
+        public void ConfirmEmailAddress() => VerifiedAt ??= DateTime.Now;
 
         /// <summary>
         /// Adds a role to the user.

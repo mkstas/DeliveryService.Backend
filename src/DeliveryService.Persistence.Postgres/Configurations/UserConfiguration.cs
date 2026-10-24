@@ -49,6 +49,10 @@ namespace DeliveryService.Persistence.Postgres.Configurations
                    .HasMaxLength(StringBounded.MAX_LENGTH)
                    .HasDefaultValue(null);
 
+            builder.Property(u => u.VerifiedAt)
+                   .HasColumnName("verified_at")
+                   .HasDefaultValue(null);
+
             builder.HasMany(u => u.Roles)
                    .WithMany(r => r.Users)
                    .UsingEntity<Dictionary<string, object>>(
