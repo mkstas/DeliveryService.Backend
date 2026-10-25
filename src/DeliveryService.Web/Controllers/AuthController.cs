@@ -1,6 +1,6 @@
 using DeliveryService.Domain.Interfaces.Services;
 using DeliveryService.Domain.ValueObjects;
-using DeliveryService.Web.Contracts.Users;
+using DeliveryService.Web.Contracts.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,7 +8,7 @@ namespace DeliveryService.Web.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class AuthController(IUserService userService) : ControllerBase
+    public class AuthController(IUserService userService, IEmailVerificationService emailVerificationService) : ControllerBase
     {
         [HttpPost("login")]
         public async Task<IActionResult> LoginAsync([FromBody] LoginUserRequest request)
@@ -34,6 +34,8 @@ namespace DeliveryService.Web.Controllers
             await userService.CreateUserAsync(
                 EmailAddress.Create(request.EmailAddress), request.Password, StringBounded.Create(request.Name));
 
+            await emailVerificationService.SendConfirmationCodeAsync(EmailAddress.Create(request.EmailAddress));
+
             return NoContent();
         }
 
@@ -42,6 +44,22 @@ namespace DeliveryService.Web.Controllers
         public IActionResult Logout()
         {
             HttpContext.Response.Cookies.Delete("access_token");
+
+            return NoContent();
+        }
+
+        [HttpPost("email/verify")]
+        public async Task<IActionResult> ConfirmEmailAsync([FromBody] ConfirmEmailRequest request)
+        {
+            await emailVerificationService.ConfirmEmailAsync(EmailAddress.Create(request.EmailAddress), request.Code);
+
+            return NoContent();
+        }
+
+        [HttpPost("email/resend")]
+        public async Task<IActionResult> SendConfirmationAsync([FromBody] SendConfirmationRequest request)
+        {
+            await emailVerificationService.SendConfirmationCodeAsync(EmailAddress.Create(request.EmailAddress));
 
             return NoContent();
         }

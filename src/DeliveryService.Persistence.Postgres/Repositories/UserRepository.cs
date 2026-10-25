@@ -2,6 +2,7 @@ using DeliveryService.Domain.Entities;
 using DeliveryService.Domain.Exceptions;
 using DeliveryService.Domain.Interfaces.Repositories;
 using DeliveryService.Domain.ValueObjects;
+using DeliveryService.Persistence.Postgres.Common;
 using Microsoft.EntityFrameworkCore;
 
 namespace DeliveryService.Persistence.Postgres.Repositories

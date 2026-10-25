@@ -29,7 +29,7 @@ namespace DeliveryService.Domain.Entities
         public StringBounded? ImageUrl { get; private set; }
 
         /// <summary>
-        ///
+        /// Fill the doc
         /// </summary>
         public DateTime? VerifiedAt { get; private set; }
 
@@ -100,9 +100,9 @@ namespace DeliveryService.Domain.Entities
         public void ChangeImageUrl(StringBounded? newImageUrl) => ImageUrl = newImageUrl;
 
         /// <summary>
-        ///
+        /// Fill the doc
         /// </summary>
-        public void ConfirmEmailAddress() => VerifiedAt ??= DateTime.Now;
+        public void ConfirmEmailAddress() => VerifiedAt ??= DateTime.UtcNow;
 
         /// <summary>
         /// Adds a role to the user.

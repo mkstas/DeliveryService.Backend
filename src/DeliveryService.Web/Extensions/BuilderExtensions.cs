@@ -5,8 +5,10 @@ using DeliveryService.Application;
 using DeliveryService.Infrastructure;
 using DeliveryService.Infrastructure.Authorization;
 using DeliveryService.Infrastructure.Common;
+using DeliveryService.Infrastructure.Email;
 using DeliveryService.Infrastructure.RustFS;
 using DeliveryService.Persistence.Postgres;
+using DeliveryService.Persistence.Redis;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -72,6 +74,18 @@ namespace DeliveryService.Web.Extensions
                 ?? throw new InvalidOperationException($"{nameof(AuthorizationJwtOptions)} not configured.");
 
             builder.Services.Configure<AuthorizationJwtOptions>(jwtOptions);
+        }
+
+        /// <summary>
+        /// Binds the <see cref="SmtpOptions"/> from configuration.
+        /// </summary>
+        /// <param name="builder">The web application builder to configure.</param>
+        public static void AddSmtpConfiguration(this WebApplicationBuilder builder)
+        {
+            var smtpOptions = builder.Configuration.GetSection(nameof(SmtpOptions))
+                ?? throw new InvalidOperationException($"{nameof(SmtpOptions)} not configured.");
+
+            builder.Services.Configure<SmtpOptions>(smtpOptions);
         }
 
         /// <summary>
@@ -150,15 +164,27 @@ namespace DeliveryService.Web.Extensions
         }
 
         /// <summary>
-        /// Registers the persistense (postgres) layer dependencies.
+        /// Registers the Postgres persistense layer dependencies.
         /// </summary>
         /// <param name="builder">The web application builder to configure.</param>
-        public static void AddDatabasePostgres(this WebApplicationBuilder builder)
+        public static void AddPostgresPersistence(this WebApplicationBuilder builder)
         {
             var connectionString = builder.Configuration.GetConnectionString(nameof(DeliveryServiceDbContext))
                 ?? throw new InvalidOperationException($"{nameof(DeliveryServiceDbContext)} connection string not configured.");
 
             builder.Services.AddPersistencePostgresLayer(connectionString);
+        }
+
+        /// <summary>
+        /// Registers the Redis persistence layer dependencies.
+        /// </summary>
+        /// <param name="builder">The web application builder to configure.</param>
+        public static void AddRedisPersistence(this WebApplicationBuilder builder)
+        {
+            var connectionString = builder.Configuration.GetConnectionString("Redis")
+                ?? throw new InvalidOperationException($"Redis connection string not configured.");
+
+            builder.Services.AddPersistenceRedisLayer(connectionString);
         }
 
         /// <summary>

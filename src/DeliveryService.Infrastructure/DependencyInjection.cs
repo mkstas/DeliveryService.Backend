@@ -1,4 +1,5 @@
 using DeliveryService.Infrastructure.Authorization;
+using DeliveryService.Infrastructure.Email;
 using DeliveryService.Infrastructure.RustFS;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,6 +20,8 @@ namespace DeliveryService.Infrastructure
         {
             services.AddSingleton<IAuthorizationJwtProvider, AuthorizationJwtProvider>();
             services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
+            services.AddSingleton<IEmailSender, EmailSender>();
+
             services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
             services.AddScoped<IRustFSService, RustFSService>();
 

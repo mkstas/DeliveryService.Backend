@@ -31,6 +31,11 @@ namespace DeliveryService.Application.Services
                 throw new UnauthorizedAccessException("Incorrect email address or password.");
             }
 
+            if (user.VerifiedAt is null)
+            {
+                throw new UnauthorizedAccessException("Email address not confirmed.");
+            }
+
             return authorizationJwtProvider.GenerateAccessToken(user.Id);
         }
 

@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
 
-namespace DeliveryService.Persistence.Postgres
+namespace DeliveryService.Persistence.Postgres.Common
 {
     /// <summary>
     /// Provides extension methods for the PostgreSQL persistence layer.

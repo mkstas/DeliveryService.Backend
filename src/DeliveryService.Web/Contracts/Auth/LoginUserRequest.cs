@@ -1,7 +1,7 @@
 ﻿using DeliveryService.Domain.ValueObjects;
 using System.ComponentModel.DataAnnotations;
 
-namespace DeliveryService.Web.Contracts.Users
+namespace DeliveryService.Web.Contracts.Auth
 {
     /// <summary>
     /// Represents the credentials required to log in a user.

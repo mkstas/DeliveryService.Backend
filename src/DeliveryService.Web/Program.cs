@@ -7,11 +7,13 @@ builder.AddRouteConvention();
 
 builder.AddCorsConfiguration();
 builder.AddJwtConfiguration();
+builder.AddSmtpConfiguration();
 
 builder.AddAuthentification();
 builder.AddRustFSClient();
 
-builder.AddDatabasePostgres();
+builder.AddPostgresPersistence();
+builder.AddRedisPersistence();
 builder.AddApplication();
 builder.AddInfrastructure();
 

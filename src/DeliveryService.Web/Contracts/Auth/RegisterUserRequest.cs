@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using DeliveryService.Domain.ValueObjects;
 
-namespace DeliveryService.Web.Contracts.Users
+namespace DeliveryService.Web.Contracts.Auth
 {
     /// <summary>
     /// Represents the data required to register a new user.
