@@ -3,7 +3,7 @@ namespace DeliveryService.Domain.Common
     /// <summary>
     /// Defines the permissions available in the system.
     /// </summary>
-    public static class PermissionsGroup
+    public static class Permissions
     {
         /// <summary>
         /// Describes a permission's system name and display name.
@@ -15,10 +15,9 @@ namespace DeliveryService.Domain.Common
         /// <summary>
         /// Permissions related to permission management itself.
         /// </summary>
-        public static class Permissions
+        public static class Self
         {
             public const string Read = "permissions.read";
-            public const string Update = "permissions.update";
 
             /// <summary>
             /// The catalog of permission definitions.
@@ -26,7 +25,6 @@ namespace DeliveryService.Domain.Common
             public static readonly Definition[] Catalog =
             [
                 new(Read, "Просмотр разрешений"),
-                new(Update, "Редактирование разрешений"),
             ];
         }
 
@@ -96,6 +94,6 @@ namespace DeliveryService.Domain.Common
         /// The catalog of all permission definitions in the system.
         /// </summary>
         public static readonly Definition[] All =
-            [.. Permissions.Catalog, .. Roles.Catalog, .. Users.Catalog, .. Access.Catalog];
+            [.. Self.Catalog, .. Roles.Catalog, .. Users.Catalog, .. Access.Catalog];
     }
 }

@@ -1,5 +1,7 @@
+using DeliveryService.Domain.Common;
 using DeliveryService.Domain.Interfaces.Application.Services;
 using DeliveryService.Domain.ValueObjects;
+using DeliveryService.Infrastructure.Authorization;
 using DeliveryService.Web.Contracts.Permissions;
 using DeliveryService.Web.Contracts.Roles;
 using DeliveryService.Web.Contracts.Users;
@@ -45,6 +47,44 @@ namespace DeliveryService.Web.Controllers
         public async Task<IActionResult> UpdateUserMeEmailAsync([FromBody] UpdateUserEmailRequest request)
         {
             await userService.UpdateUserEmailAsync(User.GetCurrentUserId(), EmailAddress.Create(request.EmailAddress));
+
+            return NoContent();
+        }
+
+        [HttpPost("payments")]
+        [Authorize]
+        public async Task<IActionResult> AddPaymentMethodAsync([FromBody] AddPaymentMethodRequest request)
+        {
+            await userService.AddPaymentMethodAsync(User.GetCurrentUserId(), CardNumber.Create(request.CardNumber));
+
+            return NoContent();
+        }
+
+        [HttpDelete("payments/{paymentId:guid}")]
+        [Authorize]
+        public async Task<IActionResult> RemovePaymentMethodAsync([FromRoute] Guid paymentId)
+        {
+            await userService.RemovePaymentMethodAsync(User.GetCurrentUserId(), paymentId);
+
+            return NoContent();
+        }
+
+        [HttpPost("roles")]
+        [HasPermission(Permissions.Access.ManageUserRoles)]
+        public async Task<IActionResult> AddUserRoleAsync([FromBody] AddUserRoleRequest request)
+        {
+            await userService.AddUserRoleAsync(request.UserId, request.RoleId);
+
+            return NoContent();
+        }
+
+        [HttpDelete("{userId:guid}/roles/{roleId:guid}")]
+        [HasPermission(Permissions.Users.Delete)]
+        public async Task<IActionResult> RemoveUserRoleAsync(
+            [FromRoute] Guid userId,
+            [FromRoute] Guid roleId)
+        {
+            await userService.RemoveUserRoleAsync(userId, roleId);
 
             return NoContent();
         }

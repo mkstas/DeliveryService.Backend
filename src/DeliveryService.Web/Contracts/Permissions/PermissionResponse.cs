@@ -4,8 +4,8 @@
     /// Represents a permission.
     /// </summary>
     /// <param name="Id">The permission's identifier.</param>
-    /// <param name="Name">The permission's name.</param>
+    /// <param name="DisplayName">The permission's display name.</param>
     public record PermissionResponse(
         Guid Id,
-        string Name);
+        string DisplayName);
 }

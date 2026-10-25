@@ -29,7 +29,7 @@ namespace DeliveryService.Persistence.Postgres.Common
             var existing = await context.Permissions.ToListAsync();
             var existingNames = existing.Select(p => (string)p.SystemName).ToHashSet();
 
-            var missing = PermissionsGroup.All
+            var missing = Permissions.All
                 .Where(d => !existingNames.Contains(d.SystemName))
                 .Select(d => Permission.Create(
                     StringBounded.Create(d.SystemName),
