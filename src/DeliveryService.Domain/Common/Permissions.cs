@@ -91,9 +91,29 @@ namespace DeliveryService.Domain.Common
         }
 
         /// <summary>
+        ///  Permissions related to establishment management.
+        /// </summary>
+        public static class Establishment
+        {
+            public const string Read = "establishment.read";
+            public const string Create = "establishment.create";
+            public const string Update = "establishment.update";
+
+            /// <summary>
+            /// The catalog of establishment definitions.
+            /// </summary>
+            public static readonly Definition[] Catalog =
+            [
+                new(Read, "Просмотр заведений"),
+                new(Create, "Создание заведений"),
+                new(Update, "Редактирование заведений"),
+            ];
+        }
+
+        /// <summary>
         /// The catalog of all permission definitions in the system.
         /// </summary>
         public static readonly Definition[] All =
-            [.. Self.Catalog, .. Roles.Catalog, .. Users.Catalog, .. Access.Catalog];
+            [.. Self.Catalog, .. Roles.Catalog, .. Users.Catalog, .. Access.Catalog, .. Establishment.Catalog];
     }
 }

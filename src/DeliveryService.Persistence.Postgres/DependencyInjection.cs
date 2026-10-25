@@ -28,6 +28,7 @@ namespace DeliveryService.Persistence.Postgres
             services.AddScoped<IPermissionRepository, PermissionRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IEstablishmentRepository, EstablishmentRepository>();
 
             return services;
         }
