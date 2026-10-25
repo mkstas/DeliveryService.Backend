@@ -4,10 +4,6 @@ using MimeKit;
 
 namespace DeliveryService.Infrastructure.Email
 {
-    /// <summary>
-    ///
-    /// </summary>
-    /// <param name="options"></param>
     public class EmailSender(IOptions<SmtpOptions> options) : IEmailSender
     {
         private readonly SmtpOptions _options = options.Value;

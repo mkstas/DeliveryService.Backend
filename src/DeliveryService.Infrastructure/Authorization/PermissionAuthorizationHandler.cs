@@ -1,4 +1,4 @@
-﻿using DeliveryService.Domain.Interfaces.Repositories;
+﻿using DeliveryService.Domain.Interfaces.Persistence.Postgres;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 

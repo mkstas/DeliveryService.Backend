@@ -29,7 +29,7 @@ namespace DeliveryService.Domain.Entities
         public StringBounded? ImageUrl { get; private set; }
 
         /// <summary>
-        /// Fill the doc
+        /// The date when the email address was confirmed.
         /// </summary>
         public DateTime? VerifiedAt { get; private set; }
 
@@ -100,7 +100,7 @@ namespace DeliveryService.Domain.Entities
         public void ChangeImageUrl(StringBounded? newImageUrl) => ImageUrl = newImageUrl;
 
         /// <summary>
-        /// Fill the doc
+        /// Confirms the email address of the user.
         /// </summary>
         public void ConfirmEmailAddress() => VerifiedAt ??= DateTime.UtcNow;
 

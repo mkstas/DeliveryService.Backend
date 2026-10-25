@@ -1,4 +1,4 @@
-using DeliveryService.Domain.Interfaces.Redis;
+using DeliveryService.Domain.Interfaces.Persistence.Redis;
 using DeliveryService.Persistence.Redis.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 using StackExchange.Redis;

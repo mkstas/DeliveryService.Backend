@@ -1,4 +1,4 @@
-using DeliveryService.Domain.Interfaces.Services;
+using DeliveryService.Domain.Interfaces.Application.Services;
 using DeliveryService.Domain.ValueObjects;
 using DeliveryService.Web.Contracts.Permissions;
 using DeliveryService.Web.Contracts.Roles;

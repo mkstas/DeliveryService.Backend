@@ -1,4 +1,4 @@
-using DeliveryService.Domain.Interfaces.Repositories;
+using DeliveryService.Domain.Interfaces.Persistence.Postgres;
 using DeliveryService.Persistence.Postgres.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;

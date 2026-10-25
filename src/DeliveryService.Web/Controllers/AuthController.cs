@@ -1,4 +1,4 @@
-using DeliveryService.Domain.Interfaces.Services;
+using DeliveryService.Domain.Interfaces.Application.Services;
 using DeliveryService.Domain.ValueObjects;
 using DeliveryService.Web.Contracts.Auth;
 using Microsoft.AspNetCore.Authorization;
@@ -48,7 +48,7 @@ namespace DeliveryService.Web.Controllers
             return NoContent();
         }
 
-        [HttpPost("email/verify")]
+        [HttpPost("email/confirm")]
         public async Task<IActionResult> ConfirmEmailAsync([FromBody] ConfirmEmailRequest request)
         {
             await emailVerificationService.ConfirmEmailAsync(EmailAddress.Create(request.EmailAddress), request.Code);
@@ -57,7 +57,7 @@ namespace DeliveryService.Web.Controllers
         }
 
         [HttpPost("email/resend")]
-        public async Task<IActionResult> SendConfirmationAsync([FromBody] SendConfirmationRequest request)
+        public async Task<IActionResult> ResendConfirmationAsync([FromBody] ResendConfirmationRequest request)
         {
             await emailVerificationService.SendConfirmationCodeAsync(EmailAddress.Create(request.EmailAddress));
 

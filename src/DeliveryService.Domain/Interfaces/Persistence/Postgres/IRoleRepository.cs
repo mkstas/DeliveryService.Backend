@@ -1,6 +1,6 @@
 using DeliveryService.Domain.Entities;
 
-namespace DeliveryService.Domain.Interfaces.Repositories
+namespace DeliveryService.Domain.Interfaces.Persistence.Postgres
 {
     /// <summary>
     /// Provides read/write access to roles.

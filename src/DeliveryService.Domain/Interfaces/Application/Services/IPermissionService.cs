@@ -1,6 +1,6 @@
 using DeliveryService.Domain.Entities;
 
-namespace DeliveryService.Domain.Interfaces.Services
+namespace DeliveryService.Domain.Interfaces.Application.Services
 {
     /// <summary>
     /// Provides operations for managing permissions.

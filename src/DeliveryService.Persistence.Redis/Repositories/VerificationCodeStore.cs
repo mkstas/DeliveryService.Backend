@@ -1,12 +1,8 @@
-using DeliveryService.Domain.Interfaces.Redis;
+using DeliveryService.Domain.Interfaces.Persistence.Redis;
 using StackExchange.Redis;
 
 namespace DeliveryService.Persistence.Redis.Repositories
 {
-    /// <summary>
-    ///
-    /// </summary>
-    /// <param name="database"></param>
     public class VerificationCodeStore(IDatabase database) : IVerificationCodeStore
     {
         private const string KeyPrefix = "email-verification:";

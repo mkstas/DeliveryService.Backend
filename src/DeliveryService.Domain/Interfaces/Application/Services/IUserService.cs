@@ -1,7 +1,7 @@
 using DeliveryService.Domain.Entities;
 using DeliveryService.Domain.ValueObjects;
 
-namespace DeliveryService.Domain.Interfaces.Services
+namespace DeliveryService.Domain.Interfaces.Application.Services
 {
     /// <summary>
     /// Provides operations for managing users.

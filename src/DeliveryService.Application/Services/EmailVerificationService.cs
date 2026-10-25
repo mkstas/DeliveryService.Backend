@@ -1,8 +1,8 @@
 using DeliveryService.Domain.Entities;
 using DeliveryService.Domain.Exceptions;
-using DeliveryService.Domain.Interfaces.Redis;
-using DeliveryService.Domain.Interfaces.Repositories;
-using DeliveryService.Domain.Interfaces.Services;
+using DeliveryService.Domain.Interfaces.Application.Services;
+using DeliveryService.Domain.Interfaces.Persistence.Postgres;
+using DeliveryService.Domain.Interfaces.Persistence.Redis;
 using DeliveryService.Domain.ValueObjects;
 using DeliveryService.Infrastructure.Email;
 using System.Security.Cryptography;

@@ -1,5 +1,5 @@
 using DeliveryService.Application.Services;
-using DeliveryService.Domain.Interfaces.Services;
+using DeliveryService.Domain.Interfaces.Application.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DeliveryService.Application
