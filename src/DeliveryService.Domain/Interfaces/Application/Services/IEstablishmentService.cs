@@ -48,7 +48,7 @@ namespace DeliveryService.Domain.Interfaces.Application.Services
         /// </summary>
         /// <param name="userId">The user identifier.</param>
         /// <param name="establishmentId">The establishment identifier.</param>
-        Task RemoveUserEstablishmentAsync(Guid userId, Guid establishmentId);
+        Task RemoveUserEstablishmentAsync(Guid establishmentId, Guid userId);
 
         /// <summary>
         /// Adds an address to the specified establishment.
