@@ -20,6 +20,7 @@ namespace DeliveryService.Application
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IEmailVerificationService, EmailVerificationService>();
+            services.AddScoped<IEstablishmentService, EstablishmentService>();
 
             return services;
         }
