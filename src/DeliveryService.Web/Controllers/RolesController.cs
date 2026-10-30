@@ -66,7 +66,7 @@ namespace DeliveryService.Web.Controllers
             return NoContent();
         }
 
-        [HttpDelete]
+        [HttpDelete("{roleId:guid}/permissions/{permissionId:guid}")]
         [HasPermission(Permissions.Access.ManageRolePermissions)]
         public async Task<IActionResult> RemoveRolePermissionAsync(
             [FromRoute] Guid roleId,
