@@ -1,3 +1,4 @@
+using DeliveryService.Domain.Common;
 using DeliveryService.Domain.Entities;
 using DeliveryService.Domain.Exceptions;
 using DeliveryService.Domain.Interfaces.Application.Services;
@@ -15,8 +16,12 @@ namespace DeliveryService.Application.Services
     {
         public async Task CreateUserAsync(EmailAddress address, string password, StringBounded name)
         {
+            var clientRole = await roleRepository.GetRoleByNameAsync(StringBounded.Create(RoleNames.Client))
+                ?? throw new NotFoundException<Role>(RoleNames.Client);
+
             var passwordHash = PasswordHasher.Generate(password);
             var user = User.Create(address, StringUnbounded.Create(passwordHash), name);
+            user.AddRole(clientRole);
 
             await userRepository.CreateUserAsync(user);
         }

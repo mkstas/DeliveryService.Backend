@@ -1,4 +1,5 @@
 using DeliveryService.Domain.Entities;
+using DeliveryService.Domain.ValueObjects;
 
 namespace DeliveryService.Domain.Interfaces.Persistence.Postgres
 {
@@ -19,6 +20,13 @@ namespace DeliveryService.Domain.Interfaces.Persistence.Postgres
         /// <param name="roleId">The role identifier.</param>
         /// <returns>The matching role, or <c>null</c> if none found.</returns>
         Task<Role?> GetRoleByIdAsync(Guid roleId);
+
+        /// <summary>
+        /// Returns a role by its name, or <c>null</c> if not found.
+        /// </summary>
+        /// <param name="name">The role name.</param>
+        /// <returns>The matching role, or <c>null</c> if none found.</returns>
+        Task<Role?> GetRoleByNameAsync(StringBounded name);
 
         /// <summary>
         /// Returns all roles in the system.

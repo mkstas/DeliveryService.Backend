@@ -10,15 +10,15 @@ namespace DeliveryService.Persistence.Postgres.Common
     /// </summary>
     public class PostgresDatabaseSeeder(DeliveryServiceDbContext context)
     {
-        private const string AdministratorRoleName = "Administrator";
-
         /// <summary>
         /// Seeds the database idempotently.
         /// </summary>
         public async Task SeedAsync()
         {
             var permissions = await SeedPermissionsAsync();
-            var administrator = await SeedRoleAsync(AdministratorRoleName);
+            var administrator = await SeedRoleAsync(RoleNames.Administrator);
+
+            await SeedRoleAsync(RoleNames.Client);
 
             await SeedAdministratorPermissionsAsync(administrator, permissions);
             await context.SaveChangesAsync();

@@ -1,6 +1,7 @@
 using DeliveryService.Domain.Entities;
 using DeliveryService.Domain.Exceptions;
 using DeliveryService.Domain.Interfaces.Persistence.Postgres;
+using DeliveryService.Domain.ValueObjects;
 using DeliveryService.Persistence.Postgres.Common;
 using Microsoft.EntityFrameworkCore;
 
@@ -27,6 +28,13 @@ namespace DeliveryService.Persistence.Postgres.Repositories
             return await context.Roles
                 .Include(r => r.Permissions)
                 .FirstOrDefaultAsync(r => r.Id == roleId);
+        }
+
+        public async Task<Role?> GetRoleByNameAsync(StringBounded name)
+        {
+            return await context.Roles
+                .Include(r => r.Permissions)
+                .FirstOrDefaultAsync(r => r.Name == name);
         }
 
         public async Task<List<Role>> GetRolesAsync()
