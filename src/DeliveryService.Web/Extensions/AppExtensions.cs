@@ -1,7 +1,11 @@
+using DeliveryService.Application.Common;
+using DeliveryService.Domain.Interfaces.Application.Services;
+using DeliveryService.Domain.ValueObjects;
 using DeliveryService.Persistence.Postgres;
 using DeliveryService.Persistence.Postgres.Common;
 using DeliveryService.Web.Middlewares;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Scalar.AspNetCore;
 
 namespace DeliveryService.Web.Extensions
@@ -45,6 +49,14 @@ namespace DeliveryService.Web.Extensions
 
             context.Database.Migrate();
             await new PostgresDatabaseSeeder(context).SeedAsync();
+
+            var adminOptions = scope.ServiceProvider.GetRequiredService<IOptions<AdminOptions>>().Value;
+            var userService = scope.ServiceProvider.GetRequiredService<IUserService>();
+
+            await userService.EnsureAdministratorAsync(
+                EmailAddress.Create(adminOptions.EmailAddress),
+                adminOptions.Password,
+                StringBounded.Create(adminOptions.Name));
         }
     }
 }

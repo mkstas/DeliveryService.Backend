@@ -8,6 +8,7 @@ builder.AddRouteConvention();
 builder.AddCorsConfiguration();
 builder.AddJwtConfiguration();
 builder.AddSmtpConfiguration();
+builder.AddAdminConfiguration();
 
 builder.AddAuthentification();
 builder.AddRustFSClient();

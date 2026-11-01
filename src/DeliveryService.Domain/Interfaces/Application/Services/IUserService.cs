@@ -9,6 +9,14 @@ namespace DeliveryService.Domain.Interfaces.Application.Services
     public interface IUserService
     {
         /// <summary>
+        /// Creates the default administrator account if it does not already exist.
+        /// </summary>
+        /// <param name="address">The administrator's email address.</param>
+        /// <param name="password">The administrator's password.</param>
+        /// <param name="name">The administrator's name.</param>
+        Task EnsureAdministratorAsync(EmailAddress address, string password, StringBounded name);
+
+        /// <summary>
         /// Creates a new user.
         /// </summary>
         /// <param name="address">The user's email address.</param>

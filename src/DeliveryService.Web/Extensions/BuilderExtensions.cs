@@ -2,6 +2,7 @@ using System.Security.Claims;
 using System.Text;
 using Amazon.S3;
 using DeliveryService.Application;
+using DeliveryService.Application.Common;
 using DeliveryService.Infrastructure;
 using DeliveryService.Infrastructure.Authorization;
 using DeliveryService.Infrastructure.Common;
@@ -74,6 +75,18 @@ namespace DeliveryService.Web.Extensions
                 ?? throw new InvalidOperationException($"{nameof(AuthorizationJwtOptions)} not configured.");
 
             builder.Services.Configure<AuthorizationJwtOptions>(jwtOptions);
+        }
+
+        /// <summary>
+        /// Binds the <see cref="AdminOptions"/> from configuration.
+        /// </summary>
+        /// <param name="builder">The web application builder to configure.</param>
+        public static void AddAdminConfiguration(this WebApplicationBuilder builder)
+        {
+            var adminOptions = builder.Configuration.GetSection(nameof(AdminOptions))
+                ?? throw new InvalidOperationException($"{nameof(AdminOptions)} not configured.");
+
+            builder.Services.Configure<AdminOptions>(adminOptions);
         }
 
         /// <summary>

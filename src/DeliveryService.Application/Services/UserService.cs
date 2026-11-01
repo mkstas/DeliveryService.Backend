@@ -14,6 +14,26 @@ namespace DeliveryService.Application.Services
         IRoleRepository roleRepository,
         IAuthorizationJwtProvider authorizationJwtProvider) : IUserService
     {
+        public async Task EnsureAdministratorAsync(EmailAddress address, string password, StringBounded name)
+        {
+            var existingUser = await userRepository.GetUserByEmailAsync(address);
+
+            if (existingUser is not null)
+            {
+                return;
+            }
+
+            var administratorRole = await roleRepository.GetRoleByNameAsync(StringBounded.Create(RoleNames.Administrator))
+                ?? throw new NotFoundException<Role>(RoleNames.Administrator);
+
+            var passwordHash = PasswordHasher.Generate(password);
+            var user = User.Create(address, StringUnbounded.Create(passwordHash), name);
+            user.AddRole(administratorRole);
+            user.ConfirmEmailAddress();
+
+            await userRepository.CreateUserAsync(user);
+        }
+
         public async Task CreateUserAsync(EmailAddress address, string password, StringBounded name)
         {
             var clientRole = await roleRepository.GetRoleByNameAsync(StringBounded.Create(RoleNames.Client))
