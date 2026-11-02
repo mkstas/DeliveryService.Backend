@@ -43,6 +43,7 @@ namespace DeliveryService.Persistence.Postgres.Repositories
         {
             return await context.Users
                 .Include(u => u.Roles)
+                .ThenInclude(r => r.Permissions)
                 .Include(u => u.PaymentMethods)
                 .ToListAsync();
         }

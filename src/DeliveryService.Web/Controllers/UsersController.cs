@@ -15,6 +15,21 @@ namespace DeliveryService.Web.Controllers
     [Route("[controller]")]
     public class UsersController(IUserService userService) : ControllerBase
     {
+        [HttpGet]
+        [HasPermission(Permissions.Users.Read)]
+        public async Task<IActionResult> GetUsersAsync()
+        {
+            var users = await userService.GetUsersAsync();
+
+            List<UserListResponse> response = [.. users.Select(user => new UserListResponse(
+                user.Id, user.Name, user.EmailAddress, user.ImageUrl is null ? null : (string)user.ImageUrl,
+                [.. user.Roles.Select(role => new RoleResponse(
+                    role.Id, role.Name,
+                    [.. role.Permissions.Select(permission => new PermissionResponse(permission.Id, permission.DisplayName))]))]))];
+
+            return Ok(response);
+        }
+
         [HttpGet("me")]
         [Authorize]
         public async Task<IActionResult> GetUserMeAsync()
