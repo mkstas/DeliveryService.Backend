@@ -76,10 +76,19 @@ namespace DeliveryService.Domain.Entities
              => new(emailAddress, passwordHash, name, imageUrl);
 
         /// <summary>
-        /// Changes the email address of the user.
+        /// Changes the email address of the user and resets email confirmation when it actually changes.
         /// </summary>
         /// <param name="newEmailAddress">The new email address to assign to the user.</param>
-        public void ChangeEmailAddress(EmailAddress newEmailAddress) => EmailAddress = newEmailAddress;
+        public void ChangeEmailAddress(EmailAddress newEmailAddress)
+        {
+            if (EmailAddress == newEmailAddress)
+            {
+                return;
+            }
+
+            EmailAddress = newEmailAddress;
+            VerifiedAt = null;
+        }
 
         /// <summary>
         /// Changes the password hash of the user.

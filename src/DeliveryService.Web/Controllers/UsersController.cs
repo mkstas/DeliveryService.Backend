@@ -13,7 +13,9 @@ namespace DeliveryService.Web.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class UsersController(IUserService userService) : ControllerBase
+    public class UsersController(
+        IUserService userService,
+        IEmailVerificationService emailVerificationService) : ControllerBase
     {
         [HttpGet]
         [HasPermission(Permissions.Users.Read)]
@@ -61,7 +63,10 @@ namespace DeliveryService.Web.Controllers
         [Authorize]
         public async Task<IActionResult> UpdateUserMeEmailAsync([FromBody] UpdateUserEmailRequest request)
         {
-            await userService.UpdateUserEmailAsync(User.GetCurrentUserId(), EmailAddress.Create(request.EmailAddress));
+            var address = EmailAddress.Create(request.EmailAddress);
+
+            await userService.UpdateUserEmailAsync(User.GetCurrentUserId(), address);
+            await emailVerificationService.SendConfirmationCodeAsync(address);
 
             return NoContent();
         }
