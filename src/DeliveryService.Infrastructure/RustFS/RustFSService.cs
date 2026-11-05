@@ -40,8 +40,8 @@ namespace DeliveryService.Infrastructure.RustFS
         /// </summary>
         /// <param name="objectName">The name of the object in the storage.</param>
         /// <returns>
-        /// The file content stream and its content type, determined from the object name
-        /// extension, falling back to <c>application/octet-stream</c>.
+        /// The file content stream and its content type, taken from the object metadata,
+        /// falling back to the object name extension and then <c>application/octet-stream</c>.
         /// </returns>
         public async Task<(Stream Stream, string ContentType)> DownloadFileAsync(string objectName)
         {
@@ -53,14 +53,18 @@ namespace DeliveryService.Infrastructure.RustFS
 
             memoryStream.Position = 0;
 
-            var provider = new FileExtensionContentTypeProvider();
+            var contentType = response.Headers.ContentType;
 
-            if (!provider.TryGetContentType(objectName, out var contentType))
+            if (string.IsNullOrWhiteSpace(contentType))
             {
-                contentType = "application/octet-stream";
+                var provider = new FileExtensionContentTypeProvider();
+
+                contentType = provider.TryGetContentType(objectName, out var inferredContentType)
+                    ? inferredContentType
+                    : "application/octet-stream";
             }
 
-            return (memoryStream, contentType);
+            return (memoryStream, contentType ?? "application/octet-stream");
         }
 
         /// <summary>

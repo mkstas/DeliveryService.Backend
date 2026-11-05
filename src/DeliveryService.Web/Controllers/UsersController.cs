@@ -24,7 +24,8 @@ namespace DeliveryService.Web.Controllers
             var users = await userService.GetUsersAsync();
 
             List<UserListResponse> response = [.. users.Select(user => new UserListResponse(
-                user.Id, user.Name, user.EmailAddress, user.ImageUrl is null ? null : (string)user.ImageUrl,
+                user.Id, user.Name, user.EmailAddress,
+                user.ImageUrl is null ? null : (string)user.ImageUrl,
                 [.. user.Roles.Select(role => new RoleResponse(
                     role.Id, role.Name,
                     [.. role.Permissions.Select(permission => new PermissionResponse(permission.Id, permission.DisplayName))]))]))];

@@ -85,5 +85,28 @@ namespace DeliveryService.Domain.Interfaces.Application.Services
         /// <param name="userId">The user identifier.</param>
         /// <param name="paymentMethodId">The payment method identifier.</param>
         Task RemovePaymentMethodAsync(Guid userId, Guid paymentMethodId);
+
+        /// <summary>
+        /// Uploads and assigns an image to the specified user.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="stream">The image content stream.</param>
+        /// <param name="contentType">The content type of the image.</param>
+        /// <param name="extension">The file extension of the image, including the leading dot.</param>
+        /// <returns>The name of the uploaded image.</returns>
+        Task<string> UploadUserImageAsync(Guid userId, Stream stream, string contentType, string extension);
+
+        /// <summary>
+        /// Returns an image by its name.
+        /// </summary>
+        /// <param name="imageName">The name of the image in the storage.</param>
+        /// <returns>The image content stream and its content type.</returns>
+        Task<(Stream Stream, string ContentType)> GetUserImageAsync(string imageName);
+
+        /// <summary>
+        /// Removes the image of the specified user.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        Task RemoveUserImageAsync(Guid userId);
     }
 }

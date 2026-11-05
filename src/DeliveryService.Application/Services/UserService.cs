@@ -6,13 +6,15 @@ using DeliveryService.Domain.Interfaces.Persistence.Postgres;
 using DeliveryService.Domain.ValueObjects;
 using DeliveryService.Infrastructure.Authorization;
 using DeliveryService.Infrastructure.Common;
+using DeliveryService.Infrastructure.RustFS;
 
 namespace DeliveryService.Application.Services
 {
     public class UserService(
         IUserRepository userRepository,
         IRoleRepository roleRepository,
-        IAuthorizationJwtProvider authorizationJwtProvider) : IUserService
+        IAuthorizationJwtProvider authorizationJwtProvider,
+        IRustFSService rustFSService) : IUserService
     {
         public async Task EnsureAdministratorAsync(EmailAddress address, string password, StringBounded name)
         {
@@ -130,6 +132,49 @@ namespace DeliveryService.Application.Services
             user.RemovePaymentMethod(paymentMethod);
 
             await userRepository.UpdateUserAsync(user);
+        }
+
+        public async Task<string> UploadUserImageAsync(Guid userId, Stream stream, string contentType, string extension)
+        {
+            var user = await userRepository.GetUserByIdAsync(userId) ?? throw new NotFoundException<User>(userId);
+
+            var newImageName = $"{Guid.NewGuid()}{extension}";
+            var previousImageName = user.ImageUrl is null ? null : (string)user.ImageUrl;
+
+            await rustFSService.UploadFileAsync(newImageName, stream, contentType);
+
+            user.ChangeImageUrl(StringBounded.Create(newImageName));
+
+            await userRepository.UpdateUserAsync(user);
+
+            if (previousImageName is not null && previousImageName != newImageName)
+            {
+                await rustFSService.DeleteFileAsync(previousImageName);
+            }
+
+            return newImageName;
+        }
+
+        public async Task<(Stream Stream, string ContentType)> GetUserImageAsync(string imageName)
+        {
+            return await rustFSService.DownloadFileAsync(imageName);
+        }
+
+        public async Task RemoveUserImageAsync(Guid userId)
+        {
+            var user = await userRepository.GetUserByIdAsync(userId) ?? throw new NotFoundException<User>(userId);
+
+            if (user.ImageUrl is null)
+            {
+                return;
+            }
+
+            var imageKey = (string)user.ImageUrl;
+
+            user.ChangeImageUrl(null);
+
+            await userRepository.UpdateUserAsync(user);
+            await rustFSService.DeleteFileAsync(imageKey);
         }
     }
 }
