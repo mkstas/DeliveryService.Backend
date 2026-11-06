@@ -9,9 +9,6 @@ using System.Security.Cryptography;
 
 namespace DeliveryService.Application.Services
 {
-    /// <summary>
-    /// Provides email verification functionality.
-    /// </summary>
     public class EmailVerificationService(
         IUserRepository userRepository,
         IVerificationCodeStore verificationCodeStore,
