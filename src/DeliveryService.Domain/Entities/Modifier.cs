@@ -58,5 +58,23 @@ namespace DeliveryService.Domain.Entities
         /// <returns>A new <see cref="Modifier"/> instance.</returns>
         internal static Modifier Create(Guid establishmentId, StringBounded name, Currency price, StringBounded? imageUrl = null)
             => new(establishmentId, name, price, imageUrl);
+
+        /// <summary>
+        /// Changes the name of the modifier.
+        /// </summary>
+        /// <param name="newName">The new name to assign to the modifier.</param>
+        public void ChangeName(StringBounded newName) => Name = newName;
+
+        /// <summary>
+        /// Changes the price of the modifier.
+        /// </summary>
+        /// <param name="newPrice">The new price to assign to the modifier.</param>
+        public void ChangePrice(Currency newPrice) => Price = newPrice;
+
+        /// <summary>
+        /// Changes the image URL of the modifier.
+        /// </summary>
+        /// <param name="newImageUrl">The new image URL to assign to the modifier.</param>
+        public void ChangeImageUrl(StringBounded? newImageUrl) => ImageUrl = newImageUrl;
     }
 }

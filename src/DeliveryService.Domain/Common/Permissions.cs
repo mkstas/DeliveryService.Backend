@@ -131,6 +131,42 @@ namespace DeliveryService.Domain.Common
         }
 
         /// <summary>
+        /// Permissions related to ingredient management.
+        /// </summary>
+        public static class Ingredients
+        {
+            public const string Create = "ingredients.create";
+            public const string Update = "ingredients.update";
+
+            /// <summary>
+            /// The catalog of ingredient definitions.
+            /// </summary>
+            public static readonly Definition[] Catalog =
+            [
+                new(Create, "Создание ингредиентов"),
+                new(Update, "Редактирование ингредиентов"),
+            ];
+        }
+
+        /// <summary>
+        /// Permissions related to modifiers management.
+        /// </summary>
+        public static class Modifiers
+        {
+            public const string Create = "modifier.create";
+            public const string Update = "modifier.update";
+
+            /// <summary>
+            /// The catalog of modifier definitions.
+            /// </summary>
+            public static readonly Definition[] Catalog =
+            [
+                new(Create, "Создание модификаторов"),
+                new(Update, "Редактирование модификаторов"),
+            ];
+        }
+
+        /// <summary>
         /// The catalog of all permission definitions in the system.
         /// </summary>
         public static readonly Definition[] All =

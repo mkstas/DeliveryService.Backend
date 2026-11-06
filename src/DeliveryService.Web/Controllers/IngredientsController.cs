@@ -12,7 +12,7 @@ namespace DeliveryService.Web.Controllers
     public class IngredientsController(IIngredientService ingredientService) : ControllerBase
     {
         [HttpPost]
-        [HasPermission(Permissions.Establishment.Update)]
+        [HasPermission(Permissions.Ingredients.Create)]
         public async Task<IActionResult> CreateIngredientAsync([FromBody] CreateIngredientRequest request)
         {
             await ingredientService.CreateIngredientAsync(request.EstablishmentId, StringBounded.Create(request.Name));
@@ -21,7 +21,7 @@ namespace DeliveryService.Web.Controllers
         }
 
         [HttpPut("{ingredientId:guid}")]
-        [HasPermission(Permissions.Establishment.Update)]
+        [HasPermission(Permissions.Ingredients.Update)]
         public async Task<IActionResult> UpdateIngredientAsync(
             [FromRoute] Guid ingredientId,
             [FromBody] CreateIngredientRequest request)
