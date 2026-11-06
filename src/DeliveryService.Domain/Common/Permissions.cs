@@ -111,9 +111,29 @@ namespace DeliveryService.Domain.Common
         }
 
         /// <summary>
+        ///  Permissions related to category management.
+        /// </summary>
+        public static class Categories
+        {
+            public const string Read = "categories.read";
+            public const string Create = "categories.create";
+            public const string Update = "categories.update";
+
+            /// <summary>
+            /// The catalog of category definitions.
+            /// </summary>
+            public static readonly Definition[] Catalog =
+            [
+                new(Read, "Просмотр категорий"),
+                new(Create, "Создание категорий"),
+                new(Update, "Редактирование категорий"),
+            ];
+        }
+
+        /// <summary>
         /// The catalog of all permission definitions in the system.
         /// </summary>
         public static readonly Definition[] All =
-            [.. Self.Catalog, .. Roles.Catalog, .. Users.Catalog, .. Access.Catalog, .. Establishment.Catalog];
+            [.. Self.Catalog, .. Roles.Catalog, .. Users.Catalog, .. Access.Catalog, .. Establishment.Catalog, .. Categories.Catalog];
     }
 }

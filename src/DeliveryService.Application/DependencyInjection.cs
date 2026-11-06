@@ -21,6 +21,7 @@ namespace DeliveryService.Application
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IEmailVerificationService, EmailVerificationService>();
             services.AddScoped<IEstablishmentService, EstablishmentService>();
+            services.AddScoped<ICategoryService, CategoryService>();
 
             return services;
         }
