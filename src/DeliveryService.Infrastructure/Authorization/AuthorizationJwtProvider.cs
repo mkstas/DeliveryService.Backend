@@ -36,7 +36,7 @@ namespace DeliveryService.Infrastructure.Authorization
     }
 
     /// <summary>
-    /// Generates JWT access tokens based on <see cref="JwtOptions"/>.
+    /// Generates JWT access tokens based on <see cref="AuthorizationJwtOptions"/>.
     /// </summary>
     /// <param name="options">The JWT configuration options.</param>
     public class AuthorizationJwtProvider(IOptions<AuthorizationJwtOptions> options) : IAuthorizationJwtProvider

@@ -3,6 +3,11 @@ using DeliveryService.Domain.ValueObjects;
 
 namespace DeliveryService.Web.Contracts.Establishment
 {
+    /// <summary>
+    /// Represents the data required to associate a user with an establishment.
+    /// </summary>
+    /// <param name="EstablishmentId">The establishment identifier.</param>
+    /// <param name="EmailAddress">The email address of the user to add.</param>
     public record AddUserEstablishmentRequest(
         [Required(ErrorMessage = "User id is required.")]
         Guid EstablishmentId,

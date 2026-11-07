@@ -39,15 +39,15 @@ namespace DeliveryService.Domain.Interfaces.Application.Services
         /// <summary>
         /// Associates a user with the specified establishment.
         /// </summary>
-        /// <param name="address">The user email address.</param>
         /// <param name="establishmentId">The establishment identifier.</param>
+        /// <param name="address">The user email address.</param>
         Task AddUserEstablishmentAsync(Guid establishmentId, EmailAddress address);
 
         /// <summary>
         /// Removes the association between a user and the specified establishment.
         /// </summary>
-        /// <param name="userId">The user identifier.</param>
         /// <param name="establishmentId">The establishment identifier.</param>
+        /// <param name="userId">The user identifier.</param>
         Task RemoveUserEstablishmentAsync(Guid establishmentId, Guid userId);
 
         /// <summary>

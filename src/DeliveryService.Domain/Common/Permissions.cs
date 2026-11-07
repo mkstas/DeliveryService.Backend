@@ -58,7 +58,6 @@ namespace DeliveryService.Domain.Common
             public const string Read = "users.read";
             public const string Create = "users.create";
             public const string Update = "users.update";
-            public const string Delete = "users.delete";
 
             /// <summary>
             /// The catalog of permission definitions.
@@ -68,25 +67,6 @@ namespace DeliveryService.Domain.Common
                 new(Read, "Просмотр пользователей"),
                 new(Create, "Создание пользователей"),
                 new(Update, "Редактирование пользователей"),
-                new(Delete, "Удаление пользователей"),
-            ];
-        }
-
-        /// <summary>
-        /// Permissions related to access management.
-        /// </summary>
-        public static class Access
-        {
-            public const string ManageUserRoles = "access.manage_user_roles";
-            public const string ManageRolePermissions = "access.manage_role_permissions";
-
-            /// <summary>
-            /// The catalog of permission definitions.
-            /// </summary>
-            public static readonly Definition[] Catalog =
-            [
-                new(ManageUserRoles, "Управление ролями пользователей"),
-                new(ManageRolePermissions, "Управление разрешениями ролей"),
             ];
         }
 
@@ -149,7 +129,7 @@ namespace DeliveryService.Domain.Common
         }
 
         /// <summary>
-        /// Permissions related to modifiers management.
+        /// Permissions related to modifier management.
         /// </summary>
         public static class Modifiers
         {
@@ -170,6 +150,6 @@ namespace DeliveryService.Domain.Common
         /// The catalog of all permission definitions in the system.
         /// </summary>
         public static readonly Definition[] All =
-            [.. Self.Catalog, .. Roles.Catalog, .. Users.Catalog, .. Access.Catalog, .. Establishment.Catalog, .. Categories.Catalog];
+            [.. Self.Catalog, .. Roles.Catalog, .. Users.Catalog, .. Establishment.Catalog, .. Categories.Catalog];
     }
 }

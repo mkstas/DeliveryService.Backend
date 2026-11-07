@@ -8,7 +8,7 @@ namespace DeliveryService.Domain.Interfaces.Persistence.Postgres
     public interface IIngredientRepository
     {
         /// <summary>
-        /// Returns a ingredient by its identifier, or <c>null</c> if not found.
+        /// Returns an ingredient by its identifier, or <c>null</c> if not found.
         /// </summary>
         /// <param name="ingredientId">The ingredient identifier.</param>
         /// <returns>The matching ingredient, or <c>null</c> if none found.</returns>

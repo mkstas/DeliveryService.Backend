@@ -26,11 +26,5 @@ namespace DeliveryService.Domain.Interfaces.Persistence.Postgres
         /// <param name="userId">The user identifier.</param>
         /// <returns>All permissions assigned to the user.</returns>
         Task<List<Permission>> GetUserPermissionsByUserIdAsync(Guid userId);
-
-        /// <summary>
-        /// Updates the specified permission.
-        /// </summary>
-        /// <param name="permission">The permission to update.</param>
-        Task UpdatePermissionAsync(Permission permission);
     }
 }

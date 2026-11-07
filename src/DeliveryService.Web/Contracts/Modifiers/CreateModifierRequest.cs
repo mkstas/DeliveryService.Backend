@@ -4,10 +4,11 @@ using DeliveryService.Domain.ValueObjects;
 namespace DeliveryService.Web.Contracts.Modifiers
 {
     /// <summary>
-    /// Represents the data required to create a new ingredient.
+    /// Represents the data required to create a new modifier.
     /// </summary>
     /// <param name="EstablishmentId">The establishment identifier.</param>
-    /// <param name="Name">The ingredient's name.</param>
+    /// <param name="Name">The modifier's name.</param>
+    /// <param name="Price">The modifier's price.</param>
     public record CreateModifierRequest(
         [Required(ErrorMessage = "Establishment id is required.")]
         Guid EstablishmentId,

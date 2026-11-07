@@ -4,6 +4,9 @@ using DeliveryService.Domain.Exceptions;
 
 namespace DeliveryService.Web.Middlewares
 {
+    /// <summary>
+    /// Middleware that converts unhandled exceptions into JSON error responses.
+    /// </summary>
     public class ExceptionHandler(RequestDelegate next)
     {
         private class ErrorResponse(int status, string message)

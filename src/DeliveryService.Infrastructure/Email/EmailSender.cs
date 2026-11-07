@@ -4,6 +4,9 @@ using MimeKit;
 
 namespace DeliveryService.Infrastructure.Email
 {
+    /// <summary>
+    /// Sends emails using an SMTP server.
+    /// </summary>
     public class EmailSender(IOptions<SmtpOptions> options) : IEmailSender
     {
         private readonly SmtpOptions _options = options.Value;

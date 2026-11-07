@@ -1,7 +1,5 @@
 using DeliveryService.Domain.Entities;
-using DeliveryService.Domain.Exceptions;
 using DeliveryService.Domain.Interfaces.Persistence.Postgres;
-using DeliveryService.Persistence.Postgres.Common;
 using Microsoft.EntityFrameworkCore;
 
 namespace DeliveryService.Persistence.Postgres.Repositories
@@ -26,18 +24,6 @@ namespace DeliveryService.Persistence.Postgres.Repositories
                 .SelectMany(r => r.Permissions)
                 .Distinct()
                 .ToListAsync();
-        }
-
-        public async Task UpdatePermissionAsync(Permission permission)
-        {
-            try
-            {
-                await context.SaveChangesAsync();
-            }
-            catch (DbUpdateException ex) when (ex.IsUniqueConstraintViolation())
-            {
-                throw new AlreadyExistsException<Permission>(permission.DisplayName);
-            }
         }
     }
 }

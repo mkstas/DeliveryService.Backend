@@ -11,7 +11,7 @@ namespace DeliveryService.Infrastructure
     /// </summary>
     public static class DependencyInjection
     {
-        // <summary>
+        /// <summary>
         /// Registers infrastructure dependencies.
         /// </summary>
         /// <param name="services">The <see cref="IServiceCollection"/> to register the infrastructure dependencies.</param>

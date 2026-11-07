@@ -4,7 +4,7 @@ using DeliveryService.Domain.ValueObjects;
 namespace DeliveryService.Web.Contracts.Users
 {
     /// <summary>
-    /// Represents the data required to update a user's bio.
+    /// Represents the data required to update a user's profile.
     /// </summary>
     /// <param name="Name">The user's new name.</param>
     public record UpdateUserBioRequest(

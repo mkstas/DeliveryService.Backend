@@ -1,5 +1,4 @@
 using DeliveryService.Domain.Interfaces.Application.Services;
-using DeliveryService.Web.Contracts.Users;
 using DeliveryService.Web.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace DeliveryService.Web.Controllers
 {
     [ApiController]
-    [Route("static/users")]
+    [Route("[controller]")]
     public class StaticUsersController(IUserService userService) : ControllerBase
     {
         private const long MaxImageSize = 5 * 1024 * 1024;
@@ -20,7 +19,7 @@ namespace DeliveryService.Web.Controllers
             ["image/gif"] = ".gif",
         };
 
-        [HttpGet("image/{imageName}")]
+        [HttpGet("users/{imageName}")]
         [Authorize]
         public async Task<IActionResult> GetUserImageAsync([FromRoute] string imageName)
         {
@@ -29,7 +28,7 @@ namespace DeliveryService.Web.Controllers
             return File(stream, contentType);
         }
 
-        [HttpPost("image")]
+        [HttpPost("users")]
         [Authorize]
         [RequestSizeLimit(MaxImageSize)]
         public async Task<IActionResult> UploadCurrentUserImageAsync([FromForm] IFormFile? file)
@@ -55,7 +54,7 @@ namespace DeliveryService.Web.Controllers
             return NoContent();
         }
 
-        [HttpDelete("image")]
+        [HttpDelete("users")]
         [Authorize]
         public async Task<IActionResult> RemoveCurrentUserImageAsync()
         {

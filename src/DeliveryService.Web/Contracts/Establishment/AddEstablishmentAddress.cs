@@ -3,6 +3,11 @@ using DeliveryService.Domain.ValueObjects;
 
 namespace DeliveryService.Web.Contracts.Establishment
 {
+    /// <summary>
+    /// Represents the data required to add an address to an establishment.
+    /// </summary>
+    /// <param name="EstablishmentId">The establishment identifier.</param>
+    /// <param name="Address">The establishment address to add.</param>
     public record AddEstablishmentAddressRequest(
         [Required(ErrorMessage = "Establishment id is required.")]
         Guid EstablishmentId,
