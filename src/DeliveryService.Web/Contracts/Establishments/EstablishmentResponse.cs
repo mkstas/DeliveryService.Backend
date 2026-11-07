@@ -1,4 +1,4 @@
-namespace DeliveryService.Web.Contracts.Establishment
+namespace DeliveryService.Web.Contracts.Establishments
 {
     /// <summary>
     /// Represents an establishment.

@@ -2,7 +2,7 @@ using DeliveryService.Domain.Common;
 using DeliveryService.Domain.Interfaces.Application.Services;
 using DeliveryService.Domain.ValueObjects;
 using DeliveryService.Infrastructure.Authorization;
-using DeliveryService.Web.Contracts.Category;
+using DeliveryService.Web.Contracts.Categories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DeliveryService.Web.Controllers
@@ -21,7 +21,6 @@ namespace DeliveryService.Web.Controllers
         }
 
         [HttpGet]
-        [HasPermission(Permissions.Categories.Read)]
         public async Task<IActionResult> GetCategoriesAsync()
         {
             var categories = await categoryService.GetCategoriesAsync();
@@ -32,7 +31,6 @@ namespace DeliveryService.Web.Controllers
         }
 
         [HttpGet("{categoryId:guid}")]
-        [HasPermission(Permissions.Categories.Read)]
         public async Task<IActionResult> GetCategoryByIdAsync([FromRoute] Guid categoryId)
         {
             var category = await categoryService.GetCategoryByIdAsync(categoryId);

@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using DeliveryService.Domain.ValueObjects;
 
-namespace DeliveryService.Web.Contracts.Establishment
+namespace DeliveryService.Web.Contracts.Establishments
 {
     /// <summary>
     /// Represents the data required to update an existing establishment.

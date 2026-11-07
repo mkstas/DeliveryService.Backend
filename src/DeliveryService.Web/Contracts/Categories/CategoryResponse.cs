@@ -1,4 +1,4 @@
-namespace DeliveryService.Web.Contracts.Category
+namespace DeliveryService.Web.Contracts.Categories
 {
     /// <summary>
     /// Represents a category.

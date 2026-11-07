@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using DeliveryService.Domain.ValueObjects;
 
-namespace DeliveryService.Web.Contracts.Category
+namespace DeliveryService.Web.Contracts.Categories
 {
     /// <summary>
     /// Represents the data required to create a new category.

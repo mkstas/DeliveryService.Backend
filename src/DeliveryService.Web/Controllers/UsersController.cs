@@ -91,7 +91,7 @@ namespace DeliveryService.Web.Controllers
         }
 
         [HttpPost("roles")]
-        [HasPermission(Permissions.Access.ManageUserRoles)]
+        [HasPermission(Permissions.Users.Update)]
         public async Task<IActionResult> AddUserRoleAsync([FromBody] AddUserRoleRequest request)
         {
             await userService.AddUserRoleAsync(request.UserId, request.RoleId);
@@ -100,7 +100,7 @@ namespace DeliveryService.Web.Controllers
         }
 
         [HttpDelete("{userId:guid}/roles/{roleId:guid}")]
-        [HasPermission(Permissions.Users.Delete)]
+        [HasPermission(Permissions.Users.Update)]
         public async Task<IActionResult> RemoveUserRoleAsync(
             [FromRoute] Guid userId,
             [FromRoute] Guid roleId)

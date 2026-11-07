@@ -2,7 +2,7 @@ using DeliveryService.Domain.Common;
 using DeliveryService.Domain.Interfaces.Application.Services;
 using DeliveryService.Domain.ValueObjects;
 using DeliveryService.Infrastructure.Authorization;
-using DeliveryService.Web.Contracts.Establishment;
+using DeliveryService.Web.Contracts.Establishments;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DeliveryService.Web.Controllers
@@ -21,7 +21,6 @@ namespace DeliveryService.Web.Controllers
         }
 
         [HttpGet]
-        [HasPermission(Permissions.Establishment.Read)]
         public async Task<IActionResult> GetEstablishmentsAsync()
         {
             var establishments = await establishmentService.GetEstablishmentsAsync();
@@ -34,7 +33,6 @@ namespace DeliveryService.Web.Controllers
         }
 
         [HttpGet("{establishmentId:guid}")]
-        [HasPermission(Permissions.Establishment.Read)]
         public async Task<IActionResult> GetEstablishmentByIdAsync([FromRoute] Guid establishmentId)
         {
             var establishment = await establishmentService.GetEstablishmentByIdAsync(establishmentId);

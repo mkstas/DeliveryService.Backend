@@ -25,7 +25,7 @@ namespace DeliveryService.Web.Controllers
         [HasPermission(Permissions.Modifiers.Update)]
         public async Task<IActionResult> UpdateModifierAsync(
             [FromRoute] Guid modifierId,
-            [FromBody] UpdateModifiertRequest request)
+            [FromBody] UpdateModifierRequest request)
         {
             await modifierService.UpdateModifierAsync(modifierId, StringBounded.Create(request.Name), Currency.Create(request.Price));
 
