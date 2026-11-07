@@ -6,7 +6,7 @@ namespace DeliveryService.Domain.Common
     public static class Permissions
     {
         /// <summary>
-        /// Describes a permission's system name and display name.
+        /// Describes a permission system name and display name.
         /// </summary>
         /// <param name="SystemName">The internal system name of the permission.</param>
         /// <param name="DisplayName">The display name of the permission.</param>
@@ -36,17 +36,15 @@ namespace DeliveryService.Domain.Common
             public const string Read = "roles.read";
             public const string Create = "roles.create";
             public const string Update = "roles.update";
-            public const string Delete = "roles.delete";
 
             /// <summary>
-            /// The catalog of permission definitions.
+            /// The catalog of role definitions.
             /// </summary>
             public static readonly Definition[] Catalog =
             [
                 new(Read, "Просмотр ролей"),
                 new(Create, "Создание ролей"),
                 new(Update, "Редактирование ролей"),
-                new(Delete, "Удаление ролей"),
             ];
         }
 
@@ -75,7 +73,6 @@ namespace DeliveryService.Domain.Common
         /// </summary>
         public static class Establishment
         {
-            public const string Read = "establishment.read";
             public const string Create = "establishment.create";
             public const string Update = "establishment.update";
 
@@ -84,7 +81,6 @@ namespace DeliveryService.Domain.Common
             /// </summary>
             public static readonly Definition[] Catalog =
             [
-                new(Read, "Просмотр заведений"),
                 new(Create, "Создание заведений"),
                 new(Update, "Редактирование заведений"),
             ];
@@ -95,7 +91,6 @@ namespace DeliveryService.Domain.Common
         /// </summary>
         public static class Categories
         {
-            public const string Read = "categories.read";
             public const string Create = "categories.create";
             public const string Update = "categories.update";
 
@@ -104,9 +99,26 @@ namespace DeliveryService.Domain.Common
             /// </summary>
             public static readonly Definition[] Catalog =
             [
-                new(Read, "Просмотр категорий"),
                 new(Create, "Создание категорий"),
                 new(Update, "Редактирование категорий"),
+            ];
+        }
+
+        /// <summary>
+        ///  Permissions related to specification management.
+        /// </summary>
+        public static class Specifications
+        {
+            public const string Create = "specifications.create";
+            public const string Update = "specifications.update";
+
+            /// <summary>
+            /// The catalog of specification definitions.
+            /// </summary>
+            public static readonly Definition[] Catalog =
+            [
+                new(Create, "Создание характерстик"),
+                new(Update, "Редактирование характерстик"),
             ];
         }
 
@@ -150,6 +162,7 @@ namespace DeliveryService.Domain.Common
         /// The catalog of all permission definitions in the system.
         /// </summary>
         public static readonly Definition[] All =
-            [.. Self.Catalog, .. Roles.Catalog, .. Users.Catalog, .. Establishment.Catalog, .. Categories.Catalog];
+            [.. Self.Catalog, .. Roles.Catalog, .. Users.Catalog, .. Establishment.Catalog, .. Categories.Catalog, ..Specifications.Catalog,
+                .. Ingredients.Catalog, .. Modifiers.Catalog];
     }
 }

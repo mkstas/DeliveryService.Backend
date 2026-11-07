@@ -379,6 +379,9 @@ namespace DeliveryService.Persistence.Postgres.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Name")
+                        .IsUnique();
+
                     b.ToTable("specifications", (string)null);
                 });
 

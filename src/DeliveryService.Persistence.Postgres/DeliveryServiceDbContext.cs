@@ -15,6 +15,7 @@ namespace DeliveryService.Persistence.Postgres
         public DbSet<Category> Categories { get; set; }
         public DbSet<Ingredient> Ingredients { get; set; }
         public DbSet<Modifier> Modifiers { get; set; }
+        public DbSet<Specification> Specifications { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

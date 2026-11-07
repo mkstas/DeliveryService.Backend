@@ -24,6 +24,8 @@ namespace DeliveryService.Persistence.Postgres.Configurations
                    .HasMaxLength(StringBounded.MAX_LENGTH)
                    .IsRequired();
 
+            builder.HasIndex(s => s.Name).IsUnique();
+
             builder.Navigation(s => s.DishSpecifications)
                    .UsePropertyAccessMode(PropertyAccessMode.Field);
         }
