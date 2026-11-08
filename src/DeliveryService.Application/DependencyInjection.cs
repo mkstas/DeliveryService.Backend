@@ -26,6 +26,7 @@ namespace DeliveryService.Application
             services.AddScoped<IIngredientService, IngredientService>();
             services.AddScoped<IModifierService, ModifierService>();
             services.AddScoped<IDishService, DishService>();
+            services.AddScoped<ICartService, CartService>();
 
             return services;
         }

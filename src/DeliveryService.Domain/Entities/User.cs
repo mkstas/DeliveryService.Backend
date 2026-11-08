@@ -145,5 +145,10 @@ namespace DeliveryService.Domain.Entities
         /// Creates a cart for the user if one does not already exist.
         /// </summary>
         public void CreateCart() => Cart ??= Cart.Create(Id);
+
+        /// <summary>
+        ///
+        /// </summary>
+        public void RemoveCart() => Cart = null;
     }
 }

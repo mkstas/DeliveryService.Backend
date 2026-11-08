@@ -58,20 +58,19 @@ namespace DeliveryService.Domain.Entities
         }
 
         /// <summary>
-        /// Decreases the quantity of a cart item for the specified dish variant and modifiers.
+        /// Decreases the quantity of a specified cart item.
         /// </summary>
-        /// <param name="dishVariantId">The identifier of the dish variant.</param>
-        /// <param name="modifiers">The list of modifiers to include with the cart item.</param>
-        /// <param name="quantity">The quantity of the dish variant to subtract.</param>
-        public void DecreaseCartItemQuantity(Guid dishVariantId, List<Modifier> modifiers, uint quantity)
+        /// <param name="cartItemId">The identifier of the cart item.</param>
+        /// <param name="quantity">The quantity of the cart item to subtract.</param>
+        public void DecreaseCartItemQuantity(Guid cartItemId, uint quantity)
         {
-            var existingCartItem = FindCartItem(dishVariantId, modifiers);
+            var existingCartItem = _items.Find(i => i.Id == cartItemId);
 
             if (existingCartItem is null) return;
 
             existingCartItem.DecreaseQuantity(quantity);
 
-            if (existingCartItem.Quantity == 0)
+            if (existingCartItem.Quantity <= 0)
             {
                 _items.Remove(existingCartItem);
             }
