@@ -121,6 +121,9 @@ namespace DeliveryService.Persistence.Postgres.Migrations
 
                     b.HasIndex("EstablishmentId");
 
+                    b.HasIndex("Name")
+                        .IsUnique();
+
                     b.ToTable("dishes", (string)null);
                 });
 

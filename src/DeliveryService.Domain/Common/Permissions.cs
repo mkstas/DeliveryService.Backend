@@ -159,10 +159,28 @@ namespace DeliveryService.Domain.Common
         }
 
         /// <summary>
+        /// Permissions related to dish management.
+        /// </summary>
+        public static class Dishes
+        {
+            public const string Create = "dishes.create";
+            public const string Update = "dishes.update";
+
+            /// <summary>
+            /// The catalog of dish definitions.
+            /// </summary>
+            public static readonly Definition[] Catalog =
+            [
+                new(Create, "Создание блюд"),
+                new(Update, "Редактирование блюд"),
+            ];
+        }
+
+        /// <summary>
         /// The catalog of all permission definitions in the system.
         /// </summary>
         public static readonly Definition[] All =
             [.. Self.Catalog, .. Roles.Catalog, .. Users.Catalog, .. Establishment.Catalog, .. Categories.Catalog, ..Specifications.Catalog,
-                .. Ingredients.Catalog, .. Modifiers.Catalog];
+                .. Ingredients.Catalog, .. Modifiers.Catalog, .. Dishes.Catalog];
     }
 }

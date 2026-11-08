@@ -44,21 +44,20 @@ namespace DeliveryService.Domain.Entities
         /// </summary>
         public IReadOnlyList<Ingredient> Ingredients => _ingredients.AsReadOnly();
 
-        private readonly List<DishVariant> _variants = [];
-        /// <summary>
-        /// The variants of the dish.
-        /// </summary>
-        public IReadOnlyList<DishVariant> Variants => _variants.AsReadOnly();
-
         private readonly List<Modifier> _modifiers = [];
         /// <summary>
         /// The modifiers associated with the dish.
         /// </summary>
         public IReadOnlyList<Modifier> Modifiers => _modifiers.AsReadOnly();
 
+        private readonly List<DishVariant> _variants = [];
+        /// <summary>
+        /// The variants of the dish.
+        /// </summary>
+        public IReadOnlyList<DishVariant> Variants => _variants.AsReadOnly();
+
         private Dish(Guid establishmentId, Guid categoryId, StringBounded name, StringUnbounded? description = null)
         {
-            Id = Guid.Empty;
             EstablishmentId = establishmentId;
             CategoryId = categoryId;
             Name = name;
@@ -73,7 +72,7 @@ namespace DeliveryService.Domain.Entities
         /// <param name="name">Must not be null, empty, or exceed <see cref="StringBounded.MAX_LENGTH"/> characters.</param>
         /// <param name="description">If provided, must not be empty.</param>
         /// <returns>A new <see cref="Dish"/> instance.</returns>
-        internal static Dish Create(Guid establishmentId, Guid categoryId, StringBounded name, StringUnbounded? description = null)
+        public static Dish Create(Guid establishmentId, Guid categoryId, StringBounded name, StringUnbounded? description = null)
             => new(establishmentId, categoryId, name, description);
 
         /// <summary>
@@ -92,7 +91,7 @@ namespace DeliveryService.Domain.Entities
         /// Changes the description of the dish.
         /// </summary>
         /// <param name="newDescription">The new description to assign to the dish.</param>
-        public void ChangeDescription(StringUnbounded newDescription) => Description = newDescription;
+        public void ChangeDescription(StringUnbounded? newDescription) => Description = newDescription;
 
         /// <summary>
         /// Adds an ingredient to the dish.
@@ -105,6 +104,18 @@ namespace DeliveryService.Domain.Entities
         /// </summary>
         /// <param name="ingredient">The ingredient to remove.</param>
         public void RemoveIngredient(Ingredient ingredient) => _ingredients.Remove(ingredient);
+
+        /// <summary>
+        /// Adds a modifier to the dish.
+        /// </summary>
+        /// <param name="modifier">The modifier to add.</param>
+        public void AddModifier(Modifier modifier) => _modifiers.Add(modifier);
+
+        /// <summary>
+        /// Removes a modifier from the dish.
+        /// </summary>
+        /// <param name="modifier">The modifier to remove.</param>
+        public void RemoveModifier(Modifier modifier) => _modifiers.Remove(modifier);
 
         /// <summary>
         /// Adds a variant to the dish.

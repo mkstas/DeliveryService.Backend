@@ -31,6 +31,8 @@ namespace DeliveryService.Persistence.Postgres.Configurations
                    .HasMaxLength(StringBounded.MAX_LENGTH)
                    .IsRequired();
 
+            builder.HasIndex(d => d.Name).IsUnique();
+
             builder.Property(d => d.Description)
                    .HasConversion(
                         desc => desc != null ? (string)desc : null,

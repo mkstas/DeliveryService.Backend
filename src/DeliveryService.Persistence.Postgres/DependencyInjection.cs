@@ -33,6 +33,7 @@ namespace DeliveryService.Persistence.Postgres
             services.AddScoped<ISpecificationRepository, SpecificationRepository>();
             services.AddScoped<IIngredientRepository, IngredientRepository>();
             services.AddScoped<IModifierRepository, ModifierRepository>();
+            services.AddScoped<IDishRepository, DishRepository>();
 
             return services;
         }

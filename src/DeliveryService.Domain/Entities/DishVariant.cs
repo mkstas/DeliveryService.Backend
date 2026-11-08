@@ -77,7 +77,15 @@ namespace DeliveryService.Domain.Entities
         /// <summary>
         /// Removes a specification from the variant.
         /// </summary>
-        /// <param name="specification">The specification to remove.</param>
-        public void RemoveSpecification(DishSpecification specification) => _specifications.Remove(specification);
+        /// <param name="specificationId">The specification id to remove.</param>
+        public void RemoveSpecification(Guid specificationId)
+        {
+            var specification = _specifications.Find(s => s.Id == specificationId);
+
+            if (specification is not null)
+            {
+                _specifications.Remove(specification);
+            }
+        }
     }
 }
