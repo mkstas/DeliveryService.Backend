@@ -16,11 +16,15 @@ namespace DeliveryService.Persistence.Postgres.Common
         public async Task SeedAsync()
         {
             var permissions = await SeedPermissionsAsync();
-            var administrator = await SeedRoleAsync(RoleNames.Administrator);
 
-            await SeedRoleAsync(RoleNames.Client);
+            var administrator = await SeedRoleAsync(RoleNames.Administrator);
+            var manager = await SeedRoleAsync(RoleNames.Manager);
+            var client = await SeedRoleAsync(RoleNames.Client);
 
             await SeedAdministratorPermissionsAsync(administrator, permissions);
+            await SeedManagerPermissionsAsync(manager, permissions);
+            await SeedClientPermissionsAsync(client, permissions);
+
             await context.SaveChangesAsync();
         }
 
@@ -64,6 +68,54 @@ namespace DeliveryService.Persistence.Postgres.Common
                 if (administrator.Permissions.All(p => p.Id != permission.Id))
                 {
                     administrator.AddPermission(permission);
+                }
+            }
+
+            return Task.CompletedTask;
+        }
+
+        private static Task SeedManagerPermissionsAsync(Role manager, List<Permission> permissions)
+        {
+            var availablePermissions = new[]
+            {
+                Permissions.Establishments.Update,
+                Permissions.Ingredients.Create,
+                Permissions.Ingredients.Update,
+                Permissions.Modifiers.Create,
+                Permissions.Modifiers.Update,
+                Permissions.Dishes.Create,
+                Permissions.Dishes.Update
+            };
+
+            foreach (var availablePermission in availablePermissions)
+            {
+                var permission = permissions.FirstOrDefault(p => (string)p.SystemName == availablePermission);
+
+                if (permission is not null && manager.Permissions.All(p => p.Id != permission.Id))
+                {
+                    manager.AddPermission(permission);
+                }
+            }
+
+            return Task.CompletedTask;
+        }
+
+        private static Task SeedClientPermissionsAsync(Role client, List<Permission> permissions)
+        {
+            var availablePermissions = new[]
+            {
+                Permissions.Carts.Create,
+                Permissions.Carts.Read,
+                Permissions.Carts.Update,
+            };
+
+            foreach (var availablePermission in availablePermissions)
+            {
+                var permission = permissions.FirstOrDefault(p => (string)p.SystemName == availablePermission);
+
+                if (permission is not null && client.Permissions.All(p => p.Id != permission.Id))
+                {
+                    client.AddPermission(permission);
                 }
             }
 

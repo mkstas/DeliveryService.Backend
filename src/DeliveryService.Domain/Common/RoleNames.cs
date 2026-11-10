@@ -8,6 +8,5 @@ namespace DeliveryService.Domain.Common
         public const string Administrator = "Администратор";
         public const string Manager = "Менеджер";
         public const string Client = "Клиент";
-        public const string Courier = "Курьер";
     }
 }

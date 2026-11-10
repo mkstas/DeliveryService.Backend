@@ -1,3 +1,5 @@
+using DeliveryService.Domain.Entities;
+
 namespace DeliveryService.Domain.Common
 {
     /// <summary>
@@ -69,12 +71,12 @@ namespace DeliveryService.Domain.Common
         }
 
         /// <summary>
-        ///  Permissions related to establishment management.
+        ///  Permissions related to establishments management.
         /// </summary>
-        public static class Establishment
+        public static class Establishments
         {
-            public const string Create = "establishment.create";
-            public const string Update = "establishment.update";
+            public const string Create = "establishments.create";
+            public const string Update = "establishments.update";
 
             /// <summary>
             /// The catalog of establishment definitions.
@@ -177,10 +179,30 @@ namespace DeliveryService.Domain.Common
         }
 
         /// <summary>
+        /// Permissions related to cart management.
+        /// </summary>
+        public static class Carts
+        {
+            public const string Create = "carts.create";
+            public const string Read = "carts.read";
+            public const string Update = "carts.update";
+
+            /// <summary>
+            /// The catalog of cart definitions.
+            /// </summary>
+            public static readonly Definition[] Catalog =
+            [
+                new(Create, "Создание корзины"),
+                new(Read, "Просмотр корзины"),
+                new(Update, "Редактирование корзины"),
+            ];
+        }
+
+        /// <summary>
         /// The catalog of all permission definitions in the system.
         /// </summary>
         public static readonly Definition[] All =
-            [.. Self.Catalog, .. Roles.Catalog, .. Users.Catalog, .. Establishment.Catalog, .. Categories.Catalog, ..Specifications.Catalog,
-                .. Ingredients.Catalog, .. Modifiers.Catalog, .. Dishes.Catalog];
+            [.. Self.Catalog, .. Roles.Catalog, .. Users.Catalog, .. Establishments.Catalog, .. Categories.Catalog, ..Specifications.Catalog,
+                .. Ingredients.Catalog, .. Modifiers.Catalog, .. Dishes.Catalog, .. Carts.Catalog];
     }
 }

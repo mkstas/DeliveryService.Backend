@@ -1,4 +1,6 @@
+using DeliveryService.Domain.Common;
 using DeliveryService.Domain.Interfaces.Application.Services;
+using DeliveryService.Infrastructure.Authorization;
 using DeliveryService.Web.Contracts.Carts;
 using DeliveryService.Web.Contracts.Dishes;
 using DeliveryService.Web.Contracts.Modifiers;
@@ -13,7 +15,7 @@ namespace DeliveryService.Web.Controllers
     public class CartsController(ICartService cartService) : ControllerBase
     {
         [HttpPost]
-        [Authorize]
+        [HasPermission(Permissions.Carts.Create)]
         public async Task<IActionResult> CreateCartItemAsync([FromBody] CreateCartItemRequest request)
         {
             await cartService.CreateCartItem(
@@ -23,7 +25,7 @@ namespace DeliveryService.Web.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [HasPermission(Permissions.Carts.Read)]
         public async Task<IActionResult> GetCartAsync()
         {
             var cart = await cartService.GetCartAsync(User.GetCurrentUserId());
@@ -38,7 +40,7 @@ namespace DeliveryService.Web.Controllers
         }
 
         [HttpPatch("{cartItemId:guid}")]
-        [Authorize]
+        [HasPermission(Permissions.Carts.Update)]
         public async Task<IActionResult> RemoveCartItemAsync(
             [FromRoute] Guid cartItemId,
             [FromBody] UpdateCartItemRequest request)

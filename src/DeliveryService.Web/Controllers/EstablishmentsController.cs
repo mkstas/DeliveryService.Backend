@@ -12,7 +12,7 @@ namespace DeliveryService.Web.Controllers
     public class EstablishmentsController(IEstablishmentService establishmentService) : ControllerBase
     {
         [HttpPost]
-        [HasPermission(Permissions.Establishment.Create)]
+        [HasPermission(Permissions.Establishments.Create)]
         public async Task<IActionResult> CreateEstablishmentAsync([FromBody] CreateEstablishmentRequest request)
         {
             await establishmentService.CreateEstablishmentAsync(StringBounded.Create(request.Name), BankAccount.Create(request.BusinessAccount));
@@ -48,7 +48,7 @@ namespace DeliveryService.Web.Controllers
         }
 
         [HttpPut("{establishmentId:guid}")]
-        [HasPermission(Permissions.Establishment.Update)]
+        [HasPermission(Permissions.Establishments.Update)]
         public async Task<IActionResult> UpdateEstablishmentAsync(
             [FromRoute] Guid establishmentId,
             [FromBody] UpdateEstablishmentRequest request)
@@ -60,7 +60,7 @@ namespace DeliveryService.Web.Controllers
         }
 
         [HttpPost("users")]
-        [HasPermission(Permissions.Establishment.Update)]
+        [HasPermission(Permissions.Establishments.Update)]
         public async Task<IActionResult> AddUserEstablishmentAsync([FromBody] AddUserEstablishmentRequest request)
         {
             await establishmentService.AddUserEstablishmentAsync(request.EstablishmentId, EmailAddress.Create(request.EmailAddress));
@@ -69,7 +69,7 @@ namespace DeliveryService.Web.Controllers
         }
 
         [HttpDelete("{establishmentId:guid}/users/{userId:guid}")]
-        [HasPermission(Permissions.Establishment.Update)]
+        [HasPermission(Permissions.Establishments.Update)]
         public async Task<IActionResult> RemoveUserEstablishmentAsync(
             [FromRoute] Guid establishmentId,
             [FromRoute] Guid userId)
@@ -80,7 +80,7 @@ namespace DeliveryService.Web.Controllers
         }
 
         [HttpPost("addresses")]
-        [HasPermission(Permissions.Establishment.Create)]
+        [HasPermission(Permissions.Establishments.Create)]
         public async Task<IActionResult> AddEstablishmentAddressAsync([FromBody] AddEstablishmentAddressRequest request)
         {
             await establishmentService.AddEstablishmentAddressAsync(request.EstablishmentId, StringBounded.Create(request.Address));
@@ -89,7 +89,7 @@ namespace DeliveryService.Web.Controllers
         }
 
         [HttpDelete("{establishmentId:guid}/addresses/{addressId:guid}")]
-        [HasPermission(Permissions.Establishment.Update)]
+        [HasPermission(Permissions.Establishments.Update)]
         public async Task<IActionResult> RemoveEstablishmentAddressAsync(
             [FromRoute] Guid establishmentId,
             [FromRoute] Guid addressId)
