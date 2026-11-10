@@ -1,3 +1,4 @@
+using DeliveryService.Domain.Common;
 using DeliveryService.Domain.Entities;
 using DeliveryService.Domain.Exceptions;
 using DeliveryService.Domain.Interfaces.Application.Services;
@@ -8,7 +9,8 @@ namespace DeliveryService.Application.Services
 {
     public class EstablishmentService(
         IEstablishmentRepository establishmentRepository,
-        IUserRepository userRepository) : IEstablishmentService
+        IUserRepository userRepository,
+        IRoleRepository roleRepository) : IEstablishmentService
     {
         public async Task CreateEstablishmentAsync(StringBounded name, BankAccount businessAccount)
         {
@@ -41,7 +43,16 @@ namespace DeliveryService.Application.Services
         {
             var establishment = await establishmentRepository.GetEstablishmentByIdAsync(establishmentId)
                 ?? throw new NotFoundException<Establishment>(establishmentId);
-            var user = await userRepository.GetUserByEmailAsync(address) ?? throw new NotFoundException<User>(address);
+
+            var user = await userRepository.GetUserByEmailAsync(address)
+                ?? throw new NotFoundException<User>(address);
+
+            var managerRole = await roleRepository.GetRoleByNameAsync(StringBounded.Create(RoleNames.Manager))
+                ?? throw new NotFoundException<Role>(RoleNames.Manager);
+
+            user.AddRole(managerRole);
+
+            await userRepository.UpdateUserAsync(user);
 
             establishment.AddUser(user);
 
