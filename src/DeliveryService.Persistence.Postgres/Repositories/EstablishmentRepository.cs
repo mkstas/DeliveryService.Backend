@@ -25,6 +25,7 @@ namespace DeliveryService.Persistence.Postgres.Repositories
         public async Task<Establishment?> GetEstablishmentByIdAsync(Guid establishmentId)
         {
             return await context.Establishments
+                .Include(e => e.Users)
                 .Include(e => e.Addresses)
                 .FirstOrDefaultAsync(e => e.Id == establishmentId);
         }
@@ -32,6 +33,7 @@ namespace DeliveryService.Persistence.Postgres.Repositories
         public async Task<List<Establishment>> GetEstablishmentsAsync()
         {
             return await context.Establishments
+                .Include(e => e.Users)
                 .Include(e => e.Addresses)
                 .ToListAsync();
         }

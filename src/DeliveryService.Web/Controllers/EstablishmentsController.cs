@@ -27,6 +27,8 @@ namespace DeliveryService.Web.Controllers
 
             List<EstablishmentResponse> response = [.. establishments.Select(
                 e => new EstablishmentResponse(e.Id, e.Name, e.BusinessAccount,
+                [.. e.Users.Select(u => new EstablishmentUserResponse(u.Id, u.EmailAddress, u.Name,
+                    u.ImageUrl is null ? null : (string)u.ImageUrl))],
                 [.. e.Addresses.Select(a => new EstablishmentAddressResponse(a.Id, a.Address))]))];
 
             return Ok(response);
@@ -38,6 +40,8 @@ namespace DeliveryService.Web.Controllers
             var establishment = await establishmentService.GetEstablishmentByIdAsync(establishmentId);
 
             var response = new EstablishmentResponse(establishment.Id, establishment.Name, establishment.BusinessAccount,
+                [.. establishment.Users.Select(u => new EstablishmentUserResponse(u.Id, u.EmailAddress, u.Name,
+                    u.ImageUrl is null ? null : (string)u.ImageUrl))],
                 [.. establishment.Addresses.Select(a => new EstablishmentAddressResponse(a.Id, a.Address))]);
 
             return Ok(response);

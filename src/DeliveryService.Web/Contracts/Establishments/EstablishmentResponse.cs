@@ -11,5 +11,6 @@ namespace DeliveryService.Web.Contracts.Establishments
         Guid Id,
         string Name,
         string BusinessAccount,
+        List<EstablishmentUserResponse> Users,
         List<EstablishmentAddressResponse> Addresses);
 }

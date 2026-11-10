@@ -9,7 +9,7 @@ namespace DeliveryService.Web.Contracts.Establishments
     /// <param name="EstablishmentId">The establishment identifier.</param>
     /// <param name="EmailAddress">The email address of the user to add.</param>
     public record AddUserEstablishmentRequest(
-        [Required(ErrorMessage = "User id is required.")]
+        [Required(ErrorMessage = "Establishment id is required.")]
         Guid EstablishmentId,
 
         [Required(ErrorMessage = "Email address is required.")]
