@@ -7,7 +7,7 @@ namespace DeliveryService.Web.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class StaticUsersController(IUserService userService) : ControllerBase
+    public class StaticController(IUserService userService) : ControllerBase
     {
         private const long MaxImageSize = 5 * 1024 * 1024;
 
