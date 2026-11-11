@@ -94,7 +94,7 @@ namespace DeliveryService.Web.Controllers
             [FromRoute] Guid establishmentId,
             [FromRoute] Guid addressId)
         {
-            await establishmentService.RemoveUserEstablishmentAsync(establishmentId, addressId);
+            await establishmentService.RemoveEstablishmentAddressAsync(establishmentId, addressId);
 
             return NoContent();
         }
