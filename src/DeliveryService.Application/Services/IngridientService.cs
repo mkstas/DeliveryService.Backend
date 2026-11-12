@@ -16,6 +16,18 @@ namespace DeliveryService.Application.Services
                 ?? throw new NotFoundException<Establishment>(establishmentId);
 
             establishment.CreateIngredient(name);
+
+            await establishmentRepository.UpdateEstablishmentAsync(establishment);
+        }
+
+        public async Task<List<Ingredient>> GetIngredientsAsync()
+        {
+            return await ingredientRepository.GetIngredientsAsync();
+        }
+
+        public async Task<List<Ingredient>> GetIngredientsByEstablishmentIdAsync(Guid establishmentId)
+        {
+            return await ingredientRepository.GetIngredientsByEstablishmentIdAsync(establishmentId);
         }
 
         public async Task UpdateIngredientAsync(Guid ingredientId, StringBounded newName)
@@ -24,6 +36,8 @@ namespace DeliveryService.Application.Services
                 ?? throw new NotFoundException<Ingredient>(ingredientId);
 
             ingredient.ChangeName(newName);
+
+            await ingredientRepository.UpdateIngredientAsync(ingredient);
         }
     }
 }

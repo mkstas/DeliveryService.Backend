@@ -1,5 +1,4 @@
 using DeliveryService.Web.Contracts.Categories;
-using DeliveryService.Web.Contracts.Ingredients;
 using DeliveryService.Web.Contracts.Modifiers;
 
 namespace DeliveryService.Web.Contracts.Dishes
@@ -21,7 +20,7 @@ namespace DeliveryService.Web.Contracts.Dishes
         string? Description,
         DishEstablishmentResponse Establishment,
         CategoryResponse Category,
-        List<IngredientResponse> Ingredients,
+        List<DishIngredientResponse> Ingredients,
         List<ModifierResponse> Modifiers,
         List<DishVariantResponse> Variants);
 }

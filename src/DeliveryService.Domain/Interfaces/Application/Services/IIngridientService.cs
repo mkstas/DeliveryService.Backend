@@ -1,3 +1,4 @@
+using DeliveryService.Domain.Entities;
 using DeliveryService.Domain.ValueObjects;
 
 namespace DeliveryService.Domain.Interfaces.Application.Services
@@ -13,6 +14,19 @@ namespace DeliveryService.Domain.Interfaces.Application.Services
         /// <param name="establishmentId">The establishment identifier.</param>
         /// <param name="name">The name of the ingredient to create.</param>
         Task CreateIngredientAsync(Guid establishmentId, StringBounded name);
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
+         Task<List<Ingredient>> GetIngredientsAsync();
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="establishmentId"></param>
+        /// <returns></returns>
+         Task<List<Ingredient>> GetIngredientsByEstablishmentIdAsync(Guid establishmentId);
 
         /// <summary>
         /// Updates the name of the specified ingredient.

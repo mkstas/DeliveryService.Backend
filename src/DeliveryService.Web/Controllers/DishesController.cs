@@ -52,7 +52,7 @@ namespace DeliveryService.Web.Controllers
                 dish.Description is null ? null : (string)dish.Description,
                 new DishEstablishmentResponse(dish.Establishment.Id, dish.Establishment.Name),
                 new CategoryResponse(dish.Category.Id, dish.Category.Name),
-                [.. dish.Ingredients.Select(i => new IngredientResponse(i.Id, i.Name))],
+                [.. dish.Ingredients.Select(i => new DishIngredientResponse(i.Id, i.Name))],
                 [.. dish.Modifiers.Select(m => new ModifierResponse(m.Id, m.Name, m.Price, m.ImageUrl is null ? null : (string)m.ImageUrl))],
                 [..dish.Variants.Select(v => new DishVariantResponse(v.Id, v.Price, v.ImageUrl is null ? null : (string)v.ImageUrl,
                     [.. v.Specifications.Select(s => new DishSpecificationResponse(s.Id, s.Specification.Name, s.Value))]))]

@@ -20,6 +20,30 @@ namespace DeliveryService.Web.Controllers
             return NoContent();
         }
 
+        [HttpGet]
+        [HasPermission(Permissions.Ingredients.Read)]
+        public async Task<IActionResult> GetIngredientsAsync()
+        {
+            var ingredients = await ingredientService.GetIngredientsAsync();
+
+            List<IngredientResponse> response = [.. ingredients.Select(i => new IngredientResponse(
+                i.Id, i.Name, new IngredientEstablishmentResponse(i.Establishment.Id, i.Establishment.Name)))];
+
+            return Ok(response);
+        }
+
+        [HttpGet("{establishmentId:guid}")]
+        [HasPermission(Permissions.Ingredients.Read)]
+        public async Task<IActionResult> GetIngredientsByEstablishmentIdAsync([FromRoute] Guid establishmentId)
+        {
+            var ingredients = await ingredientService.GetIngredientsByEstablishmentIdAsync(establishmentId);
+
+            List<IngredientResponse> response = [.. ingredients.Select(i => new IngredientResponse(
+                i.Id, i.Name, new IngredientEstablishmentResponse(i.Establishment.Id, i.Establishment.Name)))];
+
+            return Ok(response);
+        }
+
         [HttpPut("{ingredientId:guid}")]
         [HasPermission(Permissions.Ingredients.Update)]
         public async Task<IActionResult> UpdateIngredientAsync(

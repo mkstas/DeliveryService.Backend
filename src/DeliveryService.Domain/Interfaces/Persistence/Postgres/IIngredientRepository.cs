@@ -15,6 +15,19 @@ namespace DeliveryService.Domain.Interfaces.Persistence.Postgres
         Task<Ingredient?> GetIngredientByIdAsync(Guid ingredientId);
 
         /// <summary>
+        ///
+        /// </summary>
+        /// <returns></returns>
+        Task<List<Ingredient>> GetIngredientsAsync();
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="establishmentId"></param>
+        /// <returns></returns>
+        Task<List<Ingredient>> GetIngredientsByEstablishmentIdAsync(Guid establishmentId);
+
+        /// <summary>
         /// Updates the specified ingredient.
         /// </summary>
         /// <param name="ingredient">The ingredient to update.</param>

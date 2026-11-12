@@ -129,6 +129,7 @@ namespace DeliveryService.Domain.Common
         /// </summary>
         public static class Ingredients
         {
+            public const string Read = "ingredients.read";
             public const string Create = "ingredients.create";
             public const string Update = "ingredients.update";
 
@@ -137,6 +138,7 @@ namespace DeliveryService.Domain.Common
             /// </summary>
             public static readonly Definition[] Catalog =
             [
+                new(Read, "Просмотр ингредиентов"),
                 new(Create, "Создание ингредиентов"),
                 new(Update, "Редактирование ингредиентов"),
             ];
