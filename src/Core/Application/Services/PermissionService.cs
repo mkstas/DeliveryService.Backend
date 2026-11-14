@@ -6,7 +6,7 @@ using Domain.Abstractions.Repositories;
 namespace Application.Services
 {
     /// <summary>
-    ///
+    /// Implementation of <see cref="IPermissionService"/>.
     /// </summary>
     internal class PermissionService(
         IPermissionRepository permissionRepository,

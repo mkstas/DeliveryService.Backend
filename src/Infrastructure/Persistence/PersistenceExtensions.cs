@@ -6,7 +6,7 @@ namespace Infrastructure.Persistence
     /// <summary>
     /// Provides extension methods for the persistence service.
     /// </summary>
-    public static class PostgresExtensions
+    public static class PersistenceExtensions
     {
         /// <summary>
         /// Determines whether a <see cref="DbUpdateException"/> was caused by a PostgreSQL unique-constraint violation.

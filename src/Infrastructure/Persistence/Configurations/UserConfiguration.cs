@@ -7,7 +7,7 @@ namespace Infrastructure.Persistence.Configurations
     /// <summary>
     /// Configuration for the <see cref="User"/> entity.
     /// </summary>
-    internal class UserConfigurations : IEntityTypeConfiguration<User>
+    internal class UserConfiguration : IEntityTypeConfiguration<User>
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {

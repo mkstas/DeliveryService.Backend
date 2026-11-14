@@ -44,7 +44,7 @@ namespace Domain.Entities.Catalog
         /// <summary>
         /// Creates a new <see cref="User"/> instance.
         /// </summary>
-        /// <param name="emailAddress">>Must be correct email address format.</param>
+        /// <param name="emailAddress">Must be a valid email address format.</param>
         /// <param name="passwordHash">Must not be null or empty.</param>
         /// <param name="name">Must not be null or empty.</param>
         /// <returns>A new <see cref="User"/> instance.</returns>

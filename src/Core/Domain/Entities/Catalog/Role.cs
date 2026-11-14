@@ -40,7 +40,7 @@ namespace Domain.Entities.Catalog
         /// Creates a new <see cref="Role"/> instance.
         /// </summary>
         /// <param name="name">Must not be null or empty.</param>
-        /// <param name="isBuiltIn">Must be <c>true</c> if it is not built-in.</param>
+        /// <param name="isBuiltIn">Must be <c>true</c> if the role is built-in.</param>
         /// <returns>A new <see cref="Role"/> instance.</returns>
         public static Role Create(string name, bool isBuiltIn = false)
         {
@@ -53,11 +53,11 @@ namespace Domain.Entities.Catalog
         /// Changes the name of the role.
         /// </summary>
         /// <param name="newName">Must not be null or empty.</param>
-        /// <exception cref="InvalidOperationException">Throw when try to rename built-in role.</exception>
+        /// <exception cref="InvalidOperationException">Thrown when attempting to rename a built-in role.</exception>
         public void ChangeName(string newName)
         {
             if (IsBuiltIn)
-                throw new InvalidOperationException($"Built-in '{Name}' role cannot be ranamed.");
+                throw new InvalidOperationException($"Built-in '{Name}' role cannot be renamed.");
 
             ValidationHelper.CheckNotNullOrEmpty(newName, nameof(newName));
 
