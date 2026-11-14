@@ -1,8 +1,6 @@
 <Solution>
-  <Project Path="DeliveryService.Application/DeliveryService.Application.csproj" />
-  <Project Path="DeliveryService.Domain/DeliveryService.Domain.csproj" />
-  <Project Path="DeliveryService.Infrastructure/DeliveryService.Infrastructure.csproj" />
-  <Project Path="DeliveryService.Persistence.Postgres/DeliveryService.Persistence.Postgres.csproj" />
-  <Project Path="DeliveryService.Persistence.Redis/DeliveryService.Persistence.Redis.csproj" />
-  <Project Path="DeliveryService.Web/DeliveryService.Web.csproj" />
+  <Project Path="Core/Application/Application.csproj" />
+  <Project Path="Core/Domain/Domain.csproj" />
+  <Project Path="Infrastructure/Infrastructure.csproj" />
+  <Project Path="Presentation/Presentation.csproj" />
 </Solution>

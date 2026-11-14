@@ -1,8 +1,0 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-  <ItemGroup>
-    <ProjectReference Include="..\DeliveryService.Domain\DeliveryService.Domain.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="StackExchange.Redis" />
-  </ItemGroup>
-</Project>

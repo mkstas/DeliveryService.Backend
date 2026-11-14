@@ -12,9 +12,9 @@ services:
       - "${POSTGRES_PORT}:5432"
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -h localhost -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
-      interval: 5s
-      timeout: 3s
-      retries: 5
+      interval: 10s
+      timeout: 5s
+      retries: 3
       start_period: 10s
     restart: unless-stopped
 
@@ -27,9 +27,26 @@ services:
       - "${REDIS_PORT}:6379"
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
-      interval: 5s
-      timeout: 3s
-      retries: 5
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+
+  delivery_service_mailpit:
+    image: axllent/mailpit:v1.31.6
+    container_name: delivery_service_mailpit
+    environment:
+      - MP_MAX_MESSAGES=5000
+      - MP_IP=0.0.0.0
+    ports:
+      - "${MAIL_PIT_SMTP_PORT}:1025"
+      - "${MAIL_PIT_WEB_PORT}:8025"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8025/api/v1/info"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
       start_period: 10s
     restart: unless-stopped
 
@@ -46,26 +63,9 @@ services:
       - "${RUSTFS_WEB_PORT}:9001"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
-      interval: 5s
-      timeout: 3s
-      retries: 5
-      start_period: 10s
-    restart: unless-stopped
-
-  delivery_service_mailpit:
-    image: axllent/mailpit:v1.31.6
-    container_name: delivery_service_mailpit
-    environment:
-      - MP_MAX_MESSAGES=5000
-      - MP_IP=0.0.0.0
-    ports:
-      - "${MAIL_PIT_SMTP_PORT}:1025"
-      - "${MAIL_PIT_WEB_PORT}:8025"
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8025/api/v1/info"]
-      interval: 5s
-      timeout: 3s
-      retries: 5
+      interval: 10s
+      timeout: 5s
+      retries: 3
       start_period: 10s
     restart: unless-stopped
 
