@@ -1,5 +1,6 @@
 using Application;
 using Infrastructure.CacheService;
+using Infrastructure.EmailService;
 using Infrastructure.Persistence;
 using Presentation.Common;
 using Scalar.AspNetCore;
@@ -16,6 +17,7 @@ builder.Services.AddOpenApi();
 builder.Services.AddApplicationService();
 builder.Services.AddPersistenceService(builder.Configuration);
 builder.Services.AddCacheService(builder.Configuration);
+builder.Services.AddEmailService(builder.Configuration);
 
 var app = builder.Build();
 
