@@ -55,6 +55,7 @@ namespace Infrastructure.AuthService
             services.Configure<AuthorizationJwtOptions>(configuration.GetSection(nameof(AuthorizationJwtOptions)));
             services.AddSingleton<IAuthorizationJwtService, AuthorizationJwtService>();
             services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
+            services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
 
             return services;
         }

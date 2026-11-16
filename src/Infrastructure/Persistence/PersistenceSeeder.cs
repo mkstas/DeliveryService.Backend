@@ -1,6 +1,8 @@
+using Application.Common;
 using Domain.Entities.Catalog;
 using Domain.Permissions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace Infrastructure.Persistence
 {
@@ -13,7 +15,8 @@ namespace Infrastructure.Persistence
         /// Seeds the database.
         /// </summary>
         /// <param name="context">The database context to seed.</param>
-        public static async Task SeedAsync(PersistenceDbContext context)
+        /// <param name="configuration">The application configuration.</param>
+        public static async Task SeedAsync(PersistenceDbContext context, IConfiguration configuration)
         {
             var existingPermissions = await context.Permissions.ToListAsync();
             var existingNames = existingPermissions.Select(p => p.SystemName).ToHashSet();
@@ -36,8 +39,44 @@ namespace Infrastructure.Persistence
             await SeedRoleAsync(context, Roles.Manager);
 
             await SeedAdministratorPermissionsAsync(administrator, allPermissions);
+            await SeedAdministratorUserAsync(context, configuration, administrator);
 
             await context.SaveChangesAsync();
+        }
+
+        private static async Task SeedAdministratorUserAsync(
+            PersistenceDbContext context,
+            IConfiguration configuration,
+            Role administratorRole)
+        {
+            var section = configuration.GetSection("AdminSeedOptions");
+            var emailAddress = section["EmailAddress"];
+            var password = section["Password"];
+            var name = section["Name"];
+
+            if (string.IsNullOrWhiteSpace(emailAddress) ||
+                string.IsNullOrWhiteSpace(password) ||
+                string.IsNullOrWhiteSpace(name))
+            {
+                return;
+            }
+
+            var existingUser = await context.Users
+                .Include(u => u.Roles)
+                .FirstOrDefaultAsync(u => u.EmailAddress == emailAddress);
+
+            if (existingUser is null)
+            {
+                var adminUser = User.Create(emailAddress, PasswordHasher.Generate(password), name);
+                adminUser.AddRole(administratorRole);
+                context.Users.Add(adminUser);
+                return;
+            }
+
+            if (existingUser.Roles.All(r => r.Id != administratorRole.Id))
+            {
+                existingUser.AddRole(administratorRole);
+            }
         }
 
         private static async Task<Role> SeedRoleAsync(PersistenceDbContext context, string roleName)

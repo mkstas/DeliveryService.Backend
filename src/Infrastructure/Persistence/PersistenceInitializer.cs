@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastructure.Persistence
@@ -16,9 +17,10 @@ namespace Infrastructure.Persistence
         {
             using var scope = serviceProvider.CreateAsyncScope();
             var context = scope.ServiceProvider.GetRequiredService<PersistenceDbContext>();
+            var configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
 
             await context.Database.MigrateAsync();
-            await PersistenceSeeder.SeedAsync(context);
+            await PersistenceSeeder.SeedAsync(context, configuration);
         }
     }
 }

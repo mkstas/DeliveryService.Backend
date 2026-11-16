@@ -7,7 +7,7 @@ namespace Application.Common
     /// <summary>
     /// Provides password hashing and verification.
     /// </summary>
-    internal static class PasswordHasher
+    public static class PasswordHasher
     {
         private const int SaltSize = 16;
         private const int HashSize = 32;
