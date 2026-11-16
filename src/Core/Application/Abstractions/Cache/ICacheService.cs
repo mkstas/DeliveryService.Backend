@@ -27,5 +27,12 @@ namespace Application.Abstractions.Cache
         /// </summary>
         /// <param name="key">The cache key.</param>
         Task RemoveAsync(string key);
+
+        /// <summary>
+        ///
+        /// </summary>
+        /// <param name="prefix"></param>
+        /// <returns></returns>
+        Task RemoveByPrefixAsync(string prefix);
     }
 }

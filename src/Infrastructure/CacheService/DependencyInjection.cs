@@ -20,9 +20,10 @@ namespace Infrastructure.CacheService
             this IServiceCollection services,
             IConfiguration configuration)
         {
-            services.AddSingleton<IConnectionMultiplexer>(_ =>
-                ConnectionMultiplexer.Connect(configuration.GetConnectionString("Redis")!));
+            var connectionString = configuration.GetConnectionString("Redis")
+                ?? throw new InvalidOperationException($"Redis connection string not configured.");
 
+            services.AddSingleton<IConnectionMultiplexer>(_ => ConnectionMultiplexer.Connect(connectionString));
             services.AddSingleton<ICacheService, CacheService>();
 
             return services;

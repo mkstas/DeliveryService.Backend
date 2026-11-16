@@ -33,8 +33,8 @@ namespace Domain.Permissions
         /// </summary>
         public static class Roles
         {
-            public const string Read = "roles.read";
             public const string Create = "roles.create";
+            public const string Read = "roles.read";
             public const string Update = "roles.update";
             public const string Delete = "roles.delete";
 
@@ -50,6 +50,26 @@ namespace Domain.Permissions
             ];
         }
 
-        public static readonly Definition[] All = [.. Self.Catalog, .. Roles.Catalog];
+        /// <summary>
+        /// Permissions related to user management.
+        /// </summary>
+        public static class Users
+        {
+            public const string Create = "users.create";
+            public const string Read = "users.read";
+            public const string Update = "users.update";
+
+            /// <summary>
+            /// The catalog of user definitions.
+            /// </summary>
+            public static readonly Definition[] Catalog =
+            [
+                new(Create, "Создание пользователей"),
+                new(Read, "Чтение пользователей"),
+                new(Update, "Обновление пользователей"),
+            ];
+        }
+
+        public static readonly Definition[] All = [.. Self.Catalog, .. Roles.Catalog, .. Users.Catalog];
     }
 }

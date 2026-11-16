@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Domain.Entities.Common;
 using Domain.Helpers;
 
@@ -30,6 +31,7 @@ namespace Domain.Entities.Catalog
         /// </summary>
         public IReadOnlyList<User> Users => _users.AsReadOnly();
 
+        [JsonConstructor]
         private Role(string name, bool isBuiltIn = false)
         {
             Name = name;

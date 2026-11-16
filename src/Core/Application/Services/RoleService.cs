@@ -42,18 +42,6 @@ namespace Application.Services
         }
 
         /// <inheritdoc />
-        public async Task<RoleResponse> GetRoleByIdAsync(Guid roleId)
-        {
-            var role = await roleRepository.GetRoleByIdAsync(roleId)
-                ?? throw new NotFoundException<Role>(roleId);
-
-            var response = new RoleResponse(role.Id, role.Name,
-                [.. role.Permissions.Select(p => new PermissionResponse(p.Id, p.DisplayName))]);
-
-            return response;
-        }
-
-        /// <inheritdoc />
         public async Task UpdateRoleAsync(Guid roleId, UpdateRoleRequest request)
         {
             var role = await roleRepository.GetRoleByIdAsync(roleId)
@@ -66,7 +54,7 @@ namespace Application.Services
         }
 
         /// <inheritdoc />
-        public async Task DeleteRoleAsync(Guid roleId)
+        public async Task RemoveRoleAsync(Guid roleId)
         {
             var role = await roleRepository.GetRoleByIdAsync(roleId)
                 ?? throw new NotFoundException<Role>(roleId);

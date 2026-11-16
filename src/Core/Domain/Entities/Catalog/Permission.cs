@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Domain.Entities.Common;
 using Domain.Helpers;
 
@@ -24,6 +25,7 @@ namespace Domain.Entities.Catalog
         /// </summary>
         public IReadOnlyList<Role> Roles => _roles.AsReadOnly();
 
+        [JsonConstructor]
         private Permission(string systemName, string displayName)
         {
             SystemName = systemName;

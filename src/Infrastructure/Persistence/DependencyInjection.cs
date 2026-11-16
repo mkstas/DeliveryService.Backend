@@ -21,8 +21,10 @@ namespace Infrastructure.Persistence
             this IServiceCollection services,
             IConfiguration configuration)
         {
-            services.AddDbContext<PersistenceDbContext>(options =>
-                options.UseNpgsql(configuration.GetConnectionString(nameof(PersistenceDbContext))));
+            var connectionString = configuration.GetConnectionString(nameof(PersistenceDbContext))
+                ?? throw new InvalidOperationException($"{nameof(PersistenceDbContext)} connection string not configured.");
+
+            services.AddDbContext<PersistenceDbContext>(options => options.UseNpgsql(connectionString));
 
             services.AddScoped<IPermissionRepository, PermissionRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();

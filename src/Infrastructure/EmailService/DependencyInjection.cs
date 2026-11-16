@@ -19,7 +19,10 @@ namespace Infrastructure.EmailService
             this IServiceCollection services,
             IConfiguration configuration)
         {
-            services.Configure<SmtpOptions>(configuration.GetSection(nameof(SmtpOptions)));
+            var smtpOptions = configuration.GetSection(nameof(SmtpOptions))
+                ?? throw new InvalidOperationException($"{nameof(SmtpOptions)} not configured.");
+
+            services.Configure<SmtpOptions>(smtpOptions);
             services.AddSingleton<IEmailService, EmailService>();
 
             return services;

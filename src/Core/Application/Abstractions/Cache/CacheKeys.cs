@@ -10,9 +10,6 @@ namespace Application.Abstractions.Cache
         /// </summary>
         internal class Permission
         {
-            /// <summary>
-            /// The cache key for all permissions.
-            /// </summary>
             public const string All = "permissions:all";
         }
 
@@ -21,9 +18,6 @@ namespace Application.Abstractions.Cache
         /// </summary>
         internal class Roles
         {
-            /// <summary>
-            /// The cache key for all roles.
-            /// </summary>
             public const string All = "roles:all";
         }
 
@@ -32,15 +26,13 @@ namespace Application.Abstractions.Cache
         /// </summary>
         internal class Users
         {
-            /// <summary>
-            /// The cache key for pending users.
-            /// </summary>
-            public const string UsersPending = "users:pending";
+            public const string All = "users:all";
 
-             /// <summary>
-            /// The cache key for user verification codes.
-            /// </summary>
-            public const string UsersVerificationCode = "users:verification-code";
+            public static string Pending(string emailAddress)
+                => $"users:pending:{emailAddress}";
+
+            public static string VerificationCode(string emailAddress)
+                => $"users:verification-code:{emailAddress}";
         }
     }
 }

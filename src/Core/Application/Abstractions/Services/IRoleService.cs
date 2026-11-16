@@ -20,13 +20,6 @@ namespace Application.Abstractions.Services
         Task<IReadOnlyList<RoleResponse>> GetRolesAsync();
 
         /// <summary>
-        /// Returns a role by its identifier.
-        /// </summary>
-        /// <param name="roleId">The role identifier.</param>
-        /// <returns>The matching role.</returns>
-        Task<RoleResponse> GetRoleByIdAsync(Guid roleId);
-
-        /// <summary>
         /// Updates the name of the specified role.
         /// </summary>
         /// <param name="roleId">The role identifier.</param>
@@ -34,10 +27,10 @@ namespace Application.Abstractions.Services
         Task UpdateRoleAsync(Guid roleId, UpdateRoleRequest request);
 
         /// <summary>
-        /// Deletes the specified role from the system.
+        /// Remove the specified role from the system.
         /// </summary>
         /// <param name="roleId">The role identifier.</param>
-        Task DeleteRoleAsync(Guid roleId);
+        Task RemoveRoleAsync(Guid roleId);
 
         /// <summary>
         /// Assigns a permission to the specified role.
