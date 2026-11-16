@@ -1,6 +1,6 @@
-using Application.Abstractions.Services;
+﻿using Application.Abstractions.Services;
 using Application.DTOs.Users;
-using Domain.Permissions;
+using Domain.Abstractions.Permissions;
 using Infrastructure.AuthService.Permissions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -60,3 +60,4 @@ namespace Presentation.Controllers
         }
     }
 }
+

@@ -1,5 +1,5 @@
-using Domain.Abstractions.Repositories;
-using Domain.Entities.Catalog;
+﻿using Domain.Abstractions.Repositories;
+using Domain.Entities;
 using Domain.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
@@ -73,8 +73,9 @@ namespace Infrastructure.Persistence.Repositories
             }
             catch (DbUpdateException ex) when (ex.IsForeignKeyViolation())
             {
-                throw new DeleteConstraintException<Role>("assigned to users or permissions");
+                throw new DeleteConstraintException<Role>(role.Id);
             }
         }
     }
 }
+

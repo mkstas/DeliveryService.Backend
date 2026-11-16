@@ -4,10 +4,10 @@ using Application.Abstractions.Email;
 using Application.Abstractions.Services;
 using Application.Common;
 using Application.DTOs.Users;
+using Domain.Abstractions.Permissions;
 using Domain.Abstractions.Repositories;
-using Domain.Entities.Catalog;
+using Domain.Entities;
 using Domain.Exceptions;
-using Domain.Permissions;
 
 namespace Application.Services
 {
@@ -36,7 +36,7 @@ namespace Application.Services
         /// <inheritdoc />
         public async Task CreateUserAsync(CreateUserRequest request)
         {
-            var clientRole = await roleRepository.GetRoleByNameAsync(Roles.Client)
+            var clientRole = await roleRepository.GetRoleByNameAsync(RoleNames.Client)
                 ?? throw new InvalidOperationException("Cannot create user.");
 
             var passwordHash = PasswordHasher.Generate(request.Password);

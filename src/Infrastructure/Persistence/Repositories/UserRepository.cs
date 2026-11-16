@@ -1,5 +1,5 @@
-using Domain.Abstractions.Repositories;
-using Domain.Entities.Catalog;
+﻿using Domain.Abstractions.Repositories;
+using Domain.Entities;
 using Domain.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
@@ -63,3 +63,4 @@ namespace Infrastructure.Persistence.Repositories
         }
     }
 }
+

@@ -1,4 +1,4 @@
-namespace Infrastructure.AuthService.Jwt
+﻿namespace Infrastructure.AuthService.Jwt
 {
     /// <summary>
     /// Configuration options for JWT generation.
@@ -6,13 +6,13 @@ namespace Infrastructure.AuthService.Jwt
     public class AuthorizationJwtOptions
     {
         /// <summary>
-        /// Gets the secret key used to sign the JWT.
+        /// Gets or sets the secret key used to sign the JWT.
         /// </summary>
         public string SecretKey { get; set; } = string.Empty;
 
         /// <summary>
-        /// Gets the number of days until the JWT expires.
+        /// Gets or sets the number of days until the JWT expires.
         /// </summary>
-        public int ExpiresDays { get; set; } = 0;
+        public int ExpiresDays { get; set; }
     }
 }

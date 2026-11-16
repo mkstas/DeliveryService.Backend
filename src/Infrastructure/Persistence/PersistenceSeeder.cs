@@ -1,6 +1,6 @@
-using Application.Common;
-using Domain.Entities.Catalog;
-using Domain.Permissions;
+﻿using Application.Common;
+using Domain.Abstractions.Permissions;
+using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -34,9 +34,9 @@ namespace Infrastructure.Persistence
 
             var allPermissions = await context.Permissions.ToListAsync();
 
-            var administrator = await SeedRoleAsync(context, Roles.Administrator);
-            await SeedRoleAsync(context, Roles.Client);
-            await SeedRoleAsync(context, Roles.Manager);
+            var administrator = await SeedRoleAsync(context, RoleNames.Administrator);
+            await SeedRoleAsync(context, RoleNames.Client);
+            await SeedRoleAsync(context, RoleNames.Manager);
 
             await SeedAdministratorPermissionsAsync(administrator, allPermissions);
             await SeedAdministratorUserAsync(context, configuration, administrator);
@@ -52,11 +52,8 @@ namespace Infrastructure.Persistence
             var section = configuration.GetSection("AdminSeedOptions");
             var emailAddress = section["EmailAddress"];
             var password = section["Password"];
-            var name = section["Name"];
 
-            if (string.IsNullOrWhiteSpace(emailAddress) ||
-                string.IsNullOrWhiteSpace(password) ||
-                string.IsNullOrWhiteSpace(name))
+            if (string.IsNullOrWhiteSpace(emailAddress) || string.IsNullOrWhiteSpace(password))
             {
                 return;
             }
@@ -67,7 +64,7 @@ namespace Infrastructure.Persistence
 
             if (existingUser is null)
             {
-                var adminUser = User.Create(emailAddress, PasswordHasher.Generate(password), name);
+                var adminUser = User.Create(emailAddress, PasswordHasher.Generate(password), "Администратор");
                 adminUser.AddRole(administratorRole);
                 context.Users.Add(adminUser);
                 return;

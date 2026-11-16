@@ -1,4 +1,4 @@
-namespace Application.Abstractions.Auth
+﻿namespace Application.Abstractions.Auth
 {
     /// <summary>
     /// Provides generation of JWT access tokens.

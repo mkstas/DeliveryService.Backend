@@ -1,3 +1,5 @@
+using Domain.Abstractions;
+
 namespace Domain.Exceptions
 {
     /// <summary>

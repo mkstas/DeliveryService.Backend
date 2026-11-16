@@ -1,4 +1,4 @@
-namespace Domain.Entities.Common
+namespace Domain.Abstractions
 {
     /// <summary>
     /// Base class for domain entities.

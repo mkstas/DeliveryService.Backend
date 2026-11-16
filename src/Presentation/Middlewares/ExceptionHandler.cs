@@ -1,4 +1,5 @@
 using System.Net;
+using Domain.Abstractions;
 using Domain.Exceptions;
 
 namespace Presentation.Middlewares

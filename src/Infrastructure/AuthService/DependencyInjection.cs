@@ -1,4 +1,4 @@
-using System.Text;
+﻿using System.Text;
 using Application.Abstractions.Auth;
 using Infrastructure.AuthService.Jwt;
 using Infrastructure.AuthService.Permissions;

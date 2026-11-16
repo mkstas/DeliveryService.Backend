@@ -29,10 +29,9 @@ namespace Application.Abstractions.Cache
         Task RemoveAsync(string key);
 
         /// <summary>
-        ///
+        /// Removes all cached values whose keys start with the specified prefix.
         /// </summary>
-        /// <param name="prefix"></param>
-        /// <returns></returns>
+        /// <param name="prefix">The cache key prefix.</param>
         Task RemoveByPrefixAsync(string prefix);
     }
 }

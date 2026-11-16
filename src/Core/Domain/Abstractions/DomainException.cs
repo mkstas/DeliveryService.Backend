@@ -1,4 +1,4 @@
-namespace Domain.Exceptions
+namespace Domain.Abstractions
 {
     /// <summary>
     /// Base class for domain-specific exceptions.

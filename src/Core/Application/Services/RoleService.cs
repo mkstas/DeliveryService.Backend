@@ -3,7 +3,7 @@ using Application.Abstractions.Services;
 using Application.DTOs.Permissions;
 using Application.DTOs.Roles;
 using Domain.Abstractions.Repositories;
-using Domain.Entities.Catalog;
+using Domain.Entities;
 using Domain.Exceptions;
 
 namespace Application.Services

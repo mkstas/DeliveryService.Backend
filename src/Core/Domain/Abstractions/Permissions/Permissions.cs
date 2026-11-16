@@ -1,4 +1,4 @@
-namespace Domain.Permissions
+namespace Domain.Abstractions.Permissions
 {
     /// <summary>
     /// Defines the permissions available in the system.
@@ -70,6 +70,9 @@ namespace Domain.Permissions
             ];
         }
 
+        /// <summary>
+        /// The catalog of all permission definitions in the system.
+        /// </summary>
         public static readonly Definition[] All = [.. Self.Catalog, .. Roles.Catalog, .. Users.Catalog];
     }
 }

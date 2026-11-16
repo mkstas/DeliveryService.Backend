@@ -1,8 +1,8 @@
 using System.Text.Json.Serialization;
-using Domain.Entities.Common;
+using Domain.Abstractions;
 using Domain.Helpers;
 
-namespace Domain.Entities.Catalog
+namespace Domain.Entities
 {
     /// <summary>
     /// Represents a named role within the system.

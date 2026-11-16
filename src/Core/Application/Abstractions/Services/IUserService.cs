@@ -49,7 +49,7 @@ namespace Application.Abstractions.Services
         /// Updates the specified user.
         /// </summary>
         /// <param name="userId">The user identifier.</param>
-        /// /// <param name="request">The request to update user.</param>
+        /// <param name="request">The request to update user.</param>
         Task UpdateUserAsync(Guid userId, UpdateUserRequest request);
 
         /// <summary>
