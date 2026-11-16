@@ -50,7 +50,9 @@ namespace Application.Services
             role.ChangeName(request.Name);
 
             await roleRepository.UpdateRoleAsync(role);
+
             await cacheService.RemoveAsync(CacheKeys.Roles.All);
+            await cacheService.RemoveAsync(CacheKeys.Users.All);
         }
 
         /// <inheritdoc />
@@ -60,7 +62,9 @@ namespace Application.Services
                 ?? throw new NotFoundException<Role>(roleId);
 
             await roleRepository.RemoveRoleAsync(role);
+
             await cacheService.RemoveAsync(CacheKeys.Roles.All);
+            await cacheService.RemoveAsync(CacheKeys.Users.All);
         }
 
         /// <inheritdoc />
@@ -75,6 +79,7 @@ namespace Application.Services
             role.AddPermission(permission);
 
             await roleRepository.UpdateRoleAsync(role);
+            await cacheService.RemoveAsync(CacheKeys.Roles.All);
         }
 
         /// <inheritdoc />
@@ -89,6 +94,7 @@ namespace Application.Services
             role.RemovePermission(permission);
 
             await roleRepository.UpdateRoleAsync(role);
+            await cacheService.RemoveAsync(CacheKeys.Roles.All);
         }
     }
 }

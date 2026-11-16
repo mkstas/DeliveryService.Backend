@@ -39,17 +39,19 @@ namespace Application.Services
             var clientRole = await roleRepository.GetRoleByNameAsync(RoleNames.Client)
                 ?? throw new InvalidOperationException("Cannot create user.");
 
-            var passwordHash = PasswordHasher.Generate(request.Password);
+            var pendingUser = new PendingUser(
+                request.EmailAddress,
+                PasswordHasher.Generate(request.Password),
+                request.Name,
+                [clientRole.Id]);
+
             var code = VerificationCode.Generate();
-            var user = User.Create(request.EmailAddress, passwordHash, request.Name);
 
-            user.AddRole(clientRole);
-
-            await cacheService.SetAsync(CacheKeys.Users.Pending(user.EmailAddress), user, TimeSpan.FromHours(2));
-            await cacheService.SetAsync(CacheKeys.Users.VerificationCode(user.EmailAddress), code, TimeSpan.FromMinutes(10));
+            await cacheService.SetAsync(CacheKeys.Users.Pending(request.EmailAddress), pendingUser, TimeSpan.FromHours(2));
+            await cacheService.SetAsync(CacheKeys.Users.VerificationCode(request.EmailAddress), code, TimeSpan.FromMinutes(10));
 
             await emailService.SendEmailAsync(
-                user.EmailAddress,
+                request.EmailAddress,
                 "Подтверждение элекронной почты Delivery Service.",
                 $"Код подтверждения: {code}. Код действителен в течение {TimeSpan.FromMinutes(10).TotalMinutes} минут.");
         }
@@ -57,7 +59,7 @@ namespace Application.Services
         /// <inheritdoc />
         public async Task ConfirmUserEmailAsync(ConfirmEmailRequest request)
         {
-            var user = await cacheService.GetAsync<User>(CacheKeys.Users.Pending(request.EmailAddress))
+            var pendingUser = await cacheService.GetAsync<PendingUser>(CacheKeys.Users.Pending(request.EmailAddress))
                 ?? throw new InvalidOperationException("Cannot to confirm email address");
 
             var cachedCode = await cacheService.GetAsync<string>(CacheKeys.Users.VerificationCode(request.EmailAddress))
@@ -66,15 +68,29 @@ namespace Application.Services
             if (cachedCode != request.Code)
                 throw new UnauthorizedAccessException("Invalid or expired verification code.");
 
+            var user = User.Create(pendingUser.EmailAddress, pendingUser.PasswordHash, pendingUser.Name);
+
+            foreach (var roleId in pendingUser.RoleIds)
+            {
+                var role = await roleRepository.GetRoleByIdAsync(roleId)
+                    ?? throw new InvalidOperationException("Cannot to confirm email address");
+
+                user.AddRole(role);
+            }
+
             await userRepository.CreateUserAsync(user);
+
+            await cacheService.RemoveAsync(CacheKeys.Users.Pending(request.EmailAddress));
+            await cacheService.RemoveAsync(CacheKeys.Users.VerificationCode(request.EmailAddress));
             await cacheService.RemoveAsync(CacheKeys.Users.All);
-            await cacheService.RemoveByPrefixAsync(CacheKeys.Users.Pending(user.EmailAddress));
-            await cacheService.RemoveByPrefixAsync(CacheKeys.Users.VerificationCode(user.EmailAddress));
         }
 
         /// <inheritdoc />
         public async Task ResendConfirmUserEmailAsync(ResendConfirmEmailRequest request)
         {
+            _ = await cacheService.GetAsync<PendingUser>(CacheKeys.Users.Pending(request.EmailAddress))
+                ?? throw new InvalidOperationException("Cannot to resend email confirmation.");
+
             var code = VerificationCode.Generate();
 
             await cacheService.SetAsync(CacheKeys.Users.VerificationCode(request.EmailAddress), code, TimeSpan.FromMinutes(10));
@@ -125,6 +141,7 @@ namespace Application.Services
             user.ChangeName(request.Name);
 
             await userRepository.UpdateUserAsync(user);
+            await cacheService.RemoveAsync(CacheKeys.Users.All);
         }
 
         /// <inheritdoc />
@@ -139,6 +156,7 @@ namespace Application.Services
             user.AddRole(role);
 
             await userRepository.UpdateUserAsync(user);
+            await cacheService.RemoveAsync(CacheKeys.Users.All);
         }
 
         /// <inheritdoc />
@@ -153,6 +171,7 @@ namespace Application.Services
             user.RemoveRole(role);
 
             await userRepository.UpdateUserAsync(user);
+            await cacheService.RemoveAsync(CacheKeys.Users.All);
         }
     }
 }
