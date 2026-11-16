@@ -4,6 +4,7 @@ using Infrastructure.AuthService;
 using Infrastructure.CacheService;
 using Infrastructure.EmailService;
 using Infrastructure.Persistence;
+using Infrastructure.StorageService;
 using Presentation.Common;
 using Presentation.Extensions;
 using Presentation.Middlewares;
@@ -27,6 +28,7 @@ builder.Services.AddApplicationService();
 builder.Services.AddPersistenceService(builder.Configuration);
 builder.Services.AddCacheService(builder.Configuration);
 builder.Services.AddEmailService(builder.Configuration);
+builder.Services.AddStorageService(builder.Configuration);
 
 var app = builder.Build();
 

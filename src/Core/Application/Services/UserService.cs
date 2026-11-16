@@ -2,6 +2,7 @@ using Application.Abstractions.Auth;
 using Application.Abstractions.Cache;
 using Application.Abstractions.Email;
 using Application.Abstractions.Services;
+using Application.Abstractions.Storage;
 using Application.Common;
 using Application.DTOs.Users;
 using Domain.Abstractions.Permissions;
@@ -19,7 +20,8 @@ namespace Application.Services
         IRoleRepository roleRepository,
         ICacheService cacheService,
         IEmailService emailService,
-        IJwtService authorizationJwtService) : IUserService
+        IJwtService authorizationJwtService,
+        IStorageService storageService) : IUserService
     {
         /// <inheritdoc />
         public async Task<string> LoginUserAsync(LoginUserRequest request)
@@ -171,6 +173,57 @@ namespace Application.Services
             user.RemoveRole(role);
 
             await userRepository.UpdateUserAsync(user);
+            await cacheService.RemoveAsync(CacheKeys.Users.All);
+        }
+
+        /// <inheritdoc />
+        public async Task<string> UploadUserImageAsync(Guid userId, Stream stream, string contentType, string extension)
+        {
+            var user = await userRepository.GetUserByIdAsync(userId)
+                ?? throw new NotFoundException<User>(userId);
+
+            var newImageName = $"{Guid.NewGuid()}{extension}";
+            var previousImageName = user.ImageUrl is null ? null : user.ImageUrl;
+
+            await storageService.UploadFileAsync(newImageName, stream, contentType);
+
+            user.ChangeImageUrl(newImageName);
+
+            await userRepository.UpdateUserAsync(user);
+
+            if (previousImageName is not null && previousImageName != newImageName)
+            {
+                await storageService.DeleteFileAsync(previousImageName);
+            }
+
+            await cacheService.RemoveAsync(CacheKeys.Users.All);
+
+            return newImageName;
+        }
+
+        /// <inheritdoc />
+        public async Task<(Stream Stream, string ContentType)> GetUserImageAsync(string imageName)
+        {
+            return await storageService.DownloadFileAsync(imageName);
+        }
+
+        /// <inheritdoc />
+        public async Task RemoveUserImageAsync(Guid userId)
+        {
+            var user = await userRepository.GetUserByIdAsync(userId)
+                ?? throw new NotFoundException<User>(userId);
+
+            if (user.ImageUrl is null)
+            {
+                return;
+            }
+
+            var imageKey = user.ImageUrl;
+
+            user.ChangeImageUrl(null);
+
+            await userRepository.UpdateUserAsync(user);
+            await storageService.DeleteFileAsync(imageKey);
             await cacheService.RemoveAsync(CacheKeys.Users.All);
         }
     }
