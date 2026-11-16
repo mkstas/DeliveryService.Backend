@@ -1,4 +1,5 @@
 using Application;
+using DotNetEnv;
 using Infrastructure.AuthService;
 using Infrastructure.CacheService;
 using Infrastructure.EmailService;
@@ -7,6 +8,8 @@ using Presentation.Common;
 using Presentation.Extensions;
 using Presentation.Middlewares;
 using Scalar.AspNetCore;
+
+Env.TraversePath().Load();
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +30,8 @@ builder.Services.AddEmailService(builder.Configuration);
 
 var app = builder.Build();
 
+await PersistenceInitializer.InitAsync(app.Services);
+
 app.UseCors();
 
 app.UseMiddleware<ExceptionHandler>();
@@ -36,8 +41,6 @@ app.UseAuthorization();
 
 if (app.Environment.IsDevelopment())
 {
-    await PersistenceInitializer.InitAsync(app.Services);
-
     app.MapOpenApi();
     app.MapScalarApiReference();
 }

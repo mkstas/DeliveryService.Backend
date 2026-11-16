@@ -19,6 +19,7 @@ namespace Infrastructure.Persistence.Repositories
         public async Task<IReadOnlyList<Permission>> GetUserPermissionsByUserIdAsync(Guid userId)
         {
             return await context.Users
+                .AsNoTracking()
                 .Where(u => u.Id == userId)
                 .SelectMany(u => u.Roles)
                 .SelectMany(r => r.Permissions)
