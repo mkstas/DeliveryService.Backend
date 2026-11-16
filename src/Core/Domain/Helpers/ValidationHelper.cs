@@ -24,6 +24,23 @@ namespace Domain.Helpers
         }
 
         /// <summary>
+        /// Validates that the specified numeric value is equal to the given number.
+        /// </summary>
+        /// <param name="value">The numeric value to validate.</param>
+        /// <param name="number">The exact value the <paramref name="value"/> must equal.</param>
+        /// <param name="paramName">The name of the parameter being validated.</param>
+        /// <exception cref="ArgumentException">
+        /// Thrown when <paramref name="value"/> is not equal to <paramref name="number"/>.
+        /// </exception>
+        public static void CheckEqualToNumber(double value, double number, string paramName)
+        {
+            if (value != number)
+            {
+                throw new ArgumentException($"{paramName} must be equal to {number}.");
+            }
+        }
+
+        /// <summary>
         /// Validates that the specified string is in a correct email address format.
         /// </summary>
         /// <param name="value">The email address string to validate.</param>

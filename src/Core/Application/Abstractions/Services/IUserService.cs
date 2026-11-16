@@ -67,12 +67,26 @@ namespace Application.Abstractions.Services
         Task RemoveUserRoleAsync(Guid userId, Guid roleId);
 
         /// <summary>
+        /// Adds a payment to the specified user.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="request">The request to add payment.</param>
+        Task AddPaymentAsync(Guid userId, AddPaymentRequest request);
+
+        /// <summary>
+        /// Removes a payment from the specified user.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="paymentId">The payment identifier.</param>
+        Task RemovePaymentAsync(Guid userId, Guid paymentId);
+
+        /// <summary>
         /// Uploads and assigns an image to the specified user.
         /// </summary>
         /// <param name="userId">The user identifier.</param>
         /// <param name="stream">The image content stream.</param>
         /// <param name="contentType">The content type of the image.</param>
-        /// <param name="extension">The file extension of the image, including the leading dot.</param>
+        /// <param name="extension">The file extension of the image.</param>
         /// <returns>The name of the uploaded image.</returns>
         Task<string> UploadUserImageAsync(Guid userId, Stream stream, string contentType, string extension);
 

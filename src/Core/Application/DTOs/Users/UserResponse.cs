@@ -13,5 +13,6 @@ namespace Application.DTOs.Users
         string EmailAddress,
         string Name,
         string? ImageUrl,
-        IReadOnlyList<UserRoleResponse> Roles);
+        IReadOnlyList<UserRoleResponse> Roles,
+        IReadOnlyList<PaymentResponse> Payments);
 }

@@ -8,7 +8,7 @@ namespace Domain.Abstractions
         /// <summary>
         /// The unique identifier of the entity.
         /// </summary>
-        public Guid Id { get; private init; } = Guid.CreateVersion7();
+        public Guid Id { get; protected init; } = Guid.CreateVersion7();
 
         /// <summary>
         /// The date when the entity was created.

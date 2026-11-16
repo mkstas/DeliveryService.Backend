@@ -30,6 +30,7 @@ namespace Infrastructure.Persistence.Repositories
         {
             return await context.Users
                 .Include(u => u.Roles)
+                .Include(u => u.Payments)
                 .ToListAsync();
         }
 
@@ -38,6 +39,7 @@ namespace Infrastructure.Persistence.Repositories
         {
             return await context.Users
                 .Include(u => u.Roles)
+                .Include(u => u.Payments)
                 .FirstOrDefaultAsync(u => u.Id == userId);
         }
 
@@ -46,6 +48,7 @@ namespace Infrastructure.Persistence.Repositories
         {
             return await context.Users
                 .Include(u => u.Roles)
+                .Include(u => u.Payments)
                 .FirstOrDefaultAsync(u => u.EmailAddress == address);
         }
 

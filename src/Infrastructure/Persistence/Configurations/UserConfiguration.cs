@@ -61,6 +61,9 @@ namespace Infrastructure.Persistence.Configurations
 
             builder.Navigation(u => u.Roles)
                    .UsePropertyAccessMode(PropertyAccessMode.Field);
+
+            builder.Navigation(u => u.Payments)
+                   .UsePropertyAccessMode(PropertyAccessMode.Field);
         }
     }
 }

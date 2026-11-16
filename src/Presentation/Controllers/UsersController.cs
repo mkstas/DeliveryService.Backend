@@ -58,6 +58,24 @@ namespace Presentation.Controllers
 
             return NoContent();
         }
+
+        [HttpPost("payments")]
+        [Authorize]
+        public async Task<IActionResult> AddPaymentAsync([FromBody] AddPaymentRequest request)
+        {
+            await userService.AddPaymentAsync(User.GetCurrentId(), request);
+
+            return Created();
+        }
+
+        [HttpDelete("payments/{paymentId:guid}")]
+        [Authorize]
+        public async Task<IActionResult> RemovePaymentMethodAsync([FromRoute] Guid paymentId)
+        {
+            await userService.RemovePaymentAsync(User.GetCurrentId(), paymentId);
+
+            return NoContent();
+        }
     }
 }
 

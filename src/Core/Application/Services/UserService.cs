@@ -115,7 +115,8 @@ namespace Application.Services
 
             IReadOnlyList<UserResponse> response = [.. users.Select(u => new UserResponse(
                 u.Id, u.EmailAddress, u.Name, u.ImageUrl,
-                [.. u.Roles.Select(r => new UserRoleResponse(r.Id, r.Name))]))];
+                [.. u.Roles.Select(r => new UserRoleResponse(r.Id, r.Name))],
+                [.. u.Payments.Select(p => new PaymentResponse(p.Id, p.CardNumber))]))];
 
             await cacheService.SetAsync(CacheKeys.Users.All, response, TimeSpan.FromDays(1));
 
@@ -129,7 +130,8 @@ namespace Application.Services
                 ?? throw new NotFoundException<User>(userId);
 
             var response = new UserResponse(user.Id, user.EmailAddress, user.Name, user.ImageUrl,
-                [.. user.Roles.Select(r => new UserRoleResponse(r.Id, r.Name))]);
+                [.. user.Roles.Select(r => new UserRoleResponse(r.Id, r.Name))],
+                [.. user.Payments.Select(p => new PaymentResponse(p.Id, p.CardNumber))]);
 
             return response;
         }
@@ -171,6 +173,33 @@ namespace Application.Services
                 ?? throw new NotFoundException<Role>(roleId);
 
             user.RemoveRole(role);
+
+            await userRepository.UpdateUserAsync(user);
+            await cacheService.RemoveAsync(CacheKeys.Users.All);
+        }
+
+        /// <inheritdoc />
+        public async Task AddPaymentAsync(Guid userId, AddPaymentRequest request)
+        {
+            var user = await userRepository.GetUserByIdAsync(userId)
+                ?? throw new NotFoundException<User>(userId);
+
+            user.AddPayment(request.CardNumber);
+
+            await userRepository.UpdateUserAsync(user);
+            await cacheService.RemoveAsync(CacheKeys.Users.All);
+        }
+
+        /// <inheritdoc />
+        public async Task RemovePaymentAsync(Guid userId, Guid paymentId)
+        {
+            var user = await userRepository.GetUserByIdAsync(userId)
+                ?? throw new NotFoundException<User>(userId);
+
+            var payment = user.Payments.FirstOrDefault(pm => pm.Id == paymentId)
+                ?? throw new NotFoundException<Payment>(paymentId);
+
+            user.RemovePayment(payment);
 
             await userRepository.UpdateUserAsync(user);
             await cacheService.RemoveAsync(CacheKeys.Users.All);
@@ -226,5 +255,7 @@ namespace Application.Services
             await storageService.DeleteFileAsync(imageKey);
             await cacheService.RemoveAsync(CacheKeys.Users.All);
         }
+
+
     }
 }

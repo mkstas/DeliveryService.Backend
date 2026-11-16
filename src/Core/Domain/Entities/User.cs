@@ -35,6 +35,12 @@ namespace Domain.Entities
         /// </summary>
         public IReadOnlyList<Role> Roles => _roles.AsReadOnly();
 
+        private readonly List<Payment> _payments = [];
+        /// <summary>
+        /// The payments of the user.
+        /// </summary>
+        public IReadOnlyList<Payment> Payments => _payments.AsReadOnly();
+
         [JsonConstructor]
         private User(string emailAddress, string passwordHash, string name)
         {
@@ -104,5 +110,21 @@ namespace Domain.Entities
         /// </summary>
         /// <param name="role">The role to remove.</param>
         public void RemoveRole(Role role) => _roles.Remove(role);
+
+        /// <summary>
+        /// Adds a payment for the user using the specified card number.
+        /// </summary>
+        /// <param name="cardNumber">Must not be null or empty, must consist of exactly <see cref="Payment.CARD_NUMBER_LENGTH"/> digits.</param>
+        public void AddPayment(string cardNumber)
+        {
+            var payment = Payment.Create(Id, cardNumber);
+            _payments.Add(payment);
+        }
+
+        /// <summary>
+        /// Removes a payment from the user.
+        /// </summary>
+        /// <param name="payment">The payment to remove.</param>
+        public void RemovePayment(Payment payment) => _payments.Remove(payment);
     }
 }
