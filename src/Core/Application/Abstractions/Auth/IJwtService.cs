@@ -3,7 +3,7 @@
     /// <summary>
     /// Provides generation of JWT access tokens.
     /// </summary>
-    public interface IAuthorizationJwtService
+    public interface IJwtService
     {
         /// <summary>
         /// Generates a JWT access token for the specified user.

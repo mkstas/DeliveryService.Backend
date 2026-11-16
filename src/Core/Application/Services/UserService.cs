@@ -19,7 +19,7 @@ namespace Application.Services
         IRoleRepository roleRepository,
         ICacheService cacheService,
         IEmailService emailService,
-        IAuthorizationJwtService authorizationJwtService) : IUserService
+        IJwtService authorizationJwtService) : IUserService
     {
         /// <inheritdoc />
         public async Task<string> LoginUserAsync(LoginUserRequest request)
@@ -67,6 +67,7 @@ namespace Application.Services
                 throw new UnauthorizedAccessException("Invalid or expired verification code.");
 
             await userRepository.CreateUserAsync(user);
+            await cacheService.RemoveAsync(CacheKeys.Users.All);
             await cacheService.RemoveByPrefixAsync(CacheKeys.Users.Pending(user.EmailAddress));
             await cacheService.RemoveByPrefixAsync(CacheKeys.Users.VerificationCode(user.EmailAddress));
         }

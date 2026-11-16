@@ -3,7 +3,7 @@
     /// <summary>
     /// Configuration options for JWT generation.
     /// </summary>
-    public class AuthorizationJwtOptions
+    public class JwtOptions
     {
         /// <summary>
         /// Gets or sets the secret key used to sign the JWT.

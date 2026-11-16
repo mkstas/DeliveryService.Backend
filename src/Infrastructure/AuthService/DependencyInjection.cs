@@ -25,8 +25,8 @@ namespace Infrastructure.AuthService
             this IServiceCollection services,
             IConfiguration configuration)
         {
-            var jwtOptions = configuration.GetSection(nameof(AuthorizationJwtOptions)).Get<AuthorizationJwtOptions>()
-                ?? throw new InvalidOperationException($"{nameof(AuthorizationJwtOptions)} not configured.");
+            var jwtOptions = configuration.GetSection(nameof(JwtOptions)).Get<JwtOptions>()
+                ?? throw new InvalidOperationException($"{nameof(JwtOptions)} not configured.");
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
@@ -52,8 +52,8 @@ namespace Infrastructure.AuthService
 
             services.AddAuthorization();
 
-            services.Configure<AuthorizationJwtOptions>(configuration.GetSection(nameof(AuthorizationJwtOptions)));
-            services.AddSingleton<IAuthorizationJwtService, AuthorizationJwtService>();
+            services.Configure<JwtOptions>(configuration.GetSection(nameof(JwtOptions)));
+            services.AddSingleton<IJwtService, JwtService>();
             services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
             services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
 

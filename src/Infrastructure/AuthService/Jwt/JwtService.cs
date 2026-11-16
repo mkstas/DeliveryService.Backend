@@ -8,11 +8,11 @@ using Microsoft.IdentityModel.Tokens;
 namespace Infrastructure.AuthService.Jwt
 {
     /// <summary>
-    /// Implementation of <see cref="IAuthorizationJwtService"/>.
+    /// Implementation of <see cref="IJwtService"/>.
     /// </summary>
-    public class AuthorizationJwtService(IOptions<AuthorizationJwtOptions> options) : IAuthorizationJwtService
+    public class JwtService(IOptions<JwtOptions> options) : IJwtService
     {
-        private readonly AuthorizationJwtOptions _options = options.Value;
+        private readonly JwtOptions _options = options.Value;
 
         private static Claim[] CreateClaims(Guid id)
         {

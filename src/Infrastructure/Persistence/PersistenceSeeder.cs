@@ -49,7 +49,7 @@ namespace Infrastructure.Persistence
             IConfiguration configuration,
             Role administratorRole)
         {
-            var section = configuration.GetSection("AdminSeedOptions");
+            var section = configuration.GetSection("AdministratorOptions");
             var emailAddress = section["EmailAddress"];
             var password = section["Password"];
 
