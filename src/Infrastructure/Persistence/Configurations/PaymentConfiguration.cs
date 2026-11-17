@@ -28,6 +28,14 @@ namespace Infrastructure.Persistence.Configurations
                     .HasMaxLength(Payment.CARD_NUMBER_LENGTH)
                     .HasColumnName("card_number");
 
+            builder.Property(p => p.CreatedAt)
+                   .IsRequired()
+                   .HasColumnName("created_at");
+
+            builder.Property(p => p.UpdatedAt)
+                   .IsRequired()
+                   .HasColumnName("updated_at");
+
             builder.HasIndex(p => p.CardNumber).IsUnique();
 
             builder.HasOne(p => p.User)
