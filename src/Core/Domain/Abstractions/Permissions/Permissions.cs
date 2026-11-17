@@ -71,8 +71,28 @@ namespace Domain.Abstractions.Permissions
         }
 
         /// <summary>
+        /// Permissions related to restaurant management.
+        /// </summary>
+        public static class Restaurants
+        {
+            public const string Create = "restaurants.create";
+            public const string Read = "restaurants.read";
+            public const string Update = "restaurants.update";
+
+            /// <summary>
+            /// The catalog of restaurant definitions.
+            /// </summary>
+            public static readonly Definition[] Catalog =
+            [
+                new(Create, "Создание ресторанов"),
+                new(Read, "Чтение ресторанов"),
+                new(Update, "Обновление ресторанов"),
+            ];
+        }
+
+        /// <summary>
         /// The catalog of all permission definitions in the system.
         /// </summary>
-        public static readonly Definition[] All = [.. Self.Catalog, .. Roles.Catalog, .. Users.Catalog];
+        public static readonly Definition[] All = [.. Self.Catalog, .. Roles.Catalog, .. Users.Catalog, .. Restaurants.Catalog];
     }
 }

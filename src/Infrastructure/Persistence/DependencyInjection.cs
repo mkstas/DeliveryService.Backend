@@ -29,6 +29,7 @@ namespace Infrastructure.Persistence
             services.AddScoped<IPermissionRepository, PermissionRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IRestaurantRepository, RestaurantRepository>();
 
             return services;
         }

@@ -10,6 +10,11 @@ namespace Domain.Entities
     public class User : BaseEntity
     {
         /// <summary>
+        /// The identifier of the restaurant this user belongs to, if any.
+        /// </summary>
+        public Guid? RestaurantId { get; private set; }
+
+        /// <summary>
         /// The email address of the user.
         /// </summary>
         public string EmailAddress { get; private set; }
@@ -28,6 +33,11 @@ namespace Domain.Entities
         /// The image URL of the user, if any.
         /// </summary>
         public string? ImageUrl { get; private set; } = null;
+
+        /// <summary>
+        /// The restaurant this user belongs to, if any.
+        /// </summary>
+        public Restaurant? Restaurant { get; private set; } = null;
 
         private readonly List<Role> _roles = [];
         /// <summary>

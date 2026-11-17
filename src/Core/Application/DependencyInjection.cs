@@ -20,6 +20,7 @@ namespace Application
             services.AddScoped<IPermissionService, PermissionService>();
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IRestaurantService, RestaurantService>();
 
             return services;
         }

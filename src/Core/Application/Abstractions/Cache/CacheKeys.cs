@@ -34,5 +34,13 @@ namespace Application.Abstractions.Cache
             public static string VerificationCode(string emailAddress)
                 => $"users:verification-code:{emailAddress}";
         }
+
+        /// <summary>
+        /// Cache keys for restaurants.
+        /// </summary>
+        internal class Restaurants
+        {
+            public const string All = "restaurants:all";
+        }
     }
 }

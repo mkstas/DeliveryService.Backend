@@ -5,10 +5,11 @@ using Domain.Helpers;
 namespace Domain.Entities
 {
     /// <summary>
-    /// Represents a user payment method within the system.
+    /// Represents a user payment within the system.
     /// </summary>
     public class Payment : BaseEntity
-    {/// <summary>
+    {
+        /// <summary>
         /// The required length of the card number.
         /// </summary>
         public const int CARD_NUMBER_LENGTH = 16;

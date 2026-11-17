@@ -44,6 +44,12 @@ namespace Infrastructure.Persistence.Configurations
                    .IsRequired()
                    .HasColumnName("updated_at");
 
+            builder.HasOne(u => u.Restaurant)
+                   .WithMany(r => r.Users)
+                   .HasForeignKey(u => u.RestaurantId)
+                   .IsRequired(false)
+                   .OnDelete(DeleteBehavior.Restrict);
+
             builder.HasMany(u => u.Roles)
                    .WithMany(r => r.Users)
                    .UsingEntity<Dictionary<string, object>>(
@@ -67,4 +73,3 @@ namespace Infrastructure.Persistence.Configurations
         }
     }
 }
-
