@@ -91,8 +91,31 @@ namespace Domain.Abstractions.Permissions
         }
 
         /// <summary>
+        /// Permissions related to category management.
+        /// </summary>
+        public static class Categories
+        {
+            public const string Create = "categories.create";
+            public const string Read = "categories.read";
+            public const string Update = "categories.update";
+            public const string Delete = "categories.delete";
+
+            /// <summary>
+            /// The catalog of category definitions.
+            /// </summary>
+            public static readonly Definition[] Catalog =
+            [
+                new(Create, "Создание категорий"),
+                new(Read, "Чтение категорий"),
+                new(Update, "Обновление категорий"),
+                new(Delete, "Удаление категорий"),
+            ];
+        }
+
+        /// <summary>
         /// The catalog of all permission definitions in the system.
         /// </summary>
-        public static readonly Definition[] All = [.. Self.Catalog, .. Roles.Catalog, .. Users.Catalog, .. Restaurants.Catalog];
+        public static readonly Definition[] All = [.. Self.Catalog, .. Roles.Catalog, .. Users.Catalog, .. Restaurants.Catalog,
+            .. Categories.Catalog];
     }
 }

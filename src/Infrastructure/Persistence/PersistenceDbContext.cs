@@ -12,6 +12,7 @@ namespace Infrastructure.Persistence
         public DbSet<Role> Roles { get; init; }
         public DbSet<User> Users { get; init; }
         public DbSet<Restaurant> Restaurants { get; init; }
+        public DbSet<Category> Categories { get; init; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

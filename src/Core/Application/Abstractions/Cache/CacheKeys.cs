@@ -42,5 +42,13 @@ namespace Application.Abstractions.Cache
         {
             public const string All = "restaurants:all";
         }
+
+        /// <summary>
+        /// Cache keys for categories.
+        /// </summary>
+        internal class Categories
+        {
+            public const string All = "categories:all";
+        }
     }
 }

@@ -21,6 +21,7 @@ namespace Application
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IRestaurantService, RestaurantService>();
+            services.AddScoped<ICategoryService, CategoryService>();
 
             return services;
         }
