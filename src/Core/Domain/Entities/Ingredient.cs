@@ -5,7 +5,7 @@ using Domain.Helpers;
 namespace Domain.Entities
 {
     /// <summary>
-    /// Represents a ingredient within the system.
+    /// Represents an ingredient within the system.
     /// </summary>
     public class Ingredient : BaseEntity
     {
@@ -35,7 +35,7 @@ namespace Domain.Entities
         /// <summary>
         /// Creates a new <see cref="Ingredient"/> instance.
         /// </summary>
-        /// <param name="restauranttId">The identifier of the restaurant ingredient belongs to.</param>
+        /// <param name="restaurantId">The identifier of the restaurant this ingredient belongs to.</param>
         /// <param name="name">Must not be null or empty.</param>
         /// <returns>A new <see cref="Ingredient"/> instance.</returns>
         internal static Ingredient Create(Guid restaurantId, string name)
@@ -49,6 +49,12 @@ namespace Domain.Entities
         /// Changes the name of the ingredient.
         /// </summary>
         /// <param name="newName">The new name to assign to the ingredient.</param>
-        public void ChangeName(string newName) => Name = newName;
+        public void ChangeName(string newName)
+        {
+            ValidationHelper.CheckNotNullOrEmpty(newName, nameof(newName));
+
+            Name = newName;
+            UpdatedAt = DateTime.UtcNow;
+        }
     }
 }

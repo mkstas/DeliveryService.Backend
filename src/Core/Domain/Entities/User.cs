@@ -110,16 +110,43 @@ namespace Domain.Entities
         }
 
         /// <summary>
+        /// Assigns the user to the specified restaurant.
+        /// </summary>
+        /// <param name="restaurantId">The identifier of the restaurant to assign the user to.</param>
+        public void AssignToRestaurant(Guid restaurantId)
+        {
+            RestaurantId = restaurantId;
+            UpdatedAt = DateTime.UtcNow;
+        }
+
+        /// <summary>
+        /// Removes the user from the assigned restaurant.
+        /// </summary>
+        public void RemoveFromRestaurant()
+        {
+            RestaurantId = null;
+            UpdatedAt = DateTime.UtcNow;
+        }
+
+        /// <summary>
         /// Adds a role to the user.
         /// </summary>
         /// <param name="role">The role to add.</param>
-        public void AddRole(Role role) => _roles.Add(role);
+        public void AddRole(Role role)
+        {
+            _roles.Add(role);
+            UpdatedAt = DateTime.UtcNow;
+        }
 
         /// <summary>
         /// Removes a role from the user.
         /// </summary>
         /// <param name="role">The role to remove.</param>
-        public void RemoveRole(Role role) => _roles.Remove(role);
+        public void RemoveRole(Role role)
+        {
+            _roles.Remove(role);
+            UpdatedAt = DateTime.UtcNow;
+        }
 
         /// <summary>
         /// Adds a payment for the user using the specified card number.
@@ -129,12 +156,17 @@ namespace Domain.Entities
         {
             var payment = Payment.Create(Id, cardNumber);
             _payments.Add(payment);
+            UpdatedAt = DateTime.UtcNow;
         }
 
         /// <summary>
         /// Removes a payment from the user.
         /// </summary>
         /// <param name="payment">The payment to remove.</param>
-        public void RemovePayment(Payment payment) => _payments.Remove(payment);
+        public void RemovePayment(Payment payment)
+        {
+            _payments.Remove(payment);
+            UpdatedAt = DateTime.UtcNow;
+        }
     }
 }

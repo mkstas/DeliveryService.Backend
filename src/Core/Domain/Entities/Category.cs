@@ -33,6 +33,12 @@ namespace Domain.Entities
         /// Changes the name of the category.
         /// </summary>
         /// <param name="newName">The new name to assign to the category.</param>
-        public void ChangeName(string newName) => Name = newName;
+        public void ChangeName(string newName)
+        {
+            ValidationHelper.CheckNotNullOrEmpty(newName, nameof(newName));
+
+            Name = newName;
+            UpdatedAt = DateTime.UtcNow;
+        }
     }
 }

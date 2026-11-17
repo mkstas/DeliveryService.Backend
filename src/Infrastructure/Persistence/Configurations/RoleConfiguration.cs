@@ -22,6 +22,10 @@ namespace Infrastructure.Persistence.Configurations
                    .IsRequired()
                    .HasColumnName("name");
 
+            builder.Property(r => r.IsBuiltIn)
+                   .IsRequired()
+                   .HasColumnName("is_built_in");
+
             builder.Property(r => r.CreatedAt)
                    .IsRequired()
                    .HasColumnName("created_at");

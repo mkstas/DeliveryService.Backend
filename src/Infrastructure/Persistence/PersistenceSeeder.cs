@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 namespace Infrastructure.Persistence
 {
     /// <summary>
-    /// Persistance database seeder.
+    /// Persistence database seeder.
     /// </summary>
     internal static class PersistenceSeeder
     {
@@ -35,10 +35,13 @@ namespace Infrastructure.Persistence
             var allPermissions = await context.Permissions.ToListAsync();
 
             var administrator = await SeedRoleAsync(context, RoleNames.Administrator);
-            await SeedRoleAsync(context, RoleNames.Client);
-            await SeedRoleAsync(context, RoleNames.Manager);
+            var client = await SeedRoleAsync(context, RoleNames.Client);
+            var manager = await SeedRoleAsync(context, RoleNames.Manager);
 
-            await SeedAdministratorPermissionsAsync(administrator, allPermissions);
+            SeedRolePermissions(administrator, Permissions.DefaultSets.Administrator, allPermissions);
+            SeedRolePermissions(client, Permissions.DefaultSets.Client, allPermissions);
+            SeedRolePermissions(manager, Permissions.DefaultSets.Manager, allPermissions);
+
             await SeedAdministratorUserAsync(context, configuration, administrator);
 
             await context.SaveChangesAsync();
@@ -91,17 +94,25 @@ namespace Infrastructure.Persistence
             return role;
         }
 
-        private static Task SeedAdministratorPermissionsAsync(Role administrator, List<Permission> permissions)
+        private static void SeedRolePermissions(Role role, IEnumerable<string> systemNames, IReadOnlyList<Permission> permissions)
         {
-            foreach (var permission in permissions)
+            var desiredNames = systemNames.ToHashSet();
+            var permissionsByName = permissions.ToDictionary(p => p.SystemName);
+
+            foreach (var permission in role.Permissions.ToList())
             {
-                if (administrator.Permissions.All(p => p.Id != permission.Id))
-                {
-                    administrator.AddPermission(permission);
-                }
+                if (!desiredNames.Contains(permission.SystemName))
+                    role.RemovePermission(permission);
             }
 
-            return Task.CompletedTask;
+            foreach (var systemName in desiredNames)
+            {
+                if (permissionsByName.TryGetValue(systemName, out var permission)
+                    && role.Permissions.All(p => p.Id != permission.Id))
+                {
+                    role.AddPermission(permission);
+                }
+            }
         }
     }
 }

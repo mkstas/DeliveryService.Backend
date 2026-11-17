@@ -13,5 +13,6 @@ namespace Application.DTOs.Users
             Payment.CARD_NUMBER_LENGTH,
             Payment.CARD_NUMBER_LENGTH,
             ErrorMessage = "Card number must 16 characters long.")]
+        [RegularExpression("^[0-9]+$", ErrorMessage = "Card number must contain only digits.")]
         string CardNumber);
 }

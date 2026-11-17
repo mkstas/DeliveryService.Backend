@@ -29,6 +29,7 @@ namespace Application.Abstractions.Services
         /// Updates the name of the specified specification.
         /// </summary>
         /// <param name="specificationId">The specification identifier.</param>
+        /// <param name="request">The request to update specification.</param>
         Task UpdateSpecificationAsync(Guid specificationId, UpdateSpecificationRequest request);
 
         /// <summary>

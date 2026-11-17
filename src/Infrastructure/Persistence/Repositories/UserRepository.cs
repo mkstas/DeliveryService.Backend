@@ -53,6 +53,12 @@ namespace Infrastructure.Persistence.Repositories
         }
 
         /// <inheritdoc />
+        public async Task<bool> PaymentCardExistsAsync(string cardNumber)
+        {
+            return await context.Users.AnyAsync(u => u.Payments.Any(p => p.CardNumber == cardNumber));
+        }
+
+        /// <inheritdoc />
         public async Task UpdateUserAsync(User user)
         {
             try

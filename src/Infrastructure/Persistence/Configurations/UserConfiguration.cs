@@ -44,8 +44,11 @@ namespace Infrastructure.Persistence.Configurations
                    .IsRequired()
                    .HasColumnName("updated_at");
 
+            builder.Property(u => u.RestaurantId)
+                   .HasColumnName("restaurant_id");
+
             builder.HasOne(u => u.Restaurant)
-                   .WithMany(r => r.Users)
+                    .WithMany(r => r.Users)
                    .HasForeignKey(u => u.RestaurantId)
                    .IsRequired(false)
                    .OnDelete(DeleteBehavior.Restrict);

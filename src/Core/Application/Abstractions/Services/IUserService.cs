@@ -21,6 +21,12 @@ namespace Application.Abstractions.Services
         Task CreateUserAsync(CreateUserRequest request);
 
         /// <summary>
+        /// Creates a new user directly, bypassing email confirmation.
+        /// </summary>
+        /// <param name="request">The request to create user.</param>
+        Task CreateUserByAdminAsync(CreateUserRequest request);
+
+        /// <summary>
         /// Confirms the user email address.
         /// </summary>
         /// <param name="request">The request to confirm email.</param>

@@ -23,6 +23,10 @@ namespace Application
             services.AddScoped<IRestaurantService, RestaurantService>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<ISpecificationService, SpecificationService>();
+            services.AddScoped<IDishService, DishService>();
+            services.AddScoped<IDishSpecificationService, DishSpecificationService>();
+            services.AddScoped<ICartItemService, CartItemService>();
+            services.AddScoped<IOrderService, OrderService>();
 
             return services;
         }

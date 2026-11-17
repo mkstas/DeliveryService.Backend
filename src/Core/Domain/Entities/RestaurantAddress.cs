@@ -16,7 +16,7 @@ namespace Domain.Entities
         /// <summary>
         /// The address of the restaurant.
         /// </summary>
-        public string Address { get; init; }
+        public string Address { get; private set; }
 
         /// <summary>
         /// The restaurant this address belongs to.
@@ -33,14 +33,26 @@ namespace Domain.Entities
         /// <summary>
         /// Creates a new <see cref="RestaurantAddress"/> instance.
         /// </summary>
-        /// <param name="restauranttId">The identifier of the restaurant this address belongs to.</param>
+        /// <param name="restaurantId">The identifier of the restaurant this address belongs to.</param>
         /// <param name="address">Must not be null or empty.</param>
         /// <returns>A new <see cref="RestaurantAddress"/> instance.</returns>
-        internal static RestaurantAddress Create(Guid restauranttId, string address)
+        internal static RestaurantAddress Create(Guid restaurantId, string address)
         {
             ValidationHelper.CheckNotNullOrEmpty(address, nameof(address));
 
-            return new(restauranttId, address);
+            return new(restaurantId, address);
+        }
+
+        /// <summary>
+        /// Changes the address of the restaurant.
+        /// </summary>
+        /// <param name="newAddress">The new address to assign. Must not be null or empty.</param>
+        public void ChangeAddress(string newAddress)
+        {
+            ValidationHelper.CheckNotNullOrEmpty(newAddress, nameof(newAddress));
+
+            Address = newAddress;
+            UpdatedAt = DateTime.UtcNow;
         }
     }
 }

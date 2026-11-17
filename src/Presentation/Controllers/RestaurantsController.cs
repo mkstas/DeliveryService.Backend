@@ -20,7 +20,6 @@ namespace Presentation.Controllers
         }
 
         [HttpGet]
-        [HasPermission(Permissions.Restaurants.Read)]
         public async Task<ActionResult<IReadOnlyList<RestaurantResponse>>> GetRestaurantsAsync()
         {
             var restaurants = await restaurantService.GetRestaurantsAsync();
@@ -29,7 +28,6 @@ namespace Presentation.Controllers
         }
 
         [HttpGet("{restaurantId:guid}")]
-        [HasPermission(Permissions.Restaurants.Read)]
         public async Task<ActionResult<RestaurantResponse>> GetRestaurantByIdAsync([FromRoute] Guid restaurantId)
         {
             var restaurant = await restaurantService.GetRestaurantByIdAsync(restaurantId);
@@ -88,6 +86,18 @@ namespace Presentation.Controllers
             return NoContent();
         }
 
+        [HttpPut("{restaurantId:guid}/addresses/{addressId:guid}")]
+        [HasPermission(Permissions.Restaurants.Update)]
+        public async Task<ActionResult> UpdateRestaurantAddressAsync(
+            [FromRoute] Guid restaurantId,
+            [FromRoute] Guid addressId,
+            [FromBody] UpdateRestaurantAddressRequest request)
+        {
+            await restaurantService.UpdateRestaurantAddressAsync(restaurantId, addressId, request);
+
+            return Ok();
+        }
+
         [HttpPost("ingredients")]
         [HasPermission(Permissions.Restaurants.Update)]
         public async Task<ActionResult> AddRestaurantIngredientAsync([FromBody] AddRestaurantIngredientRequest request)
@@ -107,6 +117,17 @@ namespace Presentation.Controllers
             await restaurantService.UpdateRestaurantIngredientAsync(restaurantId, ingredientId, request);
 
             return Ok();
+        }
+
+        [HttpDelete("{restaurantId:guid}/ingredients/{ingredientId:guid}")]
+        [HasPermission(Permissions.Restaurants.Update)]
+        public async Task<ActionResult> RemoveRestaurantIngredientAsync(
+            [FromRoute] Guid restaurantId,
+            [FromRoute] Guid ingredientId)
+        {
+            await restaurantService.RemoveRestaurantIngredientAsync(restaurantId, ingredientId);
+
+            return NoContent();
         }
     }
 }

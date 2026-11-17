@@ -21,6 +21,15 @@ namespace Presentation.Controllers
             return Ok(users);
         }
 
+        [HttpPost]
+        [HasPermission(Permissions.Users.Create)]
+        public async Task<ActionResult> CreateUserAsync([FromBody] CreateUserRequest request)
+        {
+            await userService.CreateUserByAdminAsync(request);
+
+            return Created();
+        }
+
         [HttpGet("me")]
         [Authorize]
         public async Task<ActionResult<UserResponse>> GetMeAsync()

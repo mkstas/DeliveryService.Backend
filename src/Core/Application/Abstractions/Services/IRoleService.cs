@@ -20,6 +20,13 @@ namespace Application.Abstractions.Services
         Task<IReadOnlyList<RoleResponse>> GetRolesAsync();
 
         /// <summary>
+        /// Returns the role with the specified identifier.
+        /// </summary>
+        /// <param name="roleId">The role identifier.</param>
+        /// <returns>The role with the specified identifier.</returns>
+        Task<RoleResponse> GetRoleByIdAsync(Guid roleId);
+
+        /// <summary>
         /// Updates the name of the specified role.
         /// </summary>
         /// <param name="roleId">The role identifier.</param>

@@ -41,6 +41,17 @@ namespace Domain.Helpers
         }
 
         /// <summary>
+        /// Validates that the specified string consists only of digits.
+        /// </summary>
+        public static void CheckDigits(string value, string paramName)
+        {
+            if (!value.All(char.IsDigit))
+            {
+                throw new ArgumentException($"{paramName} must contain only digits.", paramName);
+            }
+        }
+
+        /// <summary>
         /// Validates that the specified string is in a correct email address format.
         /// </summary>
         /// <param name="value">The email address string to validate.</param>

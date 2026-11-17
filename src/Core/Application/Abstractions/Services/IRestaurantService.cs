@@ -62,6 +62,14 @@ namespace Application.Abstractions.Services
         Task RemoveRestaurantAddressAsync(Guid restaurantId, Guid addressId);
 
         /// <summary>
+        /// Updates an address of the specified restaurant.
+        /// </summary>
+        /// <param name="restaurantId">The restaurant identifier.</param>
+        /// <param name="addressId">The restaurant address identifier.</param>
+        /// <param name="request">The request to update address.</param>
+        Task UpdateRestaurantAddressAsync(Guid restaurantId, Guid addressId, UpdateRestaurantAddressRequest request);
+
+        /// <summary>
         /// Adds an ingredient to the specified restaurant.
         /// </summary>
         /// <param name="restaurantId">The restaurant identifier.</param>
@@ -75,5 +83,12 @@ namespace Application.Abstractions.Services
         /// <param name="ingredientId">The ingredient identifier.</param>
         /// <param name="request">The request to update ingredient.</param>
         Task UpdateRestaurantIngredientAsync(Guid restaurantId, Guid ingredientId, UpdateRestaurantIngredientRequest request);
+
+        /// <summary>
+        /// Removes an ingredient from the specified restaurant.
+        /// </summary>
+        /// <param name="restaurantId">The restaurant identifier.</param>
+        /// <param name="ingredientId">The ingredient identifier.</param>
+        Task RemoveRestaurantIngredientAsync(Guid restaurantId, Guid ingredientId);
     }
 }

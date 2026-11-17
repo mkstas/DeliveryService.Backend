@@ -32,6 +32,10 @@ namespace Infrastructure.Persistence
             services.AddScoped<IRestaurantRepository, RestaurantRepository>();
             services.AddScoped<ICategoryRespository, CategoryRespository>();
             services.AddScoped<ISpecificationRespository, SpecificationRespository>();
+            services.AddScoped<IDishRepository, DishRepository>();
+            services.AddScoped<IDishSpecificationRepository, DishSpecificationRepository>();
+            services.AddScoped<ICartItemRepository, CartItemRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
 
             return services;
         }

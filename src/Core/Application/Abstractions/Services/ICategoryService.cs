@@ -29,6 +29,7 @@ namespace Application.Abstractions.Services
         /// Updates the name of the specified category.
         /// </summary>
         /// <param name="categoryId">The category identifier.</param>
+        /// <param name="request">The request to update category.</param>
         Task UpdateCategoryAsync(Guid categoryId, UpdateCategoryRequest request);
 
         /// <summary>

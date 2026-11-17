@@ -134,10 +134,128 @@ namespace Domain.Abstractions.Permissions
             ];
         }
 
+        public static class Dishes
+        {
+            public const string Create = "dishes.create";
+            public const string Read = "dishes.read";
+            public const string Update = "dishes.update";
+            public const string Delete = "dishes.delete";
+
+            public static readonly Definition[] Catalog =
+            [
+                new(Create, "Создание блюд"),
+                new(Read, "Чтение блюд"),
+                new(Update, "Обновление блюд"),
+                new(Delete, "Удаление блюд"),
+            ];
+        }
+
+        public static class DishSpecifications
+        {
+            public const string Create = "dish-specifications.create";
+            public const string Read = "dish-specifications.read";
+            public const string Update = "dish-specifications.update";
+            public const string Delete = "dish-specifications.delete";
+
+            public static readonly Definition[] Catalog =
+            [
+                new(Create, "Создание характеристик блюд"),
+                new(Read, "Чтение характеристик блюд"),
+                new(Update, "Обновление характеристик блюд"),
+                new(Delete, "Удаление характеристик блюд"),
+            ];
+        }
+
+        public static class CartItems
+        {
+            public const string Create = "cart-items.create";
+            public const string Read = "cart-items.read";
+            public const string Update = "cart-items.update";
+            public const string Delete = "cart-items.delete";
+
+            public static readonly Definition[] Catalog =
+            [
+                new(Create, "Добавление в корзину"),
+                new(Read, "Чтение корзины"),
+                new(Update, "Обновление корзины"),
+                new(Delete, "Удаление из корзины"),
+            ];
+        }
+
+        public static class Orders
+        {
+            public const string Create = "orders.create";
+            public const string Read = "orders.read";
+            public const string Update = "orders.update";
+            public const string Delete = "orders.delete";
+
+            public static readonly Definition[] Catalog =
+            [
+                new(Create, "Создание заказов"),
+                new(Read, "Чтение заказов"),
+                new(Update, "Обновление заказов"),
+                new(Delete, "Удаление заказов"),
+            ];
+        }
+
         /// <summary>
         /// The catalog of all permission definitions in the system.
         /// </summary>
         public static readonly Definition[] All = [.. Self.Catalog, .. Roles.Catalog, .. Users.Catalog, .. Restaurants.Catalog,
-            .. Categories.Catalog, ..Specifications.Catalog];
+            .. Categories.Catalog, ..Specifications.Catalog, .. Dishes.Catalog, .. DishSpecifications.Catalog,
+            .. CartItems.Catalog, .. Orders.Catalog];
+
+        /// <summary>
+        /// The default permission sets for the built-in roles.
+        /// </summary>
+        public static class DefaultSets
+        {
+            public static readonly string[] Administrator = [.. All.Select(d => d.SystemName)];
+
+            public static readonly string[] Client =
+            [
+                Restaurants.Read,
+                Categories.Read,
+                Specifications.Read,
+                Dishes.Read,
+                DishSpecifications.Read,
+                CartItems.Create,
+                CartItems.Read,
+                CartItems.Update,
+                CartItems.Delete,
+                Orders.Create,
+                Orders.Read,
+                Orders.Update,
+                Orders.Delete,
+            ];
+
+            public static readonly string[] Manager =
+            [
+                Roles.Read,
+                Users.Read,
+                Users.Update,
+                Restaurants.Read,
+                Restaurants.Update,
+                Categories.Create,
+                Categories.Read,
+                Categories.Update,
+                Categories.Delete,
+                Specifications.Create,
+                Specifications.Read,
+                Specifications.Update,
+                Specifications.Delete,
+                Dishes.Create,
+                Dishes.Read,
+                Dishes.Update,
+                Dishes.Delete,
+                DishSpecifications.Create,
+                DishSpecifications.Read,
+                DishSpecifications.Update,
+                DishSpecifications.Delete,
+                Orders.Read,
+                Orders.Update,
+                Orders.Delete,
+            ];
+        }
     }
 }

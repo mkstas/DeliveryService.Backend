@@ -34,6 +34,13 @@ namespace Domain.Abstractions.Repositories
         Task<User?> GetUserByEmailAsync(string address);
 
         /// <summary>
+        /// Returns whether the specified card number is already used.
+        /// </summary>
+        /// <param name="cardNumber">The card number to search for.</param>
+        /// <returns><c>true</c> if the card number is already used; otherwise, <c>false</c>.</returns>
+        Task<bool> PaymentCardExistsAsync(string cardNumber);
+
+        /// <summary>
         /// Updates the specified user.
         /// </summary>
         /// <param name="user">The user to update.</param>

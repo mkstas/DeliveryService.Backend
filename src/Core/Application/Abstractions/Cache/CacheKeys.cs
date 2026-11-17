@@ -58,5 +58,25 @@ namespace Application.Abstractions.Cache
         {
             public const string All = "specifications:all";
         }
+
+        internal class Dishes
+        {
+            public const string All = "dishes:all";
+        }
+
+        internal class DishSpecifications
+        {
+            public const string All = "dish-specifications:all";
+        }
+
+        internal class CartItems
+        {
+            public const string All = "cart-items:all";
+        }
+
+        internal class Orders
+        {
+            public const string All = "orders:all";
+        }
     }
 }

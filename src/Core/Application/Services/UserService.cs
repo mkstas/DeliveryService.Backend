@@ -54,8 +54,21 @@ namespace Application.Services
 
             await emailService.SendEmailAsync(
                 request.EmailAddress,
-                "Подтверждение элекронной почты Delivery Service.",
+                "Подтверждение электронной почты Delivery Service.",
                 $"Код подтверждения: {code}. Код действителен в течение {TimeSpan.FromMinutes(10).TotalMinutes} минут.");
+        }
+
+        /// <inheritdoc />
+        public async Task CreateUserByAdminAsync(CreateUserRequest request)
+        {
+            var clientRole = await roleRepository.GetRoleByNameAsync(RoleNames.Client)
+                ?? throw new InvalidOperationException("Cannot create user.");
+
+            var user = User.Create(request.EmailAddress, PasswordHasher.Generate(request.Password), request.Name);
+            user.AddRole(clientRole);
+
+            await userRepository.CreateUserAsync(user);
+            await cacheService.RemoveAsync(CacheKeys.Users.All);
         }
 
         /// <inheritdoc />
@@ -99,7 +112,7 @@ namespace Application.Services
 
             await emailService.SendEmailAsync(
                 request.EmailAddress,
-                "Подтверждение элекронной почты Delivery Service.",
+                "Подтверждение электронной почты Delivery Service.",
                 $"Код подтверждения: {code}. Код действителен в течение {TimeSpan.FromMinutes(10).TotalMinutes} минут.");
         }
 
@@ -183,6 +196,9 @@ namespace Application.Services
         {
             var user = await userRepository.GetUserByIdAsync(userId)
                 ?? throw new NotFoundException<User>(userId);
+
+            if (await userRepository.PaymentCardExistsAsync(request.CardNumber))
+                throw new ConflictException<Payment>(request.CardNumber);
 
             user.AddPayment(request.CardNumber);
 

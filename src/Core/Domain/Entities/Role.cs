@@ -71,12 +71,20 @@ namespace Domain.Entities
         /// Adds a permission to the role.
         /// </summary>
         /// <param name="permission">The permission to add.</param>
-        public void AddPermission(Permission permission) => _permissions.Add(permission);
+        public void AddPermission(Permission permission)
+        {
+            _permissions.Add(permission);
+            UpdatedAt = DateTime.UtcNow;
+        }
 
         /// <summary>
         /// Removes a permission from the role.
         /// </summary>
         /// <param name="permission">The permission to remove.</param>
-        public void RemovePermission(Permission permission) => _permissions.Remove(permission);
+        public void RemovePermission(Permission permission)
+        {
+            _permissions.Remove(permission);
+            UpdatedAt = DateTime.UtcNow;
+        }
     }
 }

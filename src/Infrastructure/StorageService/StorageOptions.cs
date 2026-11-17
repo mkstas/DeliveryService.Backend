@@ -13,7 +13,7 @@ namespace Infrastructure.StorageService
         /// <summary>
         /// The access key used to authenticate with RustFS.
         /// </summary>
-        public string AccessKey { get; set;  } = string.Empty;
+        public string AccessKey { get; set; } = string.Empty;
 
         /// <summary>
         /// The secret key used to authenticate with RustFS.

@@ -25,6 +25,7 @@ namespace Infrastructure.AuthService.Permissions
                     .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
                 var policy = new AuthorizationPolicyBuilder()
+                    .RequireAuthenticatedUser()
                     .AddRequirements(new PermissionRequirement(permissionSystemNames));
 
                 return policy.Build();

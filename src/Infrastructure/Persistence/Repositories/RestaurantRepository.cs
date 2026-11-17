@@ -31,6 +31,7 @@ namespace Infrastructure.Persistence.Repositories
             return await context.Restaurants
                 .Include(r => r.Addresses)
                 .Include(r => r.Users)
+                .Include(r => r.Ingredients)
                 .ToListAsync();
         }
 
@@ -40,6 +41,7 @@ namespace Infrastructure.Persistence.Repositories
             return await context.Restaurants
                 .Include(r => r.Addresses)
                 .Include(r => r.Users)
+                .Include(r => r.Ingredients)
                 .FirstOrDefaultAsync(r => r.Id == restaurantId);
         }
 

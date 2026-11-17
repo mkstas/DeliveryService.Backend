@@ -37,6 +37,7 @@ namespace Presentation.Middlewares
                     UnauthorizedAccessException _ => HttpStatusCode.Unauthorized,
                     DomainException _ when IsGenericException(ex, typeof(NotFoundException<>)) => HttpStatusCode.NotFound,
                     DomainException _ when IsGenericException(ex, typeof(ConflictException<>)) => HttpStatusCode.Conflict,
+                    DomainException _ when IsGenericException(ex, typeof(DeleteConstraintException<>)) => HttpStatusCode.Conflict,
                     DomainException _ => HttpStatusCode.BadRequest,
                     InvalidOperationException _ => HttpStatusCode.BadRequest,
                     _ => HttpStatusCode.InternalServerError

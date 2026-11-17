@@ -3,14 +3,15 @@ using System.Security.Claims;
 namespace Presentation.Extensions
 {
     /// <summary>
-    /// Provides extension methods for the web application builder.
+    /// Provides extension methods for the service collection and current user.
     /// </summary>
     public static class BuilderExtensions
     {
         /// <summary>
         /// Configures the CORS policy using the origins from the <c>AllowedOrigins</c> configuration section.
         /// </summary>
-        /// <param name="builder">The web application builder to configure.</param>
+        /// <param name="services">The service collection to add CORS to.</param>
+        /// <param name="configuration">The configuration containing allowed origins.</param>
         public static void AddCorsConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
             var allowedOrigins = configuration.GetSection("AllowedOrigins").Get<string[]>()

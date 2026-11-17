@@ -47,6 +47,7 @@ namespace Domain.Entities
         {
             ValidationHelper.CheckNotNullOrEmpty(cardNumber, nameof(cardNumber));
             ValidationHelper.CheckEqualToNumber(cardNumber.Length, CARD_NUMBER_LENGTH, nameof(cardNumber));
+            ValidationHelper.CheckDigits(cardNumber, nameof(cardNumber));
 
             return new(userId, cardNumber);
         }

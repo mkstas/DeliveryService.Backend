@@ -1,6 +1,7 @@
 using Application.Abstractions.Cache;
 using Application.Abstractions.Services;
 using Application.DTOs.Restaurants;
+using Domain.Abstractions.Permissions;
 using Domain.Abstractions.Repositories;
 using Domain.Entities;
 using Domain.Exceptions;
@@ -13,12 +14,13 @@ namespace Application.Services
     internal class RestaurantService(
         IRestaurantRepository restaurantRepository,
         IUserRepository userRepository,
+        IRoleRepository roleRepository,
         ICacheService cacheService) : IRestaurantService
     {
         /// <inheritdoc />
         public async Task CreateRestaurantAsync(CreateRestaurantRequest request)
         {
-            await restaurantRepository.CreateRestaurantAsync(Restaurant.Create(request.Name));
+            await restaurantRepository.CreateRestaurantAsync(Restaurant.Create(request.Name, request.ImageUrl));
             await cacheService.RemoveAsync(CacheKeys.Restaurants.All);
         }
 
@@ -55,6 +57,7 @@ namespace Application.Services
                 ?? throw new NotFoundException<Restaurant>(restaurantId);
 
             restaurant.ChangeName(request.Name);
+            restaurant.ChangeImageUrl(request.ImageUrl);
 
             await restaurantRepository.UpdateRestaurantAsync(restaurant);
             await cacheService.RemoveAsync(CacheKeys.Restaurants.All);
@@ -67,11 +70,21 @@ namespace Application.Services
                 ?? throw new NotFoundException<Restaurant>(restaurantId);
 
             var user = await userRepository.GetUserByEmailAsync(request.EmailAddress)
-                ?? throw new InvalidOperationException("Cannot add user to restaurant.");
+                ?? throw new ConflictException<User>(request.EmailAddress);
+
+            if (user.RestaurantId is not null && user.RestaurantId != restaurant.Id)
+                throw new ConflictException<User>(request.EmailAddress);
+
+            var managerRole = await roleRepository.GetRoleByNameAsync(RoleNames.Manager)
+                ?? throw new InvalidOperationException("Cannot assign manager role.");
+
+            if (!user.Roles.Any(r => r.Id == managerRole.Id))
+                user.AddRole(managerRole);
 
             restaurant.AddUser(user);
 
             await restaurantRepository.UpdateRestaurantAsync(restaurant);
+            await userRepository.UpdateUserAsync(user);
 
             await cacheService.RemoveAsync(CacheKeys.Restaurants.All);
             await cacheService.RemoveAsync(CacheKeys.Users.All);
@@ -88,6 +101,14 @@ namespace Application.Services
 
             if (user.RestaurantId != restaurant.Id)
                 throw new NotFoundException<User>(userId);
+
+            var managerRole = await roleRepository.GetRoleByNameAsync(RoleNames.Manager);
+            if (managerRole is not null)
+            {
+                var assignedRole = user.Roles.FirstOrDefault(r => r.Id == managerRole.Id);
+                if (assignedRole is not null)
+                    user.RemoveRole(assignedRole);
+            }
 
             restaurant.RemoveUser(user);
 
@@ -124,6 +145,21 @@ namespace Application.Services
             await cacheService.RemoveAsync(CacheKeys.Restaurants.All);
         }
 
+        /// <inheritdoc />
+        public async Task UpdateRestaurantAddressAsync(Guid restaurantId, Guid addressId, UpdateRestaurantAddressRequest request)
+        {
+            var restaurant = await restaurantRepository.GetRestaurantByIdAsync(restaurantId)
+                ?? throw new NotFoundException<Restaurant>(restaurantId);
+
+            var address = restaurant.Addresses.FirstOrDefault(a => a.Id == addressId)
+                ?? throw new NotFoundException<RestaurantAddress>(addressId);
+
+            address.ChangeAddress(request.Address);
+
+            await restaurantRepository.UpdateRestaurantAsync(restaurant);
+            await cacheService.RemoveAsync(CacheKeys.Restaurants.All);
+        }
+
         private static RestaurantResponse MapToRestaurantResponse(Restaurant restaurant)
         {
             return new RestaurantResponse(
@@ -131,7 +167,8 @@ namespace Application.Services
                 restaurant.Name,
                 restaurant.ImageUrl,
                 [.. restaurant.Addresses.Select(a => new RestaurantAddressResponse(a.Id, a.Address))],
-                [.. restaurant.Users.Select(u => new RestaurantUserResponse(u.Id, u.EmailAddress, u.Name, u.ImageUrl))]);
+                [.. restaurant.Users.Select(u => new RestaurantUserResponse(u.Id, u.EmailAddress, u.Name, u.ImageUrl))],
+                [.. restaurant.Ingredients.Select(i => new IngredientResponse(i.Id, i.RestaurantId, i.Name))]);
         }
 
         /// <inheritdoc />
@@ -156,6 +193,21 @@ namespace Application.Services
                 ?? throw new NotFoundException<Ingredient>(ingredientId);
 
             ingredient.ChangeName(request.Name);
+
+            await restaurantRepository.UpdateRestaurantAsync(restaurant);
+            await cacheService.RemoveAsync(CacheKeys.Restaurants.All);
+        }
+
+        /// <inheritdoc />
+        public async Task RemoveRestaurantIngredientAsync(Guid restaurantId, Guid ingredientId)
+        {
+            var restaurant = await restaurantRepository.GetRestaurantByIdAsync(restaurantId)
+                ?? throw new NotFoundException<Restaurant>(restaurantId);
+
+            var ingredient = restaurant.Ingredients.FirstOrDefault(i => i.Id == ingredientId)
+                ?? throw new NotFoundException<Ingredient>(ingredientId);
+
+            restaurant.RemoveIngredient(ingredient);
 
             await restaurantRepository.UpdateRestaurantAsync(restaurant);
             await cacheService.RemoveAsync(CacheKeys.Restaurants.All);

@@ -28,6 +28,15 @@ namespace Presentation.Controllers
             return Ok(roles);
         }
 
+        [HttpGet("{roleId:guid}")]
+        [HasPermission(Permissions.Roles.Read)]
+        public async Task<ActionResult<RoleResponse>> GetRoleByIdAsync([FromRoute] Guid roleId)
+        {
+            var role = await roleService.GetRoleByIdAsync(roleId);
+
+            return Ok(role);
+        }
+
         [HttpPut("{roleId:guid}")]
         [HasPermission(Permissions.Roles.Update)]
         public async Task<ActionResult> UpdateRoleAsync(

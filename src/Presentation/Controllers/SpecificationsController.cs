@@ -20,6 +20,7 @@ namespace Presentation.Controllers
         }
 
         [HttpGet]
+        [HasPermission(Permissions.Specifications.Read)]
         public async Task<ActionResult<IReadOnlyList<SpecificationResponse>>> GetSpecificationsAsync()
         {
             var specifications = await specificationService.GetSpecificationsAsync();

@@ -43,7 +43,7 @@ namespace Infrastructure.CacheService
             foreach (var endpoints in connection.GetEndPoints())
             {
                 var server = connection.GetServer(endpoints);
-                var keys = server.Keys(pattern: $"{prefix}").ToArray();
+                var keys = server.Keys(pattern: $"{prefix}*").ToArray();
 
                 if (keys.Length > 0)
                     await _database.KeyDeleteAsync(keys);

@@ -42,6 +42,16 @@ namespace Application.Services
         }
 
         /// <inheritdoc />
+        public async Task<RoleResponse> GetRoleByIdAsync(Guid roleId)
+        {
+            var role = await roleRepository.GetRoleByIdAsync(roleId)
+                ?? throw new NotFoundException<Role>(roleId);
+
+            return new RoleResponse(role.Id, role.Name,
+                [.. role.Permissions.Select(p => new PermissionResponse(p.Id, p.DisplayName))]);
+        }
+
+        /// <inheritdoc />
         public async Task UpdateRoleAsync(Guid roleId, UpdateRoleRequest request)
         {
             var role = await roleRepository.GetRoleByIdAsync(roleId)
@@ -61,6 +71,9 @@ namespace Application.Services
             var role = await roleRepository.GetRoleByIdAsync(roleId)
                 ?? throw new NotFoundException<Role>(roleId);
 
+            if (role.IsBuiltIn)
+                throw new InvalidOperationException($"Built-in '{role.Name}' role cannot be deleted.");
+
             await roleRepository.RemoveRoleAsync(role);
 
             await cacheService.RemoveAsync(CacheKeys.Roles.All);
@@ -72,6 +85,9 @@ namespace Application.Services
         {
             var role = await roleRepository.GetRoleByIdAsync(roleId)
                 ?? throw new NotFoundException<Role>(roleId);
+
+            if (role.IsBuiltIn)
+                throw new InvalidOperationException($"Permissions of built-in '{role.Name}' role cannot be changed.");
 
             var permission = await permissionRepository.GetPermissionByIdAsync(permissionId)
                 ?? throw new NotFoundException<Permission>(permissionId);
@@ -87,6 +103,9 @@ namespace Application.Services
         {
             var role = await roleRepository.GetRoleByIdAsync(roleId)
                 ?? throw new NotFoundException<Role>(roleId);
+
+            if (role.IsBuiltIn)
+                throw new InvalidOperationException($"Permissions of built-in '{role.Name}' role cannot be changed.");
 
             var permission = await permissionRepository.GetPermissionByIdAsync(permissionId)
                 ?? throw new NotFoundException<Permission>(permissionId);
