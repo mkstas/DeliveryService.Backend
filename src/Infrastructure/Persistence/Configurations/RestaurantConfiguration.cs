@@ -39,6 +39,9 @@ namespace Infrastructure.Persistence.Configurations
 
             builder.Navigation(r => r.Addresses)
                    .UsePropertyAccessMode(PropertyAccessMode.Field);
+
+            builder.Navigation(r => r.Ingredients)
+                   .UsePropertyAccessMode(PropertyAccessMode.Field);
         }
     }
 }

@@ -133,5 +133,32 @@ namespace Application.Services
                 [.. restaurant.Addresses.Select(a => new RestaurantAddressResponse(a.Id, a.Address))],
                 [.. restaurant.Users.Select(u => new RestaurantUserResponse(u.Id, u.EmailAddress, u.Name, u.ImageUrl))]);
         }
+
+        /// <inheritdoc />
+        public async Task AddRestaurantIngredientAsync(Guid restaurantId, AddRestaurantIngredientRequest request)
+        {
+            var restaurant = await restaurantRepository.GetRestaurantByIdAsync(restaurantId)
+                ?? throw new NotFoundException<Restaurant>(restaurantId);
+
+            restaurant.AddIngredient(request.Name);
+
+            await restaurantRepository.UpdateRestaurantAsync(restaurant);
+            await cacheService.RemoveAsync(CacheKeys.Restaurants.All);
+        }
+
+        /// <inheritdoc />
+        public async Task UpdateRestaurantIngredientAsync(Guid restaurantId, Guid ingredientId, UpdateRestaurantIngredientRequest request)
+        {
+            var restaurant = await restaurantRepository.GetRestaurantByIdAsync(restaurantId)
+                ?? throw new NotFoundException<Restaurant>(restaurantId);
+
+            var ingredient = restaurant.Ingredients.FirstOrDefault(i => i.Id == ingredientId)
+                ?? throw new NotFoundException<Ingredient>(ingredientId);
+
+            ingredient.ChangeName(request.Name);
+
+            await restaurantRepository.UpdateRestaurantAsync(restaurant);
+            await cacheService.RemoveAsync(CacheKeys.Restaurants.All);
+        }
     }
 }

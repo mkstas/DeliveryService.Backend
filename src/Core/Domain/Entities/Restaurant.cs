@@ -31,6 +31,12 @@ namespace Domain.Entities
         /// </summary>
         public IReadOnlyList<RestaurantAddress> Addresses => _addresses.AsReadOnly();
 
+        private readonly List<Ingredient> _ingredients = [];
+        /// <summary>
+        /// The ingredients available to the restaurant.
+        /// </summary>
+        public IReadOnlyList<Ingredient> Ingredients => _ingredients.AsReadOnly();
+
         [JsonConstructor]
         private Restaurant(string name) => Name = name;
 
@@ -85,5 +91,21 @@ namespace Domain.Entities
         /// </summary>
         /// <param name="address">The address to remove.</param>
         public void RemoveAddress(RestaurantAddress address) => _addresses.Remove(address);
+
+        /// <summary>
+        /// Adds an ingredient for the establishment.
+        /// </summary>
+        /// <param name="name">Must not be null or empty.</param>
+        public void AddIngredient(string name)
+        {
+            var ingredient = Ingredient.Create(Id, name);
+            _ingredients.Add(ingredient);
+        }
+
+        /// <summary>
+        /// Removes an ingredient from the establishment.
+        /// </summary>
+        /// <param name="ingredient">The ingredient to remove.</param>
+        public void RemoveIngredient(Ingredient ingredient) => _ingredients.Remove(ingredient);
     }
 }

@@ -87,5 +87,26 @@ namespace Presentation.Controllers
 
             return NoContent();
         }
+
+        [HttpPost("ingredients")]
+        [HasPermission(Permissions.Restaurants.Update)]
+        public async Task<ActionResult> AddRestaurantIngredientAsync([FromBody] AddRestaurantIngredientRequest request)
+        {
+            await restaurantService.AddRestaurantIngredientAsync(request.RestaurantId, request);
+
+            return Created();
+        }
+
+        [HttpPut("{restaurantId:guid}/ingredients/{ingredientId:guid}")]
+        [HasPermission(Permissions.Restaurants.Update)]
+        public async Task<ActionResult> UpdateRestaurantIngredientAsync(
+            [FromRoute] Guid restaurantId,
+            [FromRoute] Guid ingredientId,
+            [FromBody] UpdateRestaurantIngredientRequest request)
+        {
+            await restaurantService.UpdateRestaurantIngredientAsync(restaurantId, ingredientId, request);
+
+            return Ok();
+        }
     }
 }
