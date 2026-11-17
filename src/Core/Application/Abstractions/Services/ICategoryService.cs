@@ -1,5 +1,4 @@
 using Application.DTOs.Categories;
-using Domain.Entities;
 
 namespace Application.Abstractions.Services
 {

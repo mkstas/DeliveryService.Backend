@@ -50,5 +50,13 @@ namespace Application.Abstractions.Cache
         {
             public const string All = "categories:all";
         }
+
+        /// <summary>
+        /// Cache keys for specifications.
+        /// </summary>
+        internal class Specifications
+        {
+            public const string All = "specifications:all";
+        }
     }
 }

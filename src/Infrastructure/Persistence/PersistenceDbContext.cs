@@ -13,6 +13,7 @@ namespace Infrastructure.Persistence
         public DbSet<User> Users { get; init; }
         public DbSet<Restaurant> Restaurants { get; init; }
         public DbSet<Category> Categories { get; init; }
+        public DbSet<Specification> Specifications { get; init; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

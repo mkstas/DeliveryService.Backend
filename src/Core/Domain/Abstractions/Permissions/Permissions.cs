@@ -113,9 +113,31 @@ namespace Domain.Abstractions.Permissions
         }
 
         /// <summary>
+        /// Permissions related to specification management.
+        /// </summary>
+        public static class Specifications
+        {
+            public const string Create = "specifications.create";
+            public const string Read = "specifications.read";
+            public const string Update = "specifications.update";
+            public const string Delete = "specifications.delete";
+
+            /// <summary>
+            /// The catalog of specification definitions.
+            /// </summary>
+            public static readonly Definition[] Catalog =
+            [
+                new(Create, "Создание характеристик"),
+                new(Read, "Чтение характеристик"),
+                new(Update, "Обновление характеристик"),
+                new(Delete, "Удаление характеристик"),
+            ];
+        }
+
+        /// <summary>
         /// The catalog of all permission definitions in the system.
         /// </summary>
         public static readonly Definition[] All = [.. Self.Catalog, .. Roles.Catalog, .. Users.Catalog, .. Restaurants.Catalog,
-            .. Categories.Catalog];
+            .. Categories.Catalog, ..Specifications.Catalog];
     }
 }
