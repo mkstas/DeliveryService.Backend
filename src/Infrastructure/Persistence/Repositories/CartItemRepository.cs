@@ -12,18 +12,19 @@ namespace Infrastructure.Persistence.Repositories
             await context.SaveChangesAsync();
         }
 
-        public async Task<List<CartItem>> GetCartItemsAsync()
+        public async Task<List<CartItem>> GetCartItemsAsync(Guid userId)
         {
             return await context.CartItems
                 .Include(ci => ci.Dish)
+                .Where(ci => ci.UserId == userId)
                 .ToListAsync();
         }
 
-        public async Task<CartItem?> GetCartItemByIdAsync(Guid cartItemId)
+        public async Task<CartItem?> GetCartItemByIdAsync(Guid userId, Guid cartItemId)
         {
             return await context.CartItems
                 .Include(ci => ci.Dish)
-                .FirstOrDefaultAsync(ci => ci.Id == cartItemId);
+                .FirstOrDefaultAsync(ci => ci.UserId == userId && ci.Id == cartItemId);
         }
 
         public async Task UpdateCartItemAsync(CartItem cartItem)

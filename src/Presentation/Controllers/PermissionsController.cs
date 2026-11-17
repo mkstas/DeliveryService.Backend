@@ -6,10 +6,18 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.Controllers
 {
+    /// <summary>
+    /// Provides endpoints for retrieving permissions.
+    /// </summary>
+    /// <param name="permissionService">The permission service.</param>
     [ApiController]
     [Route("[controller]")]
     public class PermissionsController(IPermissionService permissionService) : ControllerBase
     {
+        /// <summary>
+        /// Retrieves all permissions in the system.
+        /// </summary>
+        /// <returns>A task that represents the asynchronous operation. The result contains a <c>200 OK</c> response with all permissions.</returns>
         [HttpGet]
         [HasPermission(Permissions.Self.Read)]
         public async Task<ActionResult<IReadOnlyList<PermissionResponse>>> GetPermissionsAsync()

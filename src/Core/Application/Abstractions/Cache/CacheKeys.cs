@@ -71,7 +71,7 @@ namespace Application.Abstractions.Cache
 
         internal class CartItems
         {
-            public const string All = "cart-items:all";
+            public static string ByUser(Guid userId) => $"cart-items:user:{userId}";
         }
 
         internal class Orders

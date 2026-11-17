@@ -5,6 +5,7 @@ using Infrastructure.CacheService;
 using Infrastructure.EmailService;
 using Infrastructure.Persistence;
 using Infrastructure.StorageService;
+using Microsoft.AspNetCore.Mvc;
 using Presentation.Common;
 using Presentation.Extensions;
 using Presentation.Middlewares;
@@ -15,7 +16,12 @@ Env.TraversePath().Load();
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers(options =>
-    options.Conventions.Add(new RoutePrefixConvention("api/v1")));
+    options.Conventions.Add(new RoutePrefixConvention("api/v1")))
+    .ConfigureApiBehaviorOptions(options =>
+    {
+        options.InvalidModelStateResponseFactory = context =>
+            new BadRequestObjectResult(ErrorResponseFactory.FromModelState(context.ModelState));
+    });
 
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 

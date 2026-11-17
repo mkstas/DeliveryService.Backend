@@ -45,9 +45,16 @@ namespace Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");
 
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
+
                     b.HasKey("Id");
 
                     b.HasIndex("DishId");
+
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("IX_cart_items_user_id");
 
                     b.ToTable("cart_items", (string)null);
                 });
@@ -516,7 +523,15 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Dish");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Domain.Entities.Dish", b =>

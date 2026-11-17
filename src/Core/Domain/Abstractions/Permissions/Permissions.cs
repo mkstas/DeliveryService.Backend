@@ -17,6 +17,9 @@ namespace Domain.Abstractions.Permissions
         /// </summary>
         public static class Self
         {
+            /// <summary>
+            /// The permission to read permissions.
+            /// </summary>
             public const string Read = "permissions.read";
 
             /// <summary>
@@ -33,9 +36,24 @@ namespace Domain.Abstractions.Permissions
         /// </summary>
         public static class Roles
         {
+            /// <summary>
+            /// The permission to create roles.
+            /// </summary>
             public const string Create = "roles.create";
+
+            /// <summary>
+            /// The permission to read roles.
+            /// </summary>
             public const string Read = "roles.read";
+
+            /// <summary>
+            /// The permission to update roles.
+            /// </summary>
             public const string Update = "roles.update";
+
+            /// <summary>
+            /// The permission to delete roles.
+            /// </summary>
             public const string Delete = "roles.delete";
 
             /// <summary>
@@ -55,8 +73,19 @@ namespace Domain.Abstractions.Permissions
         /// </summary>
         public static class Users
         {
+            /// <summary>
+            /// The permission to create users.
+            /// </summary>
             public const string Create = "users.create";
+
+            /// <summary>
+            /// The permission to read users.
+            /// </summary>
             public const string Read = "users.read";
+
+            /// <summary>
+            /// The permission to update users.
+            /// </summary>
             public const string Update = "users.update";
 
             /// <summary>
@@ -75,8 +104,19 @@ namespace Domain.Abstractions.Permissions
         /// </summary>
         public static class Restaurants
         {
+            /// <summary>
+            /// The permission to create restaurants.
+            /// </summary>
             public const string Create = "restaurants.create";
+
+            /// <summary>
+            /// The permission to read restaurants.
+            /// </summary>
             public const string Read = "restaurants.read";
+
+            /// <summary>
+            /// The permission to update restaurants.
+            /// </summary>
             public const string Update = "restaurants.update";
 
             /// <summary>
@@ -95,9 +135,24 @@ namespace Domain.Abstractions.Permissions
         /// </summary>
         public static class Categories
         {
+            /// <summary>
+            /// The permission to create categories.
+            /// </summary>
             public const string Create = "categories.create";
+
+            /// <summary>
+            /// The permission to read categories.
+            /// </summary>
             public const string Read = "categories.read";
+
+            /// <summary>
+            /// The permission to update categories.
+            /// </summary>
             public const string Update = "categories.update";
+
+            /// <summary>
+            /// The permission to delete categories.
+            /// </summary>
             public const string Delete = "categories.delete";
 
             /// <summary>
@@ -117,9 +172,24 @@ namespace Domain.Abstractions.Permissions
         /// </summary>
         public static class Specifications
         {
+            /// <summary>
+            /// The permission to create specifications.
+            /// </summary>
             public const string Create = "specifications.create";
+
+            /// <summary>
+            /// The permission to read specifications.
+            /// </summary>
             public const string Read = "specifications.read";
+
+            /// <summary>
+            /// The permission to update specifications.
+            /// </summary>
             public const string Update = "specifications.update";
+
+            /// <summary>
+            /// The permission to delete specifications.
+            /// </summary>
             public const string Delete = "specifications.delete";
 
             /// <summary>
@@ -134,13 +204,34 @@ namespace Domain.Abstractions.Permissions
             ];
         }
 
+        /// <summary>
+        /// Permissions related to dish management.
+        /// </summary>
         public static class Dishes
         {
+            /// <summary>
+            /// The permission to create dishes.
+            /// </summary>
             public const string Create = "dishes.create";
+
+            /// <summary>
+            /// The permission to read dishes.
+            /// </summary>
             public const string Read = "dishes.read";
+
+            /// <summary>
+            /// The permission to update dishes.
+            /// </summary>
             public const string Update = "dishes.update";
+
+            /// <summary>
+            /// The permission to delete dishes.
+            /// </summary>
             public const string Delete = "dishes.delete";
 
+            /// <summary>
+            /// The catalog of dish definitions.
+            /// </summary>
             public static readonly Definition[] Catalog =
             [
                 new(Create, "Создание блюд"),
@@ -150,13 +241,34 @@ namespace Domain.Abstractions.Permissions
             ];
         }
 
+        /// <summary>
+        /// Permissions related to dish specification management.
+        /// </summary>
         public static class DishSpecifications
         {
+            /// <summary>
+            /// The permission to create dish specifications.
+            /// </summary>
             public const string Create = "dish-specifications.create";
+
+            /// <summary>
+            /// The permission to read dish specifications.
+            /// </summary>
             public const string Read = "dish-specifications.read";
+
+            /// <summary>
+            /// The permission to update dish specifications.
+            /// </summary>
             public const string Update = "dish-specifications.update";
+
+            /// <summary>
+            /// The permission to delete dish specifications.
+            /// </summary>
             public const string Delete = "dish-specifications.delete";
 
+            /// <summary>
+            /// The catalog of dish specification definitions.
+            /// </summary>
             public static readonly Definition[] Catalog =
             [
                 new(Create, "Создание характеристик блюд"),
@@ -166,13 +278,34 @@ namespace Domain.Abstractions.Permissions
             ];
         }
 
+        /// <summary>
+        /// Permissions related to cart item management.
+        /// </summary>
         public static class CartItems
         {
+            /// <summary>
+            /// The permission to create cart items.
+            /// </summary>
             public const string Create = "cart-items.create";
+
+            /// <summary>
+            /// The permission to read cart items.
+            /// </summary>
             public const string Read = "cart-items.read";
+
+            /// <summary>
+            /// The permission to update cart items.
+            /// </summary>
             public const string Update = "cart-items.update";
+
+            /// <summary>
+            /// The permission to delete cart items.
+            /// </summary>
             public const string Delete = "cart-items.delete";
 
+            /// <summary>
+            /// The catalog of cart item definitions.
+            /// </summary>
             public static readonly Definition[] Catalog =
             [
                 new(Create, "Добавление в корзину"),
@@ -182,13 +315,34 @@ namespace Domain.Abstractions.Permissions
             ];
         }
 
+        /// <summary>
+        /// Permissions related to order management.
+        /// </summary>
         public static class Orders
         {
+            /// <summary>
+            /// The permission to create orders.
+            /// </summary>
             public const string Create = "orders.create";
+
+            /// <summary>
+            /// The permission to read orders.
+            /// </summary>
             public const string Read = "orders.read";
+
+            /// <summary>
+            /// The permission to update orders.
+            /// </summary>
             public const string Update = "orders.update";
+
+            /// <summary>
+            /// The permission to delete orders.
+            /// </summary>
             public const string Delete = "orders.delete";
 
+            /// <summary>
+            /// The catalog of order definitions.
+            /// </summary>
             public static readonly Definition[] Catalog =
             [
                 new(Create, "Создание заказов"),
@@ -210,8 +364,14 @@ namespace Domain.Abstractions.Permissions
         /// </summary>
         public static class DefaultSets
         {
+            /// <summary>
+            /// The permissions granted to administrators.
+            /// </summary>
             public static readonly string[] Administrator = [.. All.Select(d => d.SystemName)];
 
+            /// <summary>
+            /// The permissions granted to clients.
+            /// </summary>
             public static readonly string[] Client =
             [
                 Restaurants.Read,
@@ -229,6 +389,9 @@ namespace Domain.Abstractions.Permissions
                 Orders.Delete,
             ];
 
+            /// <summary>
+            /// The permissions granted to managers.
+            /// </summary>
             public static readonly string[] Manager =
             [
                 Roles.Read,
