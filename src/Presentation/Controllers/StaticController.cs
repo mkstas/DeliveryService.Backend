@@ -1,4 +1,6 @@
 using Application.Abstractions.Services;
+using Domain.Abstractions.Permissions;
+using Infrastructure.AuthService.Permissions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Extensions;
@@ -6,12 +8,17 @@ using Presentation.Extensions;
 namespace Presentation.Controllers
 {
     /// <summary>
-    /// Provides endpoints for managing user images.
+    /// Provides endpoints for managing user, restaurant and dish images.
     /// </summary>
     /// <param name="userService">The user service.</param>
+    /// <param name="restaurantService">The restaurant service.</param>
+    /// <param name="dishService">The dish service.</param>
     [ApiController]
     [Route("[controller]")]
-    public class StaticController(IUserService userService) : ControllerBase
+    public class StaticController(
+        IUserService userService,
+        IRestaurantService restaurantService,
+        IDishService dishService) : ControllerBase
     {
         private const long MaxImageSize = 5 * 1024 * 1024;
 
@@ -33,16 +40,9 @@ namespace Presentation.Controllers
         [RequestSizeLimit(MaxImageSize)]
         public async Task<IActionResult> UploadCurrentUserImageAsync([FromForm] IFormFile? file)
         {
-            if (file is null || file.Length == 0)
-                throw new ArgumentException("Image file is required.");
+            var extension = GetImageExtension(file);
 
-            if (file.Length > MaxImageSize)
-                throw new ArgumentException($"Image size cannot exceed {MaxImageSize / 1024 / 1024} MB.");
-
-            if (!AllowedImageTypes.TryGetValue(file.ContentType, out var extension))
-                throw new ArgumentException("Unsupported image content type.");
-
-            await using var stream = file.OpenReadStream();
+            await using var stream = file!.OpenReadStream();
             await userService.UploadUserImageAsync(User.GetCurrentId(), stream, file.ContentType, extension);
 
             return Created();
@@ -62,8 +62,6 @@ namespace Presentation.Controllers
             return File(stream, contentType);
         }
 
-
-
         /// <summary>
         /// Removes the profile image for the current user.
         /// </summary>
@@ -75,6 +73,114 @@ namespace Presentation.Controllers
             await userService.RemoveUserImageAsync(User.GetCurrentId());
 
             return NoContent();
+        }
+
+        /// <summary>
+        /// Uploads an image for the specified restaurant.
+        /// </summary>
+        /// <param name="restaurantId">The restaurant identifier.</param>
+        /// <param name="file">The image file to upload.</param>
+        /// <returns>A task that represents the asynchronous operation. The result contains a <c>201 Created</c> response.</returns>
+        [HttpPost("restaurants/{restaurantId:guid}/image")]
+        [HasPermission(Permissions.Restaurants.Update)]
+        [RequestSizeLimit(MaxImageSize)]
+        public async Task<IActionResult> UploadRestaurantImageAsync([FromRoute] Guid restaurantId, [FromForm] IFormFile? file)
+        {
+            var extension = GetImageExtension(file);
+
+            await using var stream = file!.OpenReadStream();
+            await restaurantService.UploadRestaurantImageAsync(restaurantId, stream, file.ContentType, extension);
+
+            return Created();
+        }
+
+        /// <summary>
+        /// Retrieves a restaurant image.
+        /// </summary>
+        /// <param name="imageName">The name of the image in the storage.</param>
+        /// <returns>A task that represents the asynchronous operation. The result contains the image file stream and its content type.</returns>
+        [HttpGet("restaurants/{imageName}")]
+        [HasPermission(Permissions.Restaurants.Read)]
+        public async Task<IActionResult> GetRestaurantImageAsync([FromRoute] string imageName)
+        {
+            var (stream, contentType) = await restaurantService.GetRestaurantImageAsync(imageName);
+
+            return File(stream, contentType);
+        }
+
+        /// <summary>
+        /// Removes the image of the specified restaurant.
+        /// </summary>
+        /// <param name="restaurantId">The restaurant identifier.</param>
+        /// <returns>A task that represents the asynchronous operation. The result contains a <c>204 No Content</c> response.</returns>
+        [HttpDelete("restaurants/{restaurantId:guid}/image")]
+        [HasPermission(Permissions.Restaurants.Update)]
+        public async Task<IActionResult> RemoveRestaurantImageAsync([FromRoute] Guid restaurantId)
+        {
+            await restaurantService.RemoveRestaurantImageAsync(restaurantId);
+
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Uploads an image for the specified dish.
+        /// </summary>
+        /// <param name="dishId">The dish identifier.</param>
+        /// <param name="file">The image file to upload.</param>
+        /// <returns>A task that represents the asynchronous operation. The result contains a <c>201 Created</c> response.</returns>
+        [HttpPost("dishes/{dishId:guid}/image")]
+        [HasPermission(Permissions.Dishes.Update)]
+        [RequestSizeLimit(MaxImageSize)]
+        public async Task<IActionResult> UploadDishImageAsync([FromRoute] Guid dishId, [FromForm] IFormFile? file)
+        {
+            var extension = GetImageExtension(file);
+
+            await using var stream = file!.OpenReadStream();
+            await dishService.UploadDishImageAsync(dishId, stream, file.ContentType, extension);
+
+            return Created();
+        }
+
+        /// <summary>
+        /// Retrieves a dish image.
+        /// </summary>
+        /// <param name="imageName">The name of the image in the storage.</param>
+        /// <returns>A task that represents the asynchronous operation. The result contains the image file stream and its content type.</returns>
+        [HttpGet("dishes/{imageName}")]
+        [HasPermission(Permissions.Dishes.Read)]
+        public async Task<IActionResult> GetDishImageAsync([FromRoute] string imageName)
+        {
+            var (stream, contentType) = await dishService.GetDishImageAsync(imageName);
+
+            return File(stream, contentType);
+        }
+
+        /// <summary>
+        /// Removes the image of the specified dish.
+        /// </summary>
+        /// <param name="dishId">The dish identifier.</param>
+        /// <returns>A task that represents the asynchronous operation. The result contains a <c>204 No Content</c> response.</returns>
+        [HttpDelete("dishes/{dishId:guid}/image")]
+        [HasPermission(Permissions.Dishes.Update)]
+        public async Task<IActionResult> RemoveDishImageAsync([FromRoute] Guid dishId)
+        {
+            await dishService.RemoveDishImageAsync(dishId);
+
+            return NoContent();
+        }
+
+        private static string GetImageExtension(IFormFile? file)
+        {
+            if (file is null || file.Length == 0)
+                throw new ArgumentException("Image file is required.");
+
+            if (file.Length > MaxImageSize)
+                throw new ArgumentException($"Image size cannot exceed {MaxImageSize / 1024 / 1024} MB.");
+
+            if (!AllowedImageTypes.TryGetValue(file.ContentType, out var extension))
+                throw new ArgumentException("Unsupported image content type.");
+
+            return extension;
         }
     }
 }

@@ -1,5 +1,6 @@
 using Application.Abstractions.Cache;
 using Application.Abstractions.Services;
+using Application.Abstractions.Storage;
 using Application.DTOs.Dishes;
 using Application.DTOs.DishSpecifications;
 using Domain.Abstractions.Repositories;
@@ -12,7 +13,8 @@ namespace Application.Services
         IDishRepository dishRepository,
         IRestaurantRepository restaurantRepository,
         ICategoryRespository categoryRespository,
-        ICacheService cacheService) : IDishService
+        ICacheService cacheService,
+        IStorageService storageService) : IDishService
     {
         public async Task CreateDishAsync(CreateDishRequest request)
         {
@@ -100,6 +102,57 @@ namespace Application.Services
                 specification.DishId,
                 specification.SpecificationId,
                 specification.Value);
+        }
+
+        /// <inheritdoc />
+        public async Task<string> UploadDishImageAsync(Guid dishId, Stream stream, string contentType, string extension)
+        {
+            var dish = await dishRepository.GetDishByIdAsync(dishId)
+                ?? throw new NotFoundException<Dish>(dishId);
+
+            var newImageName = $"dish-{Guid.NewGuid()}{extension}";
+            var previousImageName = dish.ImageUrl;
+
+            await storageService.UploadFileAsync(newImageName, stream, contentType);
+
+            dish.ChangeImageUrl(newImageName);
+
+            await dishRepository.UpdateDishAsync(dish);
+
+            if (previousImageName is not null && previousImageName != newImageName)
+            {
+                await storageService.DeleteFileAsync(previousImageName);
+            }
+
+            await cacheService.RemoveAsync(CacheKeys.Dishes.All);
+
+            return newImageName;
+        }
+
+        /// <inheritdoc />
+        public async Task<(Stream Stream, string ContentType)> GetDishImageAsync(string imageName)
+        {
+            return await storageService.DownloadFileAsync(imageName);
+        }
+
+        /// <inheritdoc />
+        public async Task RemoveDishImageAsync(Guid dishId)
+        {
+            var dish = await dishRepository.GetDishByIdAsync(dishId)
+                ?? throw new NotFoundException<Dish>(dishId);
+
+            if (dish.ImageUrl is null)
+            {
+                return;
+            }
+
+            var imageKey = dish.ImageUrl;
+
+            dish.ChangeImageUrl(null);
+
+            await dishRepository.UpdateDishAsync(dish);
+            await storageService.DeleteFileAsync(imageKey);
+            await cacheService.RemoveAsync(CacheKeys.Dishes.All);
         }
     }
 }

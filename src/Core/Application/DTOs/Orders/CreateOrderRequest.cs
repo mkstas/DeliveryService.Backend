@@ -5,14 +5,12 @@ namespace Application.DTOs.Orders
     /// <summary>
     /// Represents the data required to create a new order.
     /// </summary>
-    /// <param name="UserId">The user identifier.</param>
     /// <param name="Status">The order status.</param>
     /// <param name="Address">The delivery address.</param>
     /// <param name="Cost">The order cost.</param>
-    /// <param name="Details">The additional order details, if any.</param>
+    /// <param name="Details">The dishes included in the order.</param>
+    /// <param name="Comment">The comment left by the user, if any.</param>
     public record CreateOrderRequest(
-        Guid UserId,
-
         [Required(ErrorMessage = "Status is required.")]
         string Status,
 
@@ -20,5 +18,6 @@ namespace Application.DTOs.Orders
         string Address,
 
         decimal Cost,
-        string? Details = null);
+        IReadOnlyList<OrderDish>? Details = null,
+        string? Comment = null);
 }

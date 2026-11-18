@@ -8,7 +8,8 @@ namespace Application.DTOs.Orders
     /// <param name="Status">The new order status.</param>
     /// <param name="Address">The new delivery address.</param>
     /// <param name="Cost">The new order cost.</param>
-    /// <param name="Details">The additional order details, if any.</param>
+    /// <param name="Details">The dishes included in the order.</param>
+    /// <param name="Comment">The comment left by the user, if any.</param>
     public record UpdateOrderRequest(
         [Required(ErrorMessage = "Status is required.")]
         string Status,
@@ -17,5 +18,6 @@ namespace Application.DTOs.Orders
         string Address,
 
         decimal Cost,
-        string? Details = null);
+        IReadOnlyList<OrderDish>? Details = null,
+        string? Comment = null);
 }

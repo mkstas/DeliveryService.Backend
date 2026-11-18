@@ -35,18 +35,24 @@ namespace Domain.Entities
         public string? Details { get; private set; }
 
         /// <summary>
+        /// The comment left by the user, if any.
+        /// </summary>
+        public string? Comment { get; private set; }
+
+        /// <summary>
         /// The user who placed the order.
         /// </summary>
         public User User { get; private init; } = null!;
 
         [JsonConstructor]
-        private Order(Guid userId, string status, string address, decimal cost, string? details)
+        private Order(Guid userId, string status, string address, decimal cost, string? details, string? comment)
         {
             UserId = userId;
             Status = status;
             Address = address;
             Cost = cost;
             Details = details;
+            Comment = comment;
         }
 
         /// <summary>
@@ -57,14 +63,15 @@ namespace Domain.Entities
         /// <param name="address">The delivery address of the order. Must not be null or empty.</param>
         /// <param name="cost">The total cost of the order. Must not be negative.</param>
         /// <param name="details">The additional order details, if any.</param>
+        /// <param name="comment">The comment left by the user, if any.</param>
         /// <returns>A new <see cref="Order"/> instance.</returns>
-        public static Order Create(Guid userId, string status, string address, decimal cost, string? details = null)
+        public static Order Create(Guid userId, string status, string address, decimal cost, string? details = null, string? comment = null)
         {
             ValidationHelper.CheckNotNullOrEmpty(status, nameof(status));
             ValidationHelper.CheckNotNullOrEmpty(address, nameof(address));
             ArgumentOutOfRangeException.ThrowIfNegative(cost);
 
-            return new(userId, status, address, cost, details);
+            return new(userId, status, address, cost, details, comment);
         }
 
         /// <summary>
@@ -110,6 +117,16 @@ namespace Domain.Entities
         public void ChangeDetails(string? newDetails)
         {
             Details = newDetails;
+            UpdatedAt = DateTime.UtcNow;
+        }
+
+        /// <summary>
+        /// Changes the comment left by the user.
+        /// </summary>
+        /// <param name="newComment">The new comment, or <c>null</c> to remove it.</param>
+        public void ChangeComment(string? newComment)
+        {
+            Comment = newComment;
             UpdatedAt = DateTime.UtcNow;
         }
     }

@@ -217,6 +217,10 @@ namespace Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("address");
 
+                    b.Property<string>("Comment")
+                        .HasColumnType("text")
+                        .HasColumnName("comment");
+
                     b.Property<decimal>("Cost")
                         .HasColumnType("numeric")
                         .HasColumnName("cost");

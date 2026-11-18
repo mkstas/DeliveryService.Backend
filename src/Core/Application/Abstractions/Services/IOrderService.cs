@@ -10,9 +10,10 @@ namespace Application.Abstractions.Services
         /// <summary>
         /// Creates a new order.
         /// </summary>
+        /// <param name="userId">The identifier of the user placing the order.</param>
         /// <param name="request">The request to create order.</param>
         /// <returns>A task that represents the asynchronous operation.</returns>
-        Task CreateOrderAsync(CreateOrderRequest request);
+        Task CreateOrderAsync(Guid userId, CreateOrderRequest request);
 
         /// <summary>
         /// Returns all orders in the system.
@@ -34,6 +35,14 @@ namespace Application.Abstractions.Services
         /// <param name="request">The request to update order.</param>
         /// <returns>A task that represents the asynchronous operation.</returns>
         Task UpdateOrderAsync(Guid orderId, UpdateOrderRequest request);
+
+        /// <summary>
+        /// Changes the status of the specified order.
+        /// </summary>
+        /// <param name="orderId">The order identifier.</param>
+        /// <param name="request">The request to update order status.</param>
+        /// <returns>A task that represents the asynchronous operation.</returns>
+        Task UpdateOrderStatusAsync(Guid orderId, UpdateOrderStatusRequest request);
 
         /// <summary>
         /// Remove the specified order from the system.

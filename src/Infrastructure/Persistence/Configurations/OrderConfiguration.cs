@@ -34,6 +34,9 @@ namespace Infrastructure.Persistence.Configurations
             builder.Property(o => o.Details)
                    .HasColumnName("details");
 
+            builder.Property(o => o.Comment)
+                   .HasColumnName("comment");
+
             builder.Property(o => o.CreatedAt)
                    .IsRequired()
                    .HasColumnName("created_at");

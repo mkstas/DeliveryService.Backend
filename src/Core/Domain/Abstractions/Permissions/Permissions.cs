@@ -336,6 +336,11 @@ namespace Domain.Abstractions.Permissions
             public const string Update = "orders.update";
 
             /// <summary>
+            /// The permission to change order status.
+            /// </summary>
+            public const string UpdateStatus = "orders.update-status";
+
+            /// <summary>
             /// The permission to delete orders.
             /// </summary>
             public const string Delete = "orders.delete";
@@ -348,6 +353,7 @@ namespace Domain.Abstractions.Permissions
                 new(Create, "Создание заказов"),
                 new(Read, "Чтение заказов"),
                 new(Update, "Обновление заказов"),
+                new(UpdateStatus, "Изменение статуса заказов"),
                 new(Delete, "Удаление заказов"),
             ];
         }
@@ -367,7 +373,10 @@ namespace Domain.Abstractions.Permissions
             /// <summary>
             /// The permissions granted to administrators.
             /// </summary>
-            public static readonly string[] Administrator = [.. All.Select(d => d.SystemName)];
+            public static readonly string[] Administrator =
+            [
+                .. All.Select(d => d.SystemName).Except([Orders.Create, Orders.Update, Orders.Delete]),
+            ];
 
             /// <summary>
             /// The permissions granted to clients.
@@ -416,8 +425,7 @@ namespace Domain.Abstractions.Permissions
                 DishSpecifications.Update,
                 DishSpecifications.Delete,
                 Orders.Read,
-                Orders.Update,
-                Orders.Delete,
+                Orders.UpdateStatus,
             ];
         }
     }

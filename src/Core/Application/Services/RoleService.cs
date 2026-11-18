@@ -33,7 +33,7 @@ namespace Application.Services
 
             var roles = await roleRepository.GetRolesAsync();
 
-            IReadOnlyList<RoleResponse> response = [.. roles.Select(r => new RoleResponse(r.Id, r.Name,
+            IReadOnlyList<RoleResponse> response = [.. roles.Select(r => new RoleResponse(r.Id, r.Name, r.IsBuiltIn,
                 [.. r.Permissions.Select(p => new PermissionResponse(p.Id, p.DisplayName))]))];
 
             await cacheService.SetAsync(CacheKeys.Roles.All, response, TimeSpan.FromDays(7));
@@ -47,7 +47,7 @@ namespace Application.Services
             var role = await roleRepository.GetRoleByIdAsync(roleId)
                 ?? throw new NotFoundException<Role>(roleId);
 
-            return new RoleResponse(role.Id, role.Name,
+            return new RoleResponse(role.Id, role.Name, role.IsBuiltIn,
                 [.. role.Permissions.Select(p => new PermissionResponse(p.Id, p.DisplayName))]);
         }
 

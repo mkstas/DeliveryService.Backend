@@ -3,6 +3,7 @@ using Application.DTOs.Orders;
 using Domain.Abstractions.Permissions;
 using Infrastructure.AuthService.Permissions;
 using Microsoft.AspNetCore.Mvc;
+using Presentation.Extensions;
 
 namespace Presentation.Controllers
 {
@@ -15,7 +16,7 @@ namespace Presentation.Controllers
     public class OrdersController(IOrderService orderService) : ControllerBase
     {
         /// <summary>
-        /// Creates a new order.
+        /// Creates a new order for the current client.
         /// </summary>
         /// <param name="request">The order creation request.</param>
         /// <returns>A task that represents the asynchronous operation. The result contains a <c>201 Created</c> response.</returns>
@@ -23,7 +24,7 @@ namespace Presentation.Controllers
         [HasPermission(Permissions.Orders.Create)]
         public async Task<ActionResult> CreateOrderAsync([FromBody] CreateOrderRequest request)
         {
-            await orderService.CreateOrderAsync(request);
+            await orderService.CreateOrderAsync(User.GetCurrentId(), request);
 
             return Created();
         }
@@ -53,6 +54,23 @@ namespace Presentation.Controllers
             var order = await orderService.GetOrderByIdAsync(orderId);
 
             return Ok(order);
+        }
+
+        /// <summary>
+        /// Changes the status of an existing order.
+        /// </summary>
+        /// <param name="orderId">The order identifier.</param>
+        /// <param name="request">The status update request.</param>
+        /// <returns>A task that represents the asynchronous operation. The result contains a <c>200 OK</c> response.</returns>
+        [HttpPatch("{orderId:guid}/status")]
+        [HasPermission(Permissions.Orders.UpdateStatus)]
+        public async Task<ActionResult> UpdateOrderStatusAsync(
+            [FromRoute] Guid orderId,
+            [FromBody] UpdateOrderStatusRequest request)
+        {
+            await orderService.UpdateOrderStatusAsync(orderId, request);
+
+            return Ok();
         }
 
         /// <summary>

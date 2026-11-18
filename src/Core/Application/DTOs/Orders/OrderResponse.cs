@@ -8,12 +8,14 @@ namespace Application.DTOs.Orders
     /// <param name="Status">The order status.</param>
     /// <param name="Address">The delivery address.</param>
     /// <param name="Cost">The order cost.</param>
-    /// <param name="Details">The additional order details, if any.</param>
+    /// <param name="Details">The dishes included in the order.</param>
+    /// <param name="Comment">The comment left by the user, if any.</param>
     public record OrderResponse(
         Guid Id,
         Guid UserId,
         string Status,
         string Address,
         decimal Cost,
-        string? Details);
+        IReadOnlyList<OrderDish>? Details,
+        string? Comment);
 }

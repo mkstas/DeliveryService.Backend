@@ -1,5 +1,6 @@
 using Application.Abstractions.Cache;
 using Application.Abstractions.Services;
+using Application.Abstractions.Storage;
 using Application.DTOs.Restaurants;
 using Domain.Abstractions.Permissions;
 using Domain.Abstractions.Repositories;
@@ -15,7 +16,8 @@ namespace Application.Services
         IRestaurantRepository restaurantRepository,
         IUserRepository userRepository,
         IRoleRepository roleRepository,
-        ICacheService cacheService) : IRestaurantService
+        ICacheService cacheService,
+        IStorageService storageService) : IRestaurantService
     {
         /// <inheritdoc />
         public async Task CreateRestaurantAsync(CreateRestaurantRequest request)
@@ -210,6 +212,57 @@ namespace Application.Services
             restaurant.RemoveIngredient(ingredient);
 
             await restaurantRepository.UpdateRestaurantAsync(restaurant);
+            await cacheService.RemoveAsync(CacheKeys.Restaurants.All);
+        }
+
+        /// <inheritdoc />
+        public async Task<string> UploadRestaurantImageAsync(Guid restaurantId, Stream stream, string contentType, string extension)
+        {
+            var restaurant = await restaurantRepository.GetRestaurantByIdAsync(restaurantId)
+                ?? throw new NotFoundException<Restaurant>(restaurantId);
+
+            var newImageName = $"restaurant-{Guid.NewGuid()}{extension}";
+            var previousImageName = restaurant.ImageUrl;
+
+            await storageService.UploadFileAsync(newImageName, stream, contentType);
+
+            restaurant.ChangeImageUrl(newImageName);
+
+            await restaurantRepository.UpdateRestaurantAsync(restaurant);
+
+            if (previousImageName is not null && previousImageName != newImageName)
+            {
+                await storageService.DeleteFileAsync(previousImageName);
+            }
+
+            await cacheService.RemoveAsync(CacheKeys.Restaurants.All);
+
+            return newImageName;
+        }
+
+        /// <inheritdoc />
+        public async Task<(Stream Stream, string ContentType)> GetRestaurantImageAsync(string imageName)
+        {
+            return await storageService.DownloadFileAsync(imageName);
+        }
+
+        /// <inheritdoc />
+        public async Task RemoveRestaurantImageAsync(Guid restaurantId)
+        {
+            var restaurant = await restaurantRepository.GetRestaurantByIdAsync(restaurantId)
+                ?? throw new NotFoundException<Restaurant>(restaurantId);
+
+            if (restaurant.ImageUrl is null)
+            {
+                return;
+            }
+
+            var imageKey = restaurant.ImageUrl;
+
+            restaurant.ChangeImageUrl(null);
+
+            await restaurantRepository.UpdateRestaurantAsync(restaurant);
+            await storageService.DeleteFileAsync(imageKey);
             await cacheService.RemoveAsync(CacheKeys.Restaurants.All);
         }
     }

@@ -1,5 +1,6 @@
 using Application.Abstractions.Cache;
 using Application.Abstractions.Services;
+using Application.Common;
 using Application.DTOs.Orders;
 using Domain.Abstractions.Repositories;
 using Domain.Entities;
@@ -12,17 +13,18 @@ namespace Application.Services
         IUserRepository userRepository,
         ICacheService cacheService) : IOrderService
     {
-        public async Task CreateOrderAsync(CreateOrderRequest request)
+        public async Task CreateOrderAsync(Guid userId, CreateOrderRequest request)
         {
-            _ = await userRepository.GetUserByIdAsync(request.UserId)
-                ?? throw new NotFoundException<User>(request.UserId);
+            _ = await userRepository.GetUserByIdAsync(userId)
+                ?? throw new NotFoundException<User>(userId);
 
             await orderRepository.CreateOrderAsync(Order.Create(
-                request.UserId,
+                userId,
                 request.Status,
                 request.Address,
                 request.Cost,
-                request.Details));
+                OrderDetailsSerializer.Serialize(request.Details),
+                request.Comment));
 
             await cacheService.RemoveAsync(CacheKeys.Orders.All);
         }
@@ -59,7 +61,19 @@ namespace Application.Services
             order.ChangeStatus(request.Status);
             order.ChangeAddress(request.Address);
             order.ChangeCost(request.Cost);
-            order.ChangeDetails(request.Details);
+            order.ChangeDetails(OrderDetailsSerializer.Serialize(request.Details));
+            order.ChangeComment(request.Comment);
+
+            await orderRepository.UpdateOrderAsync(order);
+            await cacheService.RemoveAsync(CacheKeys.Orders.All);
+        }
+
+        public async Task UpdateOrderStatusAsync(Guid orderId, UpdateOrderStatusRequest request)
+        {
+            var order = await orderRepository.GetOrderByIdAsync(orderId)
+                ?? throw new NotFoundException<Order>(orderId);
+
+            order.ChangeStatus(request.Status);
 
             await orderRepository.UpdateOrderAsync(order);
             await cacheService.RemoveAsync(CacheKeys.Orders.All);
@@ -82,7 +96,8 @@ namespace Application.Services
                 order.Status,
                 order.Address,
                 order.Cost,
-                order.Details);
+                OrderDetailsSerializer.Deserialize(order.Details),
+                order.Comment);
         }
     }
 }
