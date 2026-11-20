@@ -28,5 +28,13 @@ namespace Application.Services
 
             return response;
         }
+
+        /// <inheritdoc />
+        public async Task<IReadOnlyList<string>> GetUserPermissionNamesAsync(Guid userId)
+        {
+            var permissions = await permissionRepository.GetUserPermissionsByUserIdAsync(userId);
+
+            return [.. permissions.Select(p => p.SystemName).Distinct(StringComparer.OrdinalIgnoreCase)];
+        }
     }
 }

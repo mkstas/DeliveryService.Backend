@@ -13,6 +13,7 @@ namespace Application.DTOs.Dishes
     /// <param name="Description">The dish description.</param>
     /// <param name="ImageUrl">The dish image URL.</param>
     /// <param name="Specifications">The dish specifications.</param>
+    /// <param name="Ingredients">The ingredients included in the dish.</param>
     public record DishResponse(
         Guid Id,
         Guid RestaurantId,
@@ -21,5 +22,6 @@ namespace Application.DTOs.Dishes
         decimal Price,
         string? Description,
         string? ImageUrl,
-        IReadOnlyList<DishSpecificationResponse> Specifications);
+        IReadOnlyList<DishSpecificationResponse> Specifications,
+        IReadOnlyList<DishIngredientResponse> Ingredients);
 }

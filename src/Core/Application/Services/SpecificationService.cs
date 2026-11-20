@@ -22,20 +22,27 @@ namespace Application.Services
         }
 
         /// <inheritdoc />
-        public async Task<IReadOnlyList<SpecificationResponse>> GetSpecificationsAsync()
+        public async Task<IReadOnlyList<SpecificationResponse>> GetSpecificationsAsync(string? search = null)
         {
-            var cachedResponse = await cacheService.GetAsync<IReadOnlyList<SpecificationResponse>>(CacheKeys.Specifications.All);
+            if (string.IsNullOrWhiteSpace(search))
+            {
+                var cachedResponse = await cacheService.GetAsync<IReadOnlyList<SpecificationResponse>>(CacheKeys.Specifications.All);
 
-            if (cachedResponse is not null)
-                return cachedResponse;
+                if (cachedResponse is not null)
+                    return cachedResponse;
 
-            var specifications = await specificationRespository.GetSpecificationsAsync();
+                var specifications = await specificationRespository.GetSpecificationsAsync();
 
-            IReadOnlyList<SpecificationResponse> response = [.. specifications.Select(c => new SpecificationResponse(c.Id, c.Name))];
+                IReadOnlyList<SpecificationResponse> response = [.. specifications.Select(c => new SpecificationResponse(c.Id, c.Name))];
 
-            await cacheService.SetAsync(CacheKeys.Specifications.All, response, TimeSpan.FromDays(14));
+                await cacheService.SetAsync(CacheKeys.Specifications.All, response, TimeSpan.FromDays(14));
 
-            return response;
+                return response;
+            }
+
+            var filteredSpecifications = await specificationRespository.GetSpecificationsAsync(search);
+
+            return [.. filteredSpecifications.Select(c => new SpecificationResponse(c.Id, c.Name))];
         }
 
         /// <inheritdoc />

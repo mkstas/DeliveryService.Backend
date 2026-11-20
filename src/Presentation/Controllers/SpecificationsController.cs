@@ -29,14 +29,15 @@ namespace Presentation.Controllers
         }
 
         /// <summary>
-        /// Retrieves all specifications.
+        /// Retrieves all specifications, optionally filtered by name.
         /// </summary>
-        /// <returns>A task that represents the asynchronous operation. The result contains a <c>200 OK</c> response with all specifications.</returns>
+        /// <param name="search">Optional substring to match against the specification name.</param>
+        /// <returns>A task that represents the asynchronous operation. The result contains a <c>200 OK</c> response with all matching specifications.</returns>
         [HttpGet]
         [HasPermission(Permissions.Specifications.Read)]
-        public async Task<ActionResult<IReadOnlyList<SpecificationResponse>>> GetSpecificationsAsync()
+        public async Task<ActionResult<IReadOnlyList<SpecificationResponse>>> GetSpecificationsAsync([FromQuery] string? search)
         {
-            var specifications = await specificationService.GetSpecificationsAsync();
+            var specifications = await specificationService.GetSpecificationsAsync(search);
 
             return Ok(specifications);
         }

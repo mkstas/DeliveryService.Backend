@@ -21,10 +21,11 @@ namespace Domain.Abstractions.Repositories
         Task<Category?> GetCategoryByIdAsync(Guid categoryId);
 
         /// <summary>
-        /// Returns all categories in the system.
+        /// Returns categories in the system, optionally filtered by name.
         /// </summary>
-        /// <returns>All categories in the system.</returns>
-        Task<List<Category>> GetCategoriesAsync();
+        /// <param name="search">Optional substring to match against the category name.</param>
+        /// <returns>The matching categories.</returns>
+        Task<List<Category>> GetCategoriesAsync(string? search = null);
 
         /// <summary>
         /// Updates the specified category.

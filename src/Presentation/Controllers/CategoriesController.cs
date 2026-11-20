@@ -29,13 +29,14 @@ namespace Presentation.Controllers
         }
 
         /// <summary>
-        /// Returns all categories in the system.
+        /// Returns all categories in the system, optionally filtered by name.
         /// </summary>
+        /// <param name="search">Optional substring to match against the category name.</param>
         /// <returns>An <see cref="ActionResult{TValue}"/> containing the categories.</returns>
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<CategoryResponse>>> GetCategoriesAsync()
+        public async Task<ActionResult<IReadOnlyList<CategoryResponse>>> GetCategoriesAsync([FromQuery] string? search)
         {
-            var categories = await categoryService.GetCategoriesAsync();
+            var categories = await categoryService.GetCategoriesAsync(search);
 
             return Ok(categories);
         }

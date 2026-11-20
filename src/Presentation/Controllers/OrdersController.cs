@@ -11,9 +11,10 @@ namespace Presentation.Controllers
     /// Provides endpoints for managing orders.
     /// </summary>
     /// <param name="orderService">The order service.</param>
+    /// <param name="restaurantService">The restaurant service.</param>
     [ApiController]
     [Route("[controller]")]
-    public class OrdersController(IOrderService orderService) : ControllerBase
+    public class OrdersController(IOrderService orderService, IRestaurantService restaurantService) : ControllerBase
     {
         /// <summary>
         /// Creates a new order for the current client.
@@ -38,6 +39,21 @@ namespace Presentation.Controllers
         public async Task<ActionResult<IReadOnlyList<OrderResponse>>> GetOrdersAsync()
         {
             var orders = await orderService.GetOrdersAsync();
+
+            return Ok(orders);
+        }
+
+        /// <summary>
+        /// Retrieves the orders that contain dishes of the restaurant assigned to the current user.
+        /// </summary>
+        /// <returns>A task that represents the asynchronous operation. The result contains a <c>200 OK</c> response with the matching orders.</returns>
+        [HttpGet("me")]
+        [HasPermission(Permissions.Orders.Read)]
+        public async Task<ActionResult<IReadOnlyList<OrderResponse>>> GetMyRestaurantOrdersAsync()
+        {
+            var restaurant = await restaurantService.GetUserRestaurantAsync(User.GetCurrentId());
+
+            var orders = await orderService.GetOrdersByRestaurantAsync(restaurant.Id);
 
             return Ok(orders);
         }

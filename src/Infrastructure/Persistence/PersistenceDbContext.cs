@@ -1,4 +1,4 @@
-﻿using Domain.Entities;
+using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence
@@ -40,6 +40,11 @@ namespace Infrastructure.Persistence
         public DbSet<Specification> Specifications { get; init; }
 
         /// <summary>
+        /// The set of ingredients.
+        /// </summary>
+        public DbSet<Ingredient> Ingredients { get;  init; }
+
+        /// <summary>
         /// The set of dishes.
         /// </summary>
         public DbSet<Dish> Dishes { get; init; }
@@ -48,6 +53,11 @@ namespace Infrastructure.Persistence
         /// The set of dish specifications.
         /// </summary>
         public DbSet<DishSpecification> DishSpecifications { get; init; }
+
+        /// <summary>
+        /// The set of dish ingredients.
+        /// </summary>
+        public DbSet<DishIngredient> DishIngredients { get; init; }
 
         /// <summary>
         /// The set of cart items.

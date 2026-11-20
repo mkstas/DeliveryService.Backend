@@ -1,4 +1,4 @@
-﻿using Domain.Abstractions.Repositories;
+using Domain.Abstractions.Repositories;
 using Domain.Entities;
 using Domain.Exceptions;
 using Microsoft.EntityFrameworkCore;
@@ -26,12 +26,20 @@ namespace Infrastructure.Persistence.Repositories
         }
 
         /// <inheritdoc />
-        public async Task<IReadOnlyList<User>> GetUsersAsync()
+        public async Task<IReadOnlyList<User>> GetUsersAsync(string? search = null)
         {
-            return await context.Users
+            var query = context.Users
                 .Include(u => u.Roles)
                 .Include(u => u.Payments)
-                .ToListAsync();
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                var pattern = search.Trim().ToLower();
+                query = query.Where(u => u.EmailAddress.ToLower().Contains(pattern));
+            }
+
+            return await query.ToListAsync();
         }
 
         /// <inheritdoc />

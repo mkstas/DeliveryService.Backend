@@ -39,10 +39,11 @@ namespace Application.Abstractions.Services
         Task ResendConfirmUserEmailAsync(ResendConfirmEmailRequest request);
 
         /// <summary>
-        /// Returns all users in the system.
+        /// Returns users in the system, optionally filtered by email address.
         /// </summary>
-        /// <returns>All users in the system.</returns>
-        Task<IReadOnlyList<UserResponse>> GetUsersAsync();
+        /// <param name="search">Optional substring to match against the email address.</param>
+        /// <returns>The matching users.</returns>
+        Task<IReadOnlyList<UserResponse>> GetUsersAsync(string? search = null);
 
         /// <summary>
         /// Returns a user by its identifier.

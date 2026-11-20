@@ -13,10 +13,11 @@ namespace Application.Abstractions.Services
         Task CreateSpecificationAsync(CreateSpecificationRequest request);
 
         /// <summary>
-        /// Returns all specifications in the system.
+        /// Returns specifications in the system, optionally filtered by name.
         /// </summary>
-        /// <returns>All specifications in the system.</returns>
-        Task<IReadOnlyList<SpecificationResponse>> GetSpecificationsAsync();
+        /// <param name="search">Optional substring to match against the specification name.</param>
+        /// <returns>The matching specifications.</returns>
+        Task<IReadOnlyList<SpecificationResponse>> GetSpecificationsAsync(string? search = null);
 
         /// <summary>
         /// Returns a specification by its identifier.

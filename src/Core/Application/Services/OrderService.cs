@@ -11,6 +11,7 @@ namespace Application.Services
     internal class OrderService(
         IOrderRepository orderRepository,
         IUserRepository userRepository,
+        IDishRepository dishRepository,
         ICacheService cacheService) : IOrderService
     {
         public async Task CreateOrderAsync(Guid userId, CreateOrderRequest request)
@@ -43,6 +44,26 @@ namespace Application.Services
             await cacheService.SetAsync(CacheKeys.Orders.All, response, TimeSpan.FromHours(1));
 
             return response;
+        }
+
+        public async Task<IReadOnlyList<OrderResponse>> GetOrdersByRestaurantAsync(Guid restaurantId)
+        {
+            var dishIds = await dishRepository.GetDishesAsync(restaurantId: restaurantId);
+
+            if (dishIds.Count == 0)
+                return [];
+
+            var restaurantDishIds = dishIds.Select(d => d.Id).ToHashSet();
+
+            var orders = await orderRepository.GetOrdersAsync();
+
+            return
+            [
+                .. orders
+                    .Where(o => OrderDetailsSerializer.Deserialize(o.Details) is { } details
+                        && details.Any(d => restaurantDishIds.Contains(d.DishId)))
+                    .Select(MapToResponse)
+            ];
         }
 
         public async Task<OrderResponse> GetOrderByIdAsync(Guid orderId)

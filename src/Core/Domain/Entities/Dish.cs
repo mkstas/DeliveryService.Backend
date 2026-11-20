@@ -55,6 +55,12 @@ namespace Domain.Entities
         /// </summary>
         public IReadOnlyList<DishSpecification> Specifications => _specifications.AsReadOnly();
 
+        private readonly List<DishIngredient> _ingredients = [];
+        /// <summary>
+        /// The ingredients included in the dish.
+        /// </summary>
+        public IReadOnlyList<DishIngredient> Ingredients => _ingredients.AsReadOnly();
+
         private readonly List<CartItem> _cartItems = [];
         /// <summary>
         /// The cart items containing the dish.
@@ -157,6 +163,26 @@ namespace Domain.Entities
         public void RemoveSpecification(DishSpecification specification)
         {
             _specifications.Remove(specification);
+            UpdatedAt = DateTime.UtcNow;
+        }
+
+        /// <summary>
+        /// Adds an ingredient to the dish.
+        /// </summary>
+        /// <param name="ingredient">The ingredient to add.</param>
+        public void AddIngredient(DishIngredient ingredient)
+        {
+            _ingredients.Add(ingredient);
+            UpdatedAt = DateTime.UtcNow;
+        }
+
+        /// <summary>
+        /// Removes an ingredient from the dish.
+        /// </summary>
+        /// <param name="ingredient">The ingredient to remove.</param>
+        public void RemoveIngredient(DishIngredient ingredient)
+        {
+            _ingredients.Remove(ingredient);
             UpdatedAt = DateTime.UtcNow;
         }
 

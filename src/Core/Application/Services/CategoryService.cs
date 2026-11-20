@@ -22,20 +22,27 @@ namespace Application.Services
         }
 
         /// <inheritdoc />
-        public async Task<IReadOnlyList<CategoryResponse>> GetCategoriesAsync()
+        public async Task<IReadOnlyList<CategoryResponse>> GetCategoriesAsync(string? search = null)
         {
-            var cachedResponse = await cacheService.GetAsync<IReadOnlyList<CategoryResponse>>(CacheKeys.Categories.All);
+            if (string.IsNullOrWhiteSpace(search))
+            {
+                var cachedResponse = await cacheService.GetAsync<IReadOnlyList<CategoryResponse>>(CacheKeys.Categories.All);
 
-            if (cachedResponse is not null)
-                return cachedResponse;
+                if (cachedResponse is not null)
+                    return cachedResponse;
 
-            var categories = await categoryRespository.GetCategoriesAsync();
+                var categories = await categoryRespository.GetCategoriesAsync();
 
-            IReadOnlyList<CategoryResponse> response = [.. categories.Select(c => new CategoryResponse(c.Id, c.Name))];
+                IReadOnlyList<CategoryResponse> response = [.. categories.Select(c => new CategoryResponse(c.Id, c.Name))];
 
-            await cacheService.SetAsync(CacheKeys.Categories.All, response, TimeSpan.FromDays(14));
+                await cacheService.SetAsync(CacheKeys.Categories.All, response, TimeSpan.FromDays(14));
 
-            return response;
+                return response;
+            }
+
+            var filteredCategories = await categoryRespository.GetCategoriesAsync(search);
+
+            return [.. filteredCategories.Select(c => new CategoryResponse(c.Id, c.Name))];
         }
 
         /// <inheritdoc />

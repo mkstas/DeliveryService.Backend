@@ -15,10 +15,69 @@ namespace Application.Abstractions.Services
         Task CreateDishAsync(CreateDishRequest request);
 
         /// <summary>
-        /// Returns all dishes in the system.
+        /// Returns dishes in the system, optionally filtered by name.
         /// </summary>
-        /// <returns>All dishes in the system.</returns>
-        Task<IReadOnlyList<DishResponse>> GetDishesAsync();
+        /// <param name="search">Optional substring to match against the dish name.</param>
+        /// <returns>The matching dishes.</returns>
+        Task<IReadOnlyList<DishResponse>> GetDishesAsync(string? search = null);
+
+        /// <summary>
+        /// Returns dishes belonging to the specified restaurant.
+        /// </summary>
+        /// <param name="restaurantId">The restaurant identifier.</param>
+        /// <param name="search">Optional substring to match against the dish name.</param>
+        /// <returns>The matching dishes.</returns>
+        Task<IReadOnlyList<DishResponse>> GetDishesByRestaurantAsync(Guid restaurantId, string? search = null);
+
+        /// <summary>
+        /// Creates a dish in the restaurant assigned to the specified user.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="request">The request to create dish.</param>
+        /// <returns>The created dish.</returns>
+        Task<DishResponse> CreateUserDishAsync(Guid userId, CreateDishRequest request);
+
+        /// <summary>
+        /// Verifies that the specified dish belongs to the restaurant assigned to the user.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="dishId">The dish identifier.</param>
+        /// <returns>The dish identifier when the dish belongs to the user restaurant.</returns>
+        Task<Guid> EnsureUserOwnsDishAsync(Guid userId, Guid dishId);
+
+        /// <summary>
+        /// Adds an ingredient to the specified dish.
+        /// </summary>
+        /// <param name="dishId">The dish identifier.</param>
+        /// <param name="request">The request to add the ingredient.</param>
+        /// <returns>A task that represents the asynchronous operation.</returns>
+        Task AddDishIngredientAsync(Guid dishId, AddDishIngredientRequest request);
+
+        /// <summary>
+        /// Removes an ingredient from the specified dish.
+        /// </summary>
+        /// <param name="dishId">The dish identifier.</param>
+        /// <param name="dishIngredientId">The dish ingredient identifier.</param>
+        /// <returns>A task that represents the asynchronous operation.</returns>
+        Task RemoveDishIngredientAsync(Guid dishId, Guid dishIngredientId);
+
+        /// <summary>
+        /// Adds an ingredient to a dish of the restaurant assigned to the user.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="dishId">The dish identifier.</param>
+        /// <param name="request">The request to add the ingredient.</param>
+        /// <returns>A task that represents the asynchronous operation.</returns>
+        Task AddUserDishIngredientAsync(Guid userId, Guid dishId, AddDishIngredientRequest request);
+
+        /// <summary>
+        /// Removes an ingredient from a dish of the restaurant assigned to the user.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="dishId">The dish identifier.</param>
+        /// <param name="dishIngredientId">The dish ingredient identifier.</param>
+        /// <returns>A task that represents the asynchronous operation.</returns>
+        Task RemoveUserDishIngredientAsync(Guid userId, Guid dishId, Guid dishIngredientId);
 
         /// <summary>
         /// Returns a dish by its identifier.

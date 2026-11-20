@@ -26,9 +26,17 @@ namespace Infrastructure.Persistence.Repositories
         }
 
         /// <inheritdoc />
-        public async Task<List<Category>> GetCategoriesAsync()
+        public async Task<List<Category>> GetCategoriesAsync(string? search = null)
         {
-            return await context.Categories.ToListAsync();
+            var query = context.Categories.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                var pattern = search.Trim().ToLower();
+                query = query.Where(c => c.Name.ToLower().Contains(pattern));
+            }
+
+            return await query.ToListAsync();
         }
 
         /// <inheritdoc />

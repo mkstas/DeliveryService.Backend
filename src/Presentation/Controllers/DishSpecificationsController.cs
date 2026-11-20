@@ -3,6 +3,7 @@ using Application.DTOs.DishSpecifications;
 using Domain.Abstractions.Permissions;
 using Infrastructure.AuthService.Permissions;
 using Microsoft.AspNetCore.Mvc;
+using Presentation.Extensions;
 
 namespace Presentation.Controllers
 {
@@ -14,6 +15,51 @@ namespace Presentation.Controllers
     [Route("[controller]")]
     public class DishSpecificationsController(IDishSpecificationService dishSpecificationService) : ControllerBase
     {
+        /// <summary>
+        /// Creates a dish specification for a dish of the restaurant assigned to the current user.
+        /// </summary>
+        /// <param name="request">The request to create dish specification.</param>
+        /// <returns>An <see cref="ActionResult"/> representing a created response.</returns>
+        [HttpPost("me")]
+        [HasPermission(Permissions.DishSpecifications.Create)]
+        public async Task<ActionResult> CreateMyDishSpecificationAsync([FromBody] CreateDishSpecificationRequest request)
+        {
+            await dishSpecificationService.CreateUserDishSpecificationAsync(User.GetCurrentId(), request);
+
+            return Created();
+        }
+
+        /// <summary>
+        /// Updates a dish specification of the restaurant assigned to the current user.
+        /// </summary>
+        /// <param name="dishSpecificationId">The dish specification identifier.</param>
+        /// <param name="request">The request to update dish specification.</param>
+        /// <returns>An <see cref="ActionResult"/> representing an OK response.</returns>
+        [HttpPut("me/{dishSpecificationId:guid}")]
+        [HasPermission(Permissions.DishSpecifications.Update)]
+        public async Task<ActionResult> UpdateMyDishSpecificationAsync(
+            [FromRoute] Guid dishSpecificationId,
+            [FromBody] UpdateDishSpecificationRequest request)
+        {
+            await dishSpecificationService.UpdateUserDishSpecificationAsync(User.GetCurrentId(), dishSpecificationId, request);
+
+            return Ok();
+        }
+
+        /// <summary>
+        /// Removes a dish specification of the restaurant assigned to the current user.
+        /// </summary>
+        /// <param name="dishSpecificationId">The dish specification identifier.</param>
+        /// <returns>An <see cref="ActionResult"/> representing a no-content response.</returns>
+        [HttpDelete("me/{dishSpecificationId:guid}")]
+        [HasPermission(Permissions.DishSpecifications.Delete)]
+        public async Task<ActionResult> RemoveMyDishSpecificationAsync([FromRoute] Guid dishSpecificationId)
+        {
+            await dishSpecificationService.RemoveUserDishSpecificationAsync(User.GetCurrentId(), dishSpecificationId);
+
+            return NoContent();
+        }
+
         /// <summary>
         /// Creates a new dish specification.
         /// </summary>

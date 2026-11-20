@@ -1,8 +1,10 @@
-﻿using Application.Abstractions.Services;
+using Application.Abstractions.Services;
 using Application.DTOs.Permissions;
 using Domain.Abstractions.Permissions;
 using Infrastructure.AuthService.Permissions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Presentation.Extensions;
 
 namespace Presentation.Controllers
 {
@@ -23,6 +25,19 @@ namespace Presentation.Controllers
         public async Task<ActionResult<IReadOnlyList<PermissionResponse>>> GetPermissionsAsync()
         {
             var response = await permissionService.GetPermissionsAsync();
+
+            return Ok(response);
+        }
+
+        /// <summary>
+        /// Retrieves the system names of the permissions granted to the current user.
+        /// </summary>
+        /// <returns>A task that represents the asynchronous operation. The result contains a <c>200 OK</c> response with the current user permission names.</returns>
+        [HttpGet("me")]
+        [Authorize]
+        public async Task<ActionResult<IReadOnlyList<string>>> GetMyPermissionsAsync()
+        {
+            var response = await permissionService.GetUserPermissionNamesAsync(User.GetCurrentId());
 
             return Ok(response);
         }

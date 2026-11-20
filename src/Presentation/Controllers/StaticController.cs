@@ -76,6 +76,78 @@ namespace Presentation.Controllers
         }
 
         /// <summary>
+        /// Uploads an image for the restaurant assigned to the current user.
+        /// </summary>
+        /// <param name="file">The image file to upload.</param>
+        /// <returns>A task that represents the asynchronous operation. The result contains a <c>201 Created</c> response.</returns>
+        [HttpPost("restaurants/me/image")]
+        [HasPermission(Permissions.Restaurants.Update)]
+        [RequestSizeLimit(MaxImageSize)]
+        public async Task<IActionResult> UploadMyRestaurantImageAsync([FromForm] IFormFile? file)
+        {
+            var extension = GetImageExtension(file);
+
+            var restaurant = await restaurantService.GetUserRestaurantAsync(User.GetCurrentId());
+
+            await using var stream = file!.OpenReadStream();
+            await restaurantService.UploadRestaurantImageAsync(restaurant.Id, stream, file.ContentType, extension);
+
+            return Created();
+        }
+
+        /// <summary>
+        /// Removes the image of the restaurant assigned to the current user.
+        /// </summary>
+        /// <returns>A task that represents the asynchronous operation. The result contains a <c>204 No Content</c> response.</returns>
+        [HttpDelete("restaurants/me/image")]
+        [HasPermission(Permissions.Restaurants.Update)]
+        public async Task<IActionResult> RemoveMyRestaurantImageAsync()
+        {
+            var restaurant = await restaurantService.GetUserRestaurantAsync(User.GetCurrentId());
+
+            await restaurantService.RemoveRestaurantImageAsync(restaurant.Id);
+
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Uploads an image for a dish of the restaurant assigned to the current user.
+        /// </summary>
+        /// <param name="dishId">The dish identifier.</param>
+        /// <param name="file">The image file to upload.</param>
+        /// <returns>A task that represents the asynchronous operation. The result contains a <c>201 Created</c> response.</returns>
+        [HttpPost("dishes/me/{dishId:guid}/image")]
+        [HasPermission(Permissions.Dishes.Update)]
+        [RequestSizeLimit(MaxImageSize)]
+        public async Task<IActionResult> UploadMyDishImageAsync([FromRoute] Guid dishId, [FromForm] IFormFile? file)
+        {
+            var extension = GetImageExtension(file);
+
+            await dishService.EnsureUserOwnsDishAsync(User.GetCurrentId(), dishId);
+
+            await using var stream = file!.OpenReadStream();
+            await dishService.UploadDishImageAsync(dishId, stream, file.ContentType, extension);
+
+            return Created();
+        }
+
+        /// <summary>
+        /// Removes the image of a dish of the restaurant assigned to the current user.
+        /// </summary>
+        /// <param name="dishId">The dish identifier.</param>
+        /// <returns>A task that represents the asynchronous operation. The result contains a <c>204 No Content</c> response.</returns>
+        [HttpDelete("dishes/me/{dishId:guid}/image")]
+        [HasPermission(Permissions.Dishes.Update)]
+        public async Task<IActionResult> RemoveMyDishImageAsync([FromRoute] Guid dishId)
+        {
+            await dishService.EnsureUserOwnsDishAsync(User.GetCurrentId(), dishId);
+
+            await dishService.RemoveDishImageAsync(dishId);
+
+            return NoContent();
+        }
+
+        /// <summary>
         /// Uploads an image for the specified restaurant.
         /// </summary>
         /// <param name="restaurantId">The restaurant identifier.</param>

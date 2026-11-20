@@ -117,23 +117,34 @@ namespace Application.Services
         }
 
         /// <inheritdoc />
-        public async Task<IReadOnlyList<UserResponse>> GetUsersAsync()
+        public async Task<IReadOnlyList<UserResponse>> GetUsersAsync(string? search = null)
         {
-            var cachedResponse = await cacheService.GetAsync<IReadOnlyList<UserResponse>>(CacheKeys.Users.All);
+            if (string.IsNullOrWhiteSpace(search))
+            {
+                var cachedResponse = await cacheService.GetAsync<IReadOnlyList<UserResponse>>(CacheKeys.Users.All);
 
-            if (cachedResponse is not null)
-                return cachedResponse;
+                if (cachedResponse is not null)
+                    return cachedResponse;
 
-            var users = await userRepository.GetUsersAsync();
+                var users = await userRepository.GetUsersAsync();
 
-            IReadOnlyList<UserResponse> response = [.. users.Select(u => new UserResponse(
-                u.Id, u.EmailAddress, u.Name, u.ImageUrl,
-                [.. u.Roles.Select(r => new UserRoleResponse(r.Id, r.Name))],
-                [.. u.Payments.Select(p => new PaymentResponse(p.Id, p.CardNumber))]))];
+                IReadOnlyList<UserResponse> response = [.. users.Select(MapToResponse)];
 
-            await cacheService.SetAsync(CacheKeys.Users.All, response, TimeSpan.FromDays(1));
+                await cacheService.SetAsync(CacheKeys.Users.All, response, TimeSpan.FromDays(1));
 
-            return response;
+                return response;
+            }
+
+            var filteredUsers = await userRepository.GetUsersAsync(search);
+
+            return [.. filteredUsers.Select(MapToResponse)];
+        }
+
+        private static UserResponse MapToResponse(User user)
+        {
+            return new UserResponse(user.Id, user.EmailAddress, user.Name, user.ImageUrl, user.RestaurantId,
+                [.. user.Roles.Select(r => new UserRoleResponse(r.Id, r.Name))],
+                [.. user.Payments.Select(p => new PaymentResponse(p.Id, p.CardNumber))]);
         }
 
         /// <inheritdoc />
@@ -142,7 +153,7 @@ namespace Application.Services
             var user = await userRepository.GetUserByIdAsync(userId)
                 ?? throw new NotFoundException<User>(userId);
 
-            var response = new UserResponse(user.Id, user.EmailAddress, user.Name, user.ImageUrl,
+            var response = new UserResponse(user.Id, user.EmailAddress, user.Name, user.ImageUrl, user.RestaurantId,
                 [.. user.Roles.Select(r => new UserRoleResponse(r.Id, r.Name))],
                 [.. user.Payments.Select(p => new PaymentResponse(p.Id, p.CardNumber))]);
 

@@ -59,6 +59,9 @@ namespace Infrastructure.Persistence.Configurations
             builder.Navigation(d => d.Specifications)
                    .UsePropertyAccessMode(PropertyAccessMode.Field);
 
+            builder.Navigation(d => d.Ingredients)
+                   .UsePropertyAccessMode(PropertyAccessMode.Field);
+
             builder.Navigation(d => d.CartItems)
                    .UsePropertyAccessMode(PropertyAccessMode.Field);
         }

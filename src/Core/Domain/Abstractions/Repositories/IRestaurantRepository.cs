@@ -22,10 +22,18 @@ namespace Domain.Abstractions.Repositories
         Task<Restaurant?> GetRestaurantByIdAsync(Guid restaurantId);
 
         /// <summary>
-        /// Returns all restaurants in the system.
+        /// Returns restaurants in the system, optionally filtered by name.
         /// </summary>
-        /// <returns>All restaurants in the system.</returns>
-        Task<List<Restaurant>> GetRestaurantsAsync();
+        /// <param name="search">Optional substring to match against the restaurant name.</param>
+        /// <returns>The matching restaurants.</returns>
+        Task<List<Restaurant>> GetRestaurantsAsync(string? search = null);
+
+        /// <summary>
+        /// Returns the restaurant the specified user is assigned to, or <c>null</c> if none.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>The user restaurant, or <c>null</c> if none found.</returns>
+        Task<Restaurant?> GetUserRestaurantAsync(Guid userId);
 
         /// <summary>
         /// Updates the specified restaurant.

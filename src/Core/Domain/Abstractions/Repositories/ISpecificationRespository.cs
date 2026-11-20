@@ -21,10 +21,11 @@ namespace Domain.Abstractions.Repositories
         Task<Specification?> GetSpecificationByIdAsync(Guid specificationId);
 
         /// <summary>
-        /// Returns all specifications in the system.
+        /// Returns specifications in the system, optionally filtered by name.
         /// </summary>
-        /// <returns>All specifications in the system.</returns>
-        Task<List<Specification>> GetSpecificationsAsync();
+        /// <param name="search">Optional substring to match against the specification name.</param>
+        /// <returns>The matching specifications.</returns>
+        Task<List<Specification>> GetSpecificationsAsync(string? search = null);
 
         /// <summary>
         /// Updates the specified specification.

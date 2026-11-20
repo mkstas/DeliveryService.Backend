@@ -1,4 +1,4 @@
-﻿using Application.Abstractions.Services;
+using Application.Abstractions.Services;
 using Application.DTOs.Users;
 using Domain.Abstractions.Permissions;
 using Infrastructure.AuthService.Permissions;
@@ -17,14 +17,15 @@ namespace Presentation.Controllers
     public class UsersController(IUserService userService) : ControllerBase
     {
         /// <summary>
-        /// Retrieves all users.
+        /// Retrieves all users, optionally filtered by email address.
         /// </summary>
-        /// <returns>A task that represents the asynchronous operation. The result contains a <c>200 OK</c> response with all users.</returns>
+        /// <param name="search">Optional substring to match against the email address.</param>
+        /// <returns>A task that represents the asynchronous operation. The result contains a <c>200 OK</c> response with all matching users.</returns>
         [HttpGet]
         [HasPermission(Permissions.Users.Read)]
-        public async Task<ActionResult<IReadOnlyList<UserResponse>>> GetUsersAsync()
+        public async Task<ActionResult<IReadOnlyList<UserResponse>>> GetUsersAsync([FromQuery] string? search)
         {
-            var users = await userService.GetUsersAsync();
+            var users = await userService.GetUsersAsync(search);
 
             return Ok(users);
         }

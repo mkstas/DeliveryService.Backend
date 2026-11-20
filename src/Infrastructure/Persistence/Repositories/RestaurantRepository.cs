@@ -26,13 +26,21 @@ namespace Infrastructure.Persistence.Repositories
         }
 
         /// <inheritdoc />
-        public async Task<List<Restaurant>> GetRestaurantsAsync()
+        public async Task<List<Restaurant>> GetRestaurantsAsync(string? search = null)
         {
-            return await context.Restaurants
+            var query = context.Restaurants
                 .Include(r => r.Addresses)
                 .Include(r => r.Users)
                 .Include(r => r.Ingredients)
-                .ToListAsync();
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                var pattern = search.Trim().ToLower();
+                query = query.Where(r => r.Name.ToLower().Contains(pattern));
+            }
+
+            return await query.ToListAsync();
         }
 
         /// <inheritdoc />
@@ -43,6 +51,16 @@ namespace Infrastructure.Persistence.Repositories
                 .Include(r => r.Users)
                 .Include(r => r.Ingredients)
                 .FirstOrDefaultAsync(r => r.Id == restaurantId);
+        }
+
+        /// <inheritdoc />
+        public async Task<Restaurant?> GetUserRestaurantAsync(Guid userId)
+        {
+            return await context.Restaurants
+                .Include(r => r.Addresses)
+                .Include(r => r.Users)
+                .Include(r => r.Ingredients)
+                .FirstOrDefaultAsync(r => r.Users.Any(u => u.Id == userId));
         }
 
         /// <inheritdoc />

@@ -13,10 +13,11 @@ namespace Application.Abstractions.Services
         Task CreateCategoryAsync(CreateCategoryRequest request);
 
         /// <summary>
-        /// Returns all categories in the system.
+        /// Returns categories in the system, optionally filtered by name.
         /// </summary>
-        /// <returns>All categories in the system.</returns>
-        Task<IReadOnlyList<CategoryResponse>> GetCategoriesAsync();
+        /// <param name="search">Optional substring to match against the category name.</param>
+        /// <returns>The matching categories.</returns>
+        Task<IReadOnlyList<CategoryResponse>> GetCategoriesAsync(string? search = null);
 
         /// <summary>
         /// Returns a category by its identifier.

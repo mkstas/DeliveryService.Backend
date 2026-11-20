@@ -27,20 +27,27 @@ namespace Application.Services
         }
 
         /// <inheritdoc />
-        public async Task<IReadOnlyList<RestaurantResponse>> GetRestaurantsAsync()
+        public async Task<IReadOnlyList<RestaurantResponse>> GetRestaurantsAsync(string? search = null)
         {
-            var cachedResponse = await cacheService.GetAsync<IReadOnlyList<RestaurantResponse>>(CacheKeys.Restaurants.All);
+            if (string.IsNullOrWhiteSpace(search))
+            {
+                var cachedResponse = await cacheService.GetAsync<IReadOnlyList<RestaurantResponse>>(CacheKeys.Restaurants.All);
 
-            if (cachedResponse is not null)
-                return cachedResponse;
+                if (cachedResponse is not null)
+                    return cachedResponse;
 
-            var restaurants = await restaurantRepository.GetRestaurantsAsync();
+                var restaurants = await restaurantRepository.GetRestaurantsAsync();
 
-            IReadOnlyList<RestaurantResponse> response = [.. restaurants.Select(MapToRestaurantResponse)];
+                IReadOnlyList<RestaurantResponse> response = [.. restaurants.Select(MapToRestaurantResponse)];
 
-            await cacheService.SetAsync(CacheKeys.Restaurants.All, response, TimeSpan.FromHours(12));
+                await cacheService.SetAsync(CacheKeys.Restaurants.All, response, TimeSpan.FromHours(12));
 
-            return response;
+                return response;
+            }
+
+            var filteredRestaurants = await restaurantRepository.GetRestaurantsAsync(search);
+
+            return [.. filteredRestaurants.Select(MapToRestaurantResponse)];
         }
 
         /// <inheritdoc />
@@ -50,6 +57,114 @@ namespace Application.Services
                 ?? throw new NotFoundException<Restaurant>(restaurantId);
 
             return MapToRestaurantResponse(restaurant);
+        }
+
+        /// <inheritdoc />
+        public async Task<RestaurantResponse> GetUserRestaurantAsync(Guid userId)
+        {
+            var restaurant = await restaurantRepository.GetUserRestaurantAsync(userId)
+                ?? throw new NotFoundException<Restaurant>(userId);
+
+            return MapToRestaurantResponse(restaurant);
+        }
+
+        /// <inheritdoc />
+        public async Task UpdateUserRestaurantAsync(Guid userId, UpdateRestaurantRequest request)
+        {
+            var restaurant = await restaurantRepository.GetUserRestaurantAsync(userId)
+                ?? throw new NotFoundException<Restaurant>(userId);
+
+            restaurant.ChangeName(request.Name);
+
+            await restaurantRepository.UpdateRestaurantAsync(restaurant);
+            await cacheService.RemoveAsync(CacheKeys.Restaurants.All);
+        }
+
+        /// <inheritdoc />
+        public async Task AddUserRestaurantAddressAsync(Guid userId, UpdateRestaurantAddressRequest request)
+        {
+            var restaurant = await restaurantRepository.GetUserRestaurantAsync(userId)
+                ?? throw new NotFoundException<Restaurant>(userId);
+
+            restaurant.AddAddress(request.Address);
+
+            await restaurantRepository.UpdateRestaurantAsync(restaurant);
+            await cacheService.RemoveAsync(CacheKeys.Restaurants.All);
+        }
+
+        /// <inheritdoc />
+        public async Task UpdateUserRestaurantAddressAsync(Guid userId, Guid addressId, UpdateRestaurantAddressRequest request)
+        {
+            var restaurant = await restaurantRepository.GetUserRestaurantAsync(userId)
+                ?? throw new NotFoundException<Restaurant>(userId);
+
+            var address = restaurant.Addresses.FirstOrDefault(a => a.Id == addressId)
+                ?? throw new NotFoundException<RestaurantAddress>(addressId);
+
+            address.ChangeAddress(request.Address);
+
+            await restaurantRepository.UpdateRestaurantAsync(restaurant);
+            await cacheService.RemoveAsync(CacheKeys.Restaurants.All);
+        }
+
+        /// <inheritdoc />
+        public async Task RemoveUserRestaurantAddressAsync(Guid userId, Guid addressId)
+        {
+            var restaurant = await restaurantRepository.GetUserRestaurantAsync(userId)
+                ?? throw new NotFoundException<Restaurant>(userId);
+
+            var address = restaurant.Addresses.FirstOrDefault(a => a.Id == addressId)
+                ?? throw new NotFoundException<RestaurantAddress>(addressId);
+
+            restaurant.RemoveAddress(address);
+
+            await restaurantRepository.UpdateRestaurantAsync(restaurant);
+            await cacheService.RemoveAsync(CacheKeys.Restaurants.All);
+        }
+
+        /// <inheritdoc />
+        public async Task AddUserRestaurantIngredientAsync(Guid userId, AddMyRestaurantIngredientRequest request)
+        {
+            var restaurant = await restaurantRepository.GetUserRestaurantAsync(userId)
+                ?? throw new NotFoundException<Restaurant>(userId);
+
+            restaurant.AddIngredient(request.Name);
+
+            await restaurantRepository.UpdateRestaurantAsync(restaurant);
+            await cacheService.RemoveAsync(CacheKeys.Restaurants.All);
+        }
+
+        /// <inheritdoc />
+        public async Task UpdateUserRestaurantIngredientAsync(
+            Guid userId,
+            Guid ingredientId,
+            UpdateRestaurantIngredientRequest request)
+        {
+            var restaurant = await restaurantRepository.GetUserRestaurantAsync(userId)
+                ?? throw new NotFoundException<Restaurant>(userId);
+
+            var ingredient = restaurant.Ingredients.FirstOrDefault(i => i.Id == ingredientId)
+                ?? throw new NotFoundException<Ingredient>(ingredientId);
+
+            ingredient.ChangeName(request.Name);
+
+            await restaurantRepository.UpdateRestaurantAsync(restaurant);
+            await cacheService.RemoveAsync(CacheKeys.Restaurants.All);
+        }
+
+        /// <inheritdoc />
+        public async Task RemoveUserRestaurantIngredientAsync(Guid userId, Guid ingredientId)
+        {
+            var restaurant = await restaurantRepository.GetUserRestaurantAsync(userId)
+                ?? throw new NotFoundException<Restaurant>(userId);
+
+            var ingredient = restaurant.Ingredients.FirstOrDefault(i => i.Id == ingredientId)
+                ?? throw new NotFoundException<Ingredient>(ingredientId);
+
+            restaurant.RemoveIngredient(ingredient);
+
+            await restaurantRepository.UpdateRestaurantAsync(restaurant);
+            await cacheService.RemoveAsync(CacheKeys.Restaurants.All);
         }
 
         /// <inheritdoc />

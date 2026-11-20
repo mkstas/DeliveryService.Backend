@@ -2,7 +2,9 @@ using Application.Abstractions.Services;
 using Application.DTOs.Restaurants;
 using Domain.Abstractions.Permissions;
 using Infrastructure.AuthService.Permissions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Presentation.Extensions;
 
 namespace Presentation.Controllers
 {
@@ -29,15 +31,43 @@ namespace Presentation.Controllers
         }
 
         /// <summary>
-        /// Retrieves all restaurants.
+        /// Retrieves all restaurants, optionally filtered by name.
         /// </summary>
-        /// <returns>A task that represents the asynchronous operation. The result contains a <c>200 OK</c> response with all restaurants.</returns>
+        /// <param name="search">Optional substring to match against the restaurant name.</param>
+        /// <returns>A task that represents the asynchronous operation. The result contains a <c>200 OK</c> response with all matching restaurants.</returns>
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<RestaurantResponse>>> GetRestaurantsAsync()
+        public async Task<ActionResult<IReadOnlyList<RestaurantResponse>>> GetRestaurantsAsync([FromQuery] string? search)
         {
-            var restaurants = await restaurantService.GetRestaurantsAsync();
+            var restaurants = await restaurantService.GetRestaurantsAsync(search);
 
             return Ok(restaurants);
+        }
+
+        /// <summary>
+        /// Retrieves the restaurant assigned to the current user.
+        /// </summary>
+        /// <returns>A task that represents the asynchronous operation. The result contains a <c>200 OK</c> response with the current user restaurant.</returns>
+        [HttpGet("me")]
+        [Authorize]
+        public async Task<ActionResult<RestaurantResponse>> GetMyRestaurantAsync()
+        {
+            var restaurant = await restaurantService.GetUserRestaurantAsync(User.GetCurrentId());
+
+            return Ok(restaurant);
+        }
+
+        /// <summary>
+        /// Updates the restaurant assigned to the current user.
+        /// </summary>
+        /// <param name="request">The restaurant update request.</param>
+        /// <returns>A task that represents the asynchronous operation. The result contains a <c>200 OK</c> response.</returns>
+        [HttpPut("me")]
+        [HasPermission(Permissions.Restaurants.Update)]
+        public async Task<ActionResult> UpdateMyRestaurantAsync([FromBody] UpdateRestaurantRequest request)
+        {
+            await restaurantService.UpdateUserRestaurantAsync(User.GetCurrentId(), request);
+
+            return Ok();
         }
 
         /// <summary>
@@ -97,6 +127,96 @@ namespace Presentation.Controllers
             [FromRoute] Guid userId)
         {
             await restaurantService.RemoveRestaurantUserAsync(restaurantId, userId);
+
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Adds an address to the restaurant assigned to the current user.
+        /// </summary>
+        /// <param name="request">The restaurant address request.</param>
+        /// <returns>A task that represents the asynchronous operation. The result contains a <c>201 Created</c> response.</returns>
+        [HttpPost("me/addresses")]
+        [HasPermission(Permissions.Restaurants.Update)]
+        public async Task<ActionResult> AddMyRestaurantAddressAsync([FromBody] UpdateRestaurantAddressRequest request)
+        {
+            await restaurantService.AddUserRestaurantAddressAsync(User.GetCurrentId(), request);
+
+            return Created();
+        }
+
+        /// <summary>
+        /// Updates an address of the restaurant assigned to the current user.
+        /// </summary>
+        /// <param name="addressId">The address identifier.</param>
+        /// <param name="request">The restaurant address update request.</param>
+        /// <returns>A task that represents the asynchronous operation. The result contains a <c>200 OK</c> response.</returns>
+        [HttpPut("me/addresses/{addressId:guid}")]
+        [HasPermission(Permissions.Restaurants.Update)]
+        public async Task<ActionResult> UpdateMyRestaurantAddressAsync(
+            [FromRoute] Guid addressId,
+            [FromBody] UpdateRestaurantAddressRequest request)
+        {
+            await restaurantService.UpdateUserRestaurantAddressAsync(User.GetCurrentId(), addressId, request);
+
+            return Ok();
+        }
+
+        /// <summary>
+        /// Removes an address from the restaurant assigned to the current user.
+        /// </summary>
+        /// <param name="addressId">The address identifier.</param>
+        /// <returns>A task that represents the asynchronous operation. The result contains a <c>204 No Content</c> response.</returns>
+        [HttpDelete("me/addresses/{addressId:guid}")]
+        [HasPermission(Permissions.Restaurants.Update)]
+        public async Task<ActionResult> RemoveMyRestaurantAddressAsync([FromRoute] Guid addressId)
+        {
+            await restaurantService.RemoveUserRestaurantAddressAsync(User.GetCurrentId(), addressId);
+
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Adds an ingredient to the restaurant assigned to the current user.
+        /// </summary>
+        /// <param name="request">The restaurant ingredient request.</param>
+        /// <returns>A task that represents the asynchronous operation. The result contains a <c>201 Created</c> response.</returns>
+        [HttpPost("me/ingredients")]
+        [HasPermission(Permissions.Restaurants.Update)]
+        public async Task<ActionResult> AddMyRestaurantIngredientAsync([FromBody] AddMyRestaurantIngredientRequest request)
+        {
+            await restaurantService.AddUserRestaurantIngredientAsync(User.GetCurrentId(), request);
+
+            return Created();
+        }
+
+        /// <summary>
+        /// Updates an ingredient of the restaurant assigned to the current user.
+        /// </summary>
+        /// <param name="ingredientId">The ingredient identifier.</param>
+        /// <param name="request">The restaurant ingredient update request.</param>
+        /// <returns>A task that represents the asynchronous operation. The result contains a <c>200 OK</c> response.</returns>
+        [HttpPut("me/ingredients/{ingredientId:guid}")]
+        [HasPermission(Permissions.Restaurants.Update)]
+        public async Task<ActionResult> UpdateMyRestaurantIngredientAsync(
+            [FromRoute] Guid ingredientId,
+            [FromBody] UpdateRestaurantIngredientRequest request)
+        {
+            await restaurantService.UpdateUserRestaurantIngredientAsync(User.GetCurrentId(), ingredientId, request);
+
+            return Ok();
+        }
+
+        /// <summary>
+        /// Removes an ingredient from the restaurant assigned to the current user.
+        /// </summary>
+        /// <param name="ingredientId">The ingredient identifier.</param>
+        /// <returns>A task that represents the asynchronous operation. The result contains a <c>204 No Content</c> response.</returns>
+        [HttpDelete("me/ingredients/{ingredientId:guid}")]
+        [HasPermission(Permissions.Restaurants.Update)]
+        public async Task<ActionResult> RemoveMyRestaurantIngredientAsync([FromRoute] Guid ingredientId)
+        {
+            await restaurantService.RemoveUserRestaurantIngredientAsync(User.GetCurrentId(), ingredientId);
 
             return NoContent();
         }

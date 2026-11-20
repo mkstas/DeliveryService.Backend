@@ -21,10 +21,18 @@ namespace Application.Abstractions.Services
         Task<RestaurantResponse> GetRestaurantByIdAsync(Guid restaurantId);
 
         /// <summary>
-        /// Returns all restaurants in the system.
+        /// Returns restaurants in the system, optionally filtered by name.
         /// </summary>
-        /// <returns>All restaurants in the system.</returns>
-        Task<IReadOnlyList<RestaurantResponse>> GetRestaurantsAsync();
+        /// <param name="search">Optional substring to match against the restaurant name.</param>
+        /// <returns>The matching restaurants.</returns>
+        Task<IReadOnlyList<RestaurantResponse>> GetRestaurantsAsync(string? search = null);
+
+        /// <summary>
+        /// Returns the restaurant assigned to the specified user.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>The user restaurant.</returns>
+        Task<RestaurantResponse> GetUserRestaurantAsync(Guid userId);
 
         /// <summary>
         /// Updates the specified restaurant.
@@ -32,6 +40,57 @@ namespace Application.Abstractions.Services
         /// <param name="restaurantId">The restaurant identifier.</param>
         /// <param name="request">The request to update restaurant.</param>
         Task UpdateRestaurantAsync(Guid restaurantId, UpdateRestaurantRequest request);
+
+        /// <summary>
+        /// Updates the restaurant assigned to the specified user.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="request">The request to update restaurant.</param>
+        Task UpdateUserRestaurantAsync(Guid userId, UpdateRestaurantRequest request);
+
+        /// <summary>
+        /// Adds an address to the restaurant assigned to the specified user.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="request">The request to add address.</param>
+        Task AddUserRestaurantAddressAsync(Guid userId, UpdateRestaurantAddressRequest request);
+
+        /// <summary>
+        /// Updates an address of the restaurant assigned to the specified user.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="addressId">The address identifier.</param>
+        /// <param name="request">The request to update address.</param>
+        Task UpdateUserRestaurantAddressAsync(Guid userId, Guid addressId, UpdateRestaurantAddressRequest request);
+
+        /// <summary>
+        /// Removes an address from the restaurant assigned to the specified user.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="addressId">The address identifier.</param>
+        Task RemoveUserRestaurantAddressAsync(Guid userId, Guid addressId);
+
+        /// <summary>
+        /// Adds an ingredient to the restaurant assigned to the specified user.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="request">The request to add ingredient.</param>
+        Task AddUserRestaurantIngredientAsync(Guid userId, AddMyRestaurantIngredientRequest request);
+
+        /// <summary>
+        /// Updates an ingredient of the restaurant assigned to the specified user.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="ingredientId">The ingredient identifier.</param>
+        /// <param name="request">The request to update ingredient.</param>
+        Task UpdateUserRestaurantIngredientAsync(Guid userId, Guid ingredientId, UpdateRestaurantIngredientRequest request);
+
+        /// <summary>
+        /// Removes an ingredient from the restaurant assigned to the specified user.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="ingredientId">The ingredient identifier.</param>
+        Task RemoveUserRestaurantIngredientAsync(Guid userId, Guid ingredientId);
 
         /// <summary>
         /// Assigns a user to the specified restaurant.

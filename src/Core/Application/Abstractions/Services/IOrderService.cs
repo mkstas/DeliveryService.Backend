@@ -22,6 +22,13 @@ namespace Application.Abstractions.Services
         Task<IReadOnlyList<OrderResponse>> GetOrdersAsync();
 
         /// <summary>
+        /// Returns the orders that contain at least one dish of the specified restaurant.
+        /// </summary>
+        /// <param name="restaurantId">The restaurant identifier.</param>
+        /// <returns>The orders related to the restaurant.</returns>
+        Task<IReadOnlyList<OrderResponse>> GetOrdersByRestaurantAsync(Guid restaurantId);
+
+        /// <summary>
         /// Returns an order by its identifier.
         /// </summary>
         /// <param name="orderId">The order identifier.</param>
