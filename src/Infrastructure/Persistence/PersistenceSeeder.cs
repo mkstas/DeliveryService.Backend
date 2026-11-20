@@ -45,6 +45,8 @@ namespace Infrastructure.Persistence
             await SeedAdministratorUserAsync(context, configuration, administrator);
 
             await context.SaveChangesAsync();
+
+            await DemoDataSeeder.SeedAsync(context);
         }
 
         private static async Task SeedAdministratorUserAsync(
