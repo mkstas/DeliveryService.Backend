@@ -1,4 +1,4 @@
-using Domain.Entities.Catalog;
+using Domain.Entities;
 
 namespace Domain.Abstractions.Repositories
 {
@@ -14,10 +14,11 @@ namespace Domain.Abstractions.Repositories
         Task CreateUserAsync(User user);
 
         /// <summary>
-        /// Returns all users in the system.
+        /// Returns users in the system, optionally filtered by email address.
         /// </summary>
-        /// <returns>All users in the system.</returns>
-        Task<IReadOnlyList<User>> GetUsersAsync();
+        /// <param name="search">Optional substring to match against the email address.</param>
+        /// <returns>The matching users.</returns>
+        Task<IReadOnlyList<User>> GetUsersAsync(string? search = null);
 
         /// <summary>
         /// Returns a user by its identifier, or <c>null</c> if not found.
@@ -32,6 +33,13 @@ namespace Domain.Abstractions.Repositories
         /// <param name="address">The email address to search for.</param>
         /// <returns>The matching user, or <c>null</c> if none found.</returns>
         Task<User?> GetUserByEmailAsync(string address);
+
+        /// <summary>
+        /// Returns whether the specified card number is already used.
+        /// </summary>
+        /// <param name="cardNumber">The card number to search for.</param>
+        /// <returns><c>true</c> if the card number is already used; otherwise, <c>false</c>.</returns>
+        Task<bool> PaymentCardExistsAsync(string cardNumber);
 
         /// <summary>
         /// Updates the specified user.

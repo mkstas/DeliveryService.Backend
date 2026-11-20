@@ -21,12 +21,22 @@ namespace Infrastructure.Persistence
             this IServiceCollection services,
             IConfiguration configuration)
         {
-            services.AddDbContext<PersistenceDbContext>(options =>
-                options.UseNpgsql(configuration.GetConnectionString(nameof(PersistenceDbContext))));
+            var connectionString = configuration.GetConnectionString(nameof(PersistenceDbContext))
+                ?? throw new InvalidOperationException($"{nameof(PersistenceDbContext)} connection string not configured.");
+
+            services.AddDbContext<PersistenceDbContext>(options => options.UseNpgsql(connectionString));
 
             services.AddScoped<IPermissionRepository, PermissionRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IRestaurantRepository, RestaurantRepository>();
+            services.AddScoped<ICategoryRespository, CategoryRespository>();
+            services.AddScoped<ISpecificationRespository, SpecificationRespository>();
+            services.AddScoped<IDishRepository, DishRepository>();
+            services.AddScoped<IIngredientRepository, IngredientRepository>();
+            services.AddScoped<IDishSpecificationRepository, DishSpecificationRepository>();
+            services.AddScoped<ICartItemRepository, CartItemRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
 
             return services;
         }

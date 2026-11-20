@@ -1,5 +1,4 @@
 using Application.DTOs.Roles;
-using Domain.Entities.Catalog;
 
 namespace Application.Abstractions.Services
 {
@@ -18,14 +17,14 @@ namespace Application.Abstractions.Services
         /// Returns all roles in the system.
         /// </summary>
         /// <returns>All roles in the system.</returns>
-        Task<IReadOnlyList<Role>> GetRolesAsync();
+        Task<IReadOnlyList<RoleResponse>> GetRolesAsync();
 
         /// <summary>
-        /// Returns a role by its identifier.
+        /// Returns the role with the specified identifier.
         /// </summary>
         /// <param name="roleId">The role identifier.</param>
-        /// <returns>The matching role, or null if not found.</returns>
-        Task<Role> GetRoleByIdAsync(Guid roleId);
+        /// <returns>The role with the specified identifier.</returns>
+        Task<RoleResponse> GetRoleByIdAsync(Guid roleId);
 
         /// <summary>
         /// Updates the name of the specified role.
@@ -35,10 +34,10 @@ namespace Application.Abstractions.Services
         Task UpdateRoleAsync(Guid roleId, UpdateRoleRequest request);
 
         /// <summary>
-        /// Deletes the specified role from the system.
+        /// Remove the specified role from the system.
         /// </summary>
         /// <param name="roleId">The role identifier.</param>
-        Task DeleteRoleAsync(Guid roleId);
+        Task RemoveRoleAsync(Guid roleId);
 
         /// <summary>
         /// Assigns a permission to the specified role.

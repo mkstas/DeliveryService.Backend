@@ -6,7 +6,7 @@ using Domain.Abstractions.Repositories;
 namespace Application.Services
 {
     /// <summary>
-    ///
+    /// Implementation of <see cref="IPermissionService"/>.
     /// </summary>
     internal class PermissionService(
         IPermissionRepository permissionRepository,
@@ -27,6 +27,14 @@ namespace Application.Services
             await cacheService.SetAsync(CacheKeys.Permission.All, response, TimeSpan.FromHours(24));
 
             return response;
+        }
+
+        /// <inheritdoc />
+        public async Task<IReadOnlyList<string>> GetUserPermissionNamesAsync(Guid userId)
+        {
+            var permissions = await permissionRepository.GetUserPermissionsByUserIdAsync(userId);
+
+            return [.. permissions.Select(p => p.SystemName).Distinct(StringComparer.OrdinalIgnoreCase)];
         }
     }
 }

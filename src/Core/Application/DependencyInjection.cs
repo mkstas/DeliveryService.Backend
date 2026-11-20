@@ -1,3 +1,5 @@
+using Application.Abstractions.Services;
+using Application.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Application
@@ -15,6 +17,17 @@ namespace Application
         public static IServiceCollection AddApplicationService(
             this IServiceCollection services)
         {
+            services.AddScoped<IPermissionService, PermissionService>();
+            services.AddScoped<IRoleService, RoleService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IRestaurantService, RestaurantService>();
+            services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<ISpecificationService, SpecificationService>();
+            services.AddScoped<IDishService, DishService>();
+            services.AddScoped<IDishSpecificationService, DishSpecificationService>();
+            services.AddScoped<ICartItemService, CartItemService>();
+            services.AddScoped<IOrderService, OrderService>();
+
             return services;
         }
     }

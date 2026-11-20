@@ -1,5 +1,5 @@
 using Domain.Abstractions.Repositories;
-using Domain.Entities.Catalog;
+using Domain.Entities;
 using Domain.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,11 +26,20 @@ namespace Infrastructure.Persistence.Repositories
         }
 
         /// <inheritdoc />
-        public async Task<IReadOnlyList<User>> GetUsersAsync()
+        public async Task<IReadOnlyList<User>> GetUsersAsync(string? search = null)
         {
-            return await context.Users
+            var query = context.Users
                 .Include(u => u.Roles)
-                .ToListAsync();
+                .Include(u => u.Payments)
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                var pattern = search.Trim().ToLower();
+                query = query.Where(u => u.EmailAddress.ToLower().Contains(pattern));
+            }
+
+            return await query.ToListAsync();
         }
 
         /// <inheritdoc />
@@ -38,6 +47,7 @@ namespace Infrastructure.Persistence.Repositories
         {
             return await context.Users
                 .Include(u => u.Roles)
+                .Include(u => u.Payments)
                 .FirstOrDefaultAsync(u => u.Id == userId);
         }
 
@@ -46,7 +56,14 @@ namespace Infrastructure.Persistence.Repositories
         {
             return await context.Users
                 .Include(u => u.Roles)
+                .Include(u => u.Payments)
                 .FirstOrDefaultAsync(u => u.EmailAddress == address);
+        }
+
+        /// <inheritdoc />
+        public async Task<bool> PaymentCardExistsAsync(string cardNumber)
+        {
+            return await context.Users.AnyAsync(u => u.Payments.Any(p => p.CardNumber == cardNumber));
         }
 
         /// <inheritdoc />
@@ -63,3 +80,4 @@ namespace Infrastructure.Persistence.Repositories
         }
     }
 }
+

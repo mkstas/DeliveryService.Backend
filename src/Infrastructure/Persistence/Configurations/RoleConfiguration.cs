@@ -1,4 +1,4 @@
-using Domain.Entities.Catalog;
+﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -21,6 +21,10 @@ namespace Infrastructure.Persistence.Configurations
             builder.Property(r => r.Name)
                    .IsRequired()
                    .HasColumnName("name");
+
+            builder.Property(r => r.IsBuiltIn)
+                   .IsRequired()
+                   .HasColumnName("is_built_in");
 
             builder.Property(r => r.CreatedAt)
                    .IsRequired()
@@ -55,3 +59,4 @@ namespace Infrastructure.Persistence.Configurations
         }
     }
 }
+

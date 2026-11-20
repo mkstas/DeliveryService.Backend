@@ -1,5 +1,5 @@
-using Domain.Abstractions.Repositories;
-using Domain.Entities.Catalog;
+﻿using Domain.Abstractions.Repositories;
+using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence.Repositories
@@ -19,6 +19,7 @@ namespace Infrastructure.Persistence.Repositories
         public async Task<IReadOnlyList<Permission>> GetUserPermissionsByUserIdAsync(Guid userId)
         {
             return await context.Users
+                .AsNoTracking()
                 .Where(u => u.Id == userId)
                 .SelectMany(u => u.Roles)
                 .SelectMany(r => r.Permissions)
@@ -33,3 +34,4 @@ namespace Infrastructure.Persistence.Repositories
         }
     }
 }
+
