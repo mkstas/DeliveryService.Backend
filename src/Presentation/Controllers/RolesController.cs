@@ -1,4 +1,6 @@
 ﻿using Application.Abstractions.Services;
+using Application.Common;
+using Application.DTOs.Common;
 using Application.DTOs.Roles;
 using Domain.Abstractions.Permissions;
 using Infrastructure.AuthService.Permissions;
@@ -39,6 +41,15 @@ namespace Presentation.Controllers
             var roles = await roleService.GetRolesAsync();
 
             return Ok(roles);
+        }
+
+        [HttpGet("page")]
+        [HasPermission(Permissions.Roles.Read)]
+        public async Task<ActionResult<PagedResponse<RoleResponse>>> GetRolesPageAsync([FromQuery] PaginationQuery pagination)
+        {
+            var roles = await roleService.GetRolesAsync();
+
+            return Ok(roles.ToPaged(pagination));
         }
 
         /// <summary>

@@ -1,4 +1,6 @@
 using Application.Abstractions.Services;
+using Application.Common;
+using Application.DTOs.Common;
 using Application.DTOs.Orders;
 using Domain.Abstractions.Permissions;
 using Infrastructure.AuthService.Permissions;
@@ -43,6 +45,15 @@ namespace Presentation.Controllers
             return Ok(orders);
         }
 
+        [HttpGet("page")]
+        [HasPermission(Permissions.Orders.Read)]
+        public async Task<ActionResult<PagedResponse<OrderResponse>>> GetOrdersPageAsync([FromQuery] PaginationQuery pagination)
+        {
+            var orders = await orderService.GetOrdersAsync();
+
+            return Ok(orders.ToPaged(pagination));
+        }
+
         /// <summary>
         /// Retrieves the orders that contain dishes of the restaurant assigned to the current user.
         /// </summary>
@@ -56,6 +67,18 @@ namespace Presentation.Controllers
             var orders = await orderService.GetOrdersByRestaurantAsync(restaurant.Id);
 
             return Ok(orders);
+        }
+
+        [HttpGet("me/page")]
+        [HasPermission(Permissions.Orders.Read)]
+        public async Task<ActionResult<PagedResponse<OrderResponse>>> GetMyRestaurantOrdersPageAsync(
+            [FromQuery] PaginationQuery pagination)
+        {
+            var restaurant = await restaurantService.GetUserRestaurantAsync(User.GetCurrentId());
+
+            var orders = await orderService.GetOrdersByRestaurantAsync(restaurant.Id);
+
+            return Ok(orders.ToPaged(pagination));
         }
 
         /// <summary>

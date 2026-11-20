@@ -1,4 +1,6 @@
 using Application.Abstractions.Services;
+using Application.Common;
+using Application.DTOs.Common;
 using Application.DTOs.Users;
 using Domain.Abstractions.Permissions;
 using Infrastructure.AuthService.Permissions;
@@ -28,6 +30,17 @@ namespace Presentation.Controllers
             var users = await userService.GetUsersAsync(search);
 
             return Ok(users);
+        }
+
+        [HttpGet("page")]
+        [HasPermission(Permissions.Users.Read)]
+        public async Task<ActionResult<PagedResponse<UserResponse>>> GetUsersPageAsync(
+            [FromQuery] string? search,
+            [FromQuery] PaginationQuery pagination)
+        {
+            var users = await userService.GetUsersAsync(search);
+
+            return Ok(users.ToPaged(pagination));
         }
 
         /// <summary>

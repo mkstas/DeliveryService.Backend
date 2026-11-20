@@ -1,4 +1,6 @@
 using Application.Abstractions.Services;
+using Application.Common;
+using Application.DTOs.Common;
 using Application.DTOs.Specifications;
 using Domain.Abstractions.Permissions;
 using Infrastructure.AuthService.Permissions;
@@ -40,6 +42,17 @@ namespace Presentation.Controllers
             var specifications = await specificationService.GetSpecificationsAsync(search);
 
             return Ok(specifications);
+        }
+
+        [HttpGet("page")]
+        [HasPermission(Permissions.Specifications.Read)]
+        public async Task<ActionResult<PagedResponse<SpecificationResponse>>> GetSpecificationsPageAsync(
+            [FromQuery] string? search,
+            [FromQuery] PaginationQuery pagination)
+        {
+            var specifications = await specificationService.GetSpecificationsAsync(search);
+
+            return Ok(specifications.ToPaged(pagination));
         }
 
         /// <summary>

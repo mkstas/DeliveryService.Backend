@@ -1,4 +1,6 @@
 using Application.Abstractions.Services;
+using Application.Common;
+using Application.DTOs.Common;
 using Application.DTOs.Restaurants;
 using Domain.Abstractions.Permissions;
 using Infrastructure.AuthService.Permissions;
@@ -41,6 +43,16 @@ namespace Presentation.Controllers
             var restaurants = await restaurantService.GetRestaurantsAsync(search);
 
             return Ok(restaurants);
+        }
+
+        [HttpGet("page")]
+        public async Task<ActionResult<PagedResponse<RestaurantResponse>>> GetRestaurantsPageAsync(
+            [FromQuery] string? search,
+            [FromQuery] PaginationQuery pagination)
+        {
+            var restaurants = await restaurantService.GetRestaurantsAsync(search);
+
+            return Ok(restaurants.ToPaged(pagination));
         }
 
         /// <summary>

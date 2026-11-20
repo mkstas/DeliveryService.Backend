@@ -1,4 +1,6 @@
 using Application.Abstractions.Services;
+using Application.Common;
+using Application.DTOs.Common;
 using Application.DTOs.Dishes;
 using Domain.Abstractions.Permissions;
 using Infrastructure.AuthService.Permissions;
@@ -43,6 +45,16 @@ namespace Presentation.Controllers
             return Ok(dishes);
         }
 
+        [HttpGet("page")]
+        public async Task<ActionResult<PagedResponse<DishResponse>>> GetDishesPageAsync(
+            [FromQuery] string? search,
+            [FromQuery] PaginationQuery pagination)
+        {
+            var dishes = await dishService.GetDishesAsync(search);
+
+            return Ok(dishes.ToPaged(pagination));
+        }
+
         /// <summary>
         /// Creates a dish in the restaurant assigned to the current user.
         /// </summary>
@@ -71,6 +83,19 @@ namespace Presentation.Controllers
             var dishes = await dishService.GetDishesByRestaurantAsync(restaurant.Id, search);
 
             return Ok(dishes);
+        }
+
+        [HttpGet("me/page")]
+        [HasPermission(Permissions.Dishes.Read)]
+        public async Task<ActionResult<PagedResponse<DishResponse>>> GetMyDishesPageAsync(
+            [FromQuery] string? search,
+            [FromQuery] PaginationQuery pagination)
+        {
+            var restaurant = await restaurantService.GetUserRestaurantAsync(User.GetCurrentId());
+
+            var dishes = await dishService.GetDishesByRestaurantAsync(restaurant.Id, search);
+
+            return Ok(dishes.ToPaged(pagination));
         }
 
         /// <summary>

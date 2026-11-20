@@ -1,5 +1,7 @@
 using Application.Abstractions.Services;
+using Application.Common;
 using Application.DTOs.Categories;
+using Application.DTOs.Common;
 using Domain.Abstractions.Permissions;
 using Infrastructure.AuthService.Permissions;
 using Microsoft.AspNetCore.Mvc;
@@ -39,6 +41,16 @@ namespace Presentation.Controllers
             var categories = await categoryService.GetCategoriesAsync(search);
 
             return Ok(categories);
+        }
+
+        [HttpGet("page")]
+        public async Task<ActionResult<PagedResponse<CategoryResponse>>> GetCategoriesPageAsync(
+            [FromQuery] string? search,
+            [FromQuery] PaginationQuery pagination)
+        {
+            var categories = await categoryService.GetCategoriesAsync(search);
+
+            return Ok(categories.ToPaged(pagination));
         }
 
         /// <summary>
