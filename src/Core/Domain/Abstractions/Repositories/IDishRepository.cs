@@ -22,12 +22,22 @@ namespace Domain.Abstractions.Repositories
         Task<Dish?> GetDishByIdAsync(Guid dishId);
 
         /// <summary>
-        /// Returns dishes in the system, optionally filtered by name.
+        /// Returns dishes in the system, optionally filtered.
         /// </summary>
         /// <param name="search">Optional substring to match against the dish name.</param>
         /// <param name="restaurantId">Optional restaurant identifier to restrict the result.</param>
+        /// <param name="categoryId">Optional category identifier to restrict the result.</param>
+        /// <param name="minPrice">Optional inclusive minimum price.</param>
+        /// <param name="maxPrice">Optional inclusive maximum price.</param>
+        /// <param name="restaurantIds">Optional restaurant identifiers to restrict the result.</param>
         /// <returns>The matching dishes.</returns>
-        Task<List<Dish>> GetDishesAsync(string? search = null, Guid? restaurantId = null);
+        Task<List<Dish>> GetDishesAsync(
+            string? search = null,
+            Guid? restaurantId = null,
+            Guid? categoryId = null,
+            decimal? minPrice = null,
+            decimal? maxPrice = null,
+            IReadOnlyCollection<Guid>? restaurantIds = null);
 
         /// <summary>
         /// Updates the specified dish.

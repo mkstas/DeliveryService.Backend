@@ -13,7 +13,13 @@ namespace Infrastructure.Persistence.Repositories
             await context.SaveChangesAsync();
         }
 
-        public async Task<List<Dish>> GetDishesAsync(string? search = null, Guid? restaurantId = null)
+        public async Task<List<Dish>> GetDishesAsync(
+            string? search = null,
+            Guid? restaurantId = null,
+            Guid? categoryId = null,
+            decimal? minPrice = null,
+            decimal? maxPrice = null,
+            IReadOnlyCollection<Guid>? restaurantIds = null)
         {
             var query = context.Dishes
                 .Include(d => d.Restaurant)
@@ -26,6 +32,26 @@ namespace Infrastructure.Persistence.Repositories
             if (restaurantId is not null)
             {
                 query = query.Where(d => d.RestaurantId == restaurantId);
+            }
+
+            if (restaurantIds is { Count: > 0 })
+            {
+                query = query.Where(d => restaurantIds.Contains(d.RestaurantId));
+            }
+
+            if (categoryId is not null)
+            {
+                query = query.Where(d => d.CategoryId == categoryId);
+            }
+
+            if (minPrice is { } minimumPrice)
+            {
+                query = query.Where(d => d.Price >= minimumPrice);
+            }
+
+            if (maxPrice is { } maximumPrice)
+            {
+                query = query.Where(d => d.Price <= maximumPrice);
             }
 
             if (!string.IsNullOrWhiteSpace(search))

@@ -36,9 +36,11 @@ namespace Application.Services
             await cacheService.RemoveAsync(CacheKeys.Dishes.All);
         }
 
-        public async Task<IReadOnlyList<DishResponse>> GetDishesAsync(string? search = null)
+        public async Task<IReadOnlyList<DishResponse>> GetDishesAsync(DishFilterQuery? filter = null)
         {
-            if (string.IsNullOrWhiteSpace(search))
+            filter ??= new DishFilterQuery();
+
+            if (filter.IsEmpty)
             {
                 var cachedResponse = await cacheService.GetAsync<IReadOnlyList<DishResponse>>(CacheKeys.Dishes.All);
 
@@ -54,7 +56,14 @@ namespace Application.Services
                 return response;
             }
 
-            var filteredDishes = await dishRepository.GetDishesAsync(search);
+            var restaurantIds = filter.RestaurantIds?.Where(id => id != Guid.Empty).Distinct().ToList();
+
+            var filteredDishes = await dishRepository.GetDishesAsync(
+                filter.Search,
+                categoryId: filter.CategoryId,
+                minPrice: filter.MinPrice,
+                maxPrice: filter.MaxPrice,
+                restaurantIds: restaurantIds);
 
             return [.. filteredDishes.Select(MapToDishResponse)];
         }

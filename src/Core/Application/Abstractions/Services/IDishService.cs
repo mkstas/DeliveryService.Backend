@@ -15,11 +15,11 @@ namespace Application.Abstractions.Services
         Task CreateDishAsync(CreateDishRequest request);
 
         /// <summary>
-        /// Returns dishes in the system, optionally filtered by name.
+        /// Returns dishes in the system, optionally filtered.
         /// </summary>
-        /// <param name="search">Optional substring to match against the dish name.</param>
+        /// <param name="filter">Optional dish filters.</param>
         /// <returns>The matching dishes.</returns>
-        Task<IReadOnlyList<DishResponse>> GetDishesAsync(string? search = null);
+        Task<IReadOnlyList<DishResponse>> GetDishesAsync(DishFilterQuery? filter = null);
 
         /// <summary>
         /// Returns dishes belonging to the specified restaurant.
