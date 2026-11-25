@@ -33,24 +33,30 @@ namespace Presentation.Controllers
         }
 
         /// <summary>
-        /// Returns all dishes in the system, optionally filtered by name.
+        /// Returns all dishes in the system, optionally filtered.
         /// </summary>
-        /// <param name="search">Optional substring to match against the dish name.</param>
+        /// <param name="filter">Optional dish filters.</param>
         /// <returns>An <see cref="ActionResult{TValue}"/> containing the dishes.</returns>
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<DishResponse>>> GetDishesAsync([FromQuery] string? search)
+        public async Task<ActionResult<IReadOnlyList<DishResponse>>> GetDishesAsync([FromQuery] DishFilterQuery filter)
         {
-            var dishes = await dishService.GetDishesAsync(search);
+            var dishes = await dishService.GetDishesAsync(filter);
 
             return Ok(dishes);
         }
 
+        /// <summary>
+        /// Returns a page of dishes in the system, optionally filtered.
+        /// </summary>
+        /// <param name="filter">Optional dish filters.</param>
+        /// <param name="pagination">The pagination parameters.</param>
+        /// <returns>An <see cref="ActionResult{TValue}"/> containing the page of dishes.</returns>
         [HttpGet("page")]
         public async Task<ActionResult<PagedResponse<DishResponse>>> GetDishesPageAsync(
-            [FromQuery] string? search,
+            [FromQuery] DishFilterQuery filter,
             [FromQuery] PaginationQuery pagination)
         {
-            var dishes = await dishService.GetDishesAsync(search);
+            var dishes = await dishService.GetDishesAsync(filter);
 
             return Ok(dishes.ToPaged(pagination));
         }
